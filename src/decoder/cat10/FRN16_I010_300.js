@@ -1,0 +1,23 @@
+// Vehicle Fleet Identification
+// Definition:
+// Vehicle fleet identification number.
+// Format:
+// One octet fixed length Data Item.
+
+import { pushDataItem } from "../decoder";
+
+const name = "vehicle_fleet_identification";
+const byteLength = 1;
+const item = ["Unknown", "ATC equipment maintenance", "Airport maintenance", "Fire", "Bird scarer", "Snow plough", "Runway sweeper",
+    "Emergency", "Police", "Bus", "Tug (push/tow)", "Grass cutter", "Fuel", "Baggage", "Catering", "Aircraft maintenance", "Flyco (follow me)"]
+export function parse(record) {
+
+    let indexVFI = record[0];
+
+    pushDataItem(name, item[indexVFI])
+
+    return record.subarray(byteLength);
+}
+
+
+

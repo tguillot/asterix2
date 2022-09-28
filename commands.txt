@@ -1,0 +1,6 @@
+vue create vue-desktop (VUE V2)
+cd vue-desktop/
+vue add electron-builder
+vue add vuetify
+npm i @arcgis/core
+npm run electron:serve
