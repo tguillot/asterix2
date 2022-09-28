@@ -25,7 +25,9 @@ import { parse as parse22 } from "./FRN22_I010_500.js"
 import { parse as parse23 } from "./FRN23_I010_280.js"
 import { parse as parse24 } from "./FRN24_I010_131.js"
 import { parse as parse25 } from "./FRN25_I010_210.js"
-var parsers = [parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10, parse11, parse12, parse13, parse14, parse15, parse16, parse17, parse18, parse19, parse20, parse21, parse22, parse23, parse24, parse25];
+var parsers = [parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10,
+    parse11, parse12, parse13, parse14, parse15, parse16, parse17, parse18, parse19, parse20,
+    parse21, parse22, parse23, parse24, parse25];
 export function parse(record) {
 
     let lengthFSPEC = getNumBytesWithFX(record);
@@ -35,8 +37,6 @@ export function parse(record) {
 
     for (var i = 0; i < strFSPEC.length; i++) {
         if (strFSPEC.charAt(i) == "1" & i < 25) {
-            // let parseFunction = "parse" + (i + 1);
-            // record = eval(parseFunction)(record);
             record = parsers[i](record);
         }
     }

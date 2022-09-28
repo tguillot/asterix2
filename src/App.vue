@@ -33,7 +33,7 @@ export default {
       title: 'ASTERIX',
       menuItems: [
           { title: 'Home', path: '/', icon: 'mdi-home' },
-          { title: 'About', path: '/about', icon: 'mdi-account' },
+          { title: 'View Data', path: '/data', icon: 'mdi-table-eye' },
      ]
     }
   },

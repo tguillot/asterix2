@@ -21,7 +21,6 @@ import EsriMap from "../components/EsriMap";
 import {decode} from "../decoder/decoder.js"
 
 export default {
-  name: "Home",
   components: {
     EsriMap,
   },

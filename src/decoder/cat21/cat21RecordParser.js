@@ -42,7 +42,11 @@ import { parse as parse41 } from "./FRN41_I021_400.js"
 import { parse as parse42 } from "./FRN42_I021_295.js"
 import { getNumBytesWithFX, intArrayToBits } from "../utils/bitUtils.js"
 
-var parsers = [parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10, parse11, parse12, parse13, parse14, parse15, parse16, parse17, parse18, parse19, parse20, parse21, parse22, parse23, parse24, parse25, parse26, parse27, parse28, parse29, parse30, parse31, parse32, parse33, parse34, parse35, parse36, parse37, parse38, parse39, parse40, parse41, parse42];
+var parsers = [parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10,
+    parse11, parse12, parse13, parse14, parse15, parse16, parse17, parse18, parse19, parse20,
+    parse21, parse22, parse23, parse24, parse25, parse26, parse27, parse28, parse29, parse30,
+    parse31, parse32, parse33, parse34, parse35, parse36, parse37, parse38, parse39, parse40,
+    parse41, parse42];
 export function parse(record) {
 
     let lengthFSPEC = getNumBytesWithFX(record);

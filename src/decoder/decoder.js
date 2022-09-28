@@ -1,6 +1,7 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { int8Toint16 } from './utils/bitUtils.js';
+import store from '../store'
 
 
 const CATEGORY_10 = 10;
@@ -58,6 +59,7 @@ export function decode(buffer) {
     console.log("framesParsed", framesParsed - 1)
     console.log(records[0])
 
+    store.dispatch("setData", records);
 
     // for (let j = 0; j < 3; j++)
     //     console.log(global.data.records[j])
