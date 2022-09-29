@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
-          text
+        color="primary"
           to="/">
           <v-icon left dark> mdi-home </v-icon>
           Home
@@ -20,6 +20,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
         color="primary"
+        
           v-bind="attrs"
           v-on="on"
         >
@@ -38,6 +39,28 @@
         </v-list-item>
       </v-list>
     </v-menu>
+      
+
+    <!-- <div> -->
+      <v-btn
+      color="primary"
+        :loading="isSelecting"
+        @click="onButtonClick"
+      >
+        <v-icon left>
+          mdi-cloud-upload
+        </v-icon>
+        {{ buttonText }}
+      </v-btn>
+      <input
+        ref="uploader"
+        class="d-none"
+        type="file"
+        accept=".ast"
+        @change="onFileChanged"
+      >
+    <!-- </div>     -->
+   
       </v-toolbar-items>
     </v-toolbar>
 
@@ -48,12 +71,17 @@
 </template>
 
 <script>
+import { decode } from './decoder/decoder';
+
 
 export default {
   name: 'App',
 
    data(){
     return {
+      defaultButtonText: 'Upload Data',
+      chosenFile: null,
+      isSelecting: false, 
       title: 'ASTERIX',
       items: [
         { title: 'Cat 10', path: "/data" },
@@ -61,6 +89,37 @@ export default {
       ],
     }
   },
+  computed: {
+    buttonText() {
+      return this.chosenFile ? this.chosenFile.name : this.defaultButtonText
+    }
+  },
+  methods:{
+    
+    onButtonClick() {
+      this.isSelecting = true
+      window.addEventListener('focus', () => {
+        this.isSelecting = false
+      }, { once: true })
+
+      this.$refs.uploader.click()
+    },
+    onFileChanged(e) {
+      this.chosenFile = e.target.files[0]
+      if (this.chosenFile) {
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(this.chosenFile);
+        reader.onload = () => {
+          try {
+            decode(reader.result)
+          } catch (e) {
+           console.log(e)
+          }
+        };
+      }
+      // do something
+    }
+  }
 };
 </script>
 

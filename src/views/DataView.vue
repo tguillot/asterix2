@@ -43,7 +43,8 @@ export default {
       headers: [
       { text: 'Category', align: 'start', value: 'category' },
       { text: 'Length',  value: 'length' },
-        { text: 'Data Source Identifier', value: 'data_source_identifier' },
+        { text: 'SAC', value: 'SAC' },
+        { text: 'SIC', value: 'SIC' },
         { text: 'Message Type', value: 'message_type' },
         { text: 'Target Report Descriptor', value: 'target_report_descriptor' },
         { text: 'Time of Day', value: 'time_of_day' },
@@ -109,11 +110,12 @@ td:hover{
 }
 td{
   max-width: 200px;
-  overflow-x: auto;
+  overflow-x :hidden;
   overflow-y :auto;
   height: auto;
   overflow-wrap: break-word;
   text-align: center;
+  white-space: pre-wrap;
 }
 #table{
   height: 100vh;

@@ -15,7 +15,7 @@ export default new Vuex.Store({
   mutations: {
     SET_DATA(state, data) {
       data.map(item => {
-        Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key]); });
+        Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "")});
         return item;
       })
       state.data = data;
