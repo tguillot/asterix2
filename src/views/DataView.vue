@@ -1,41 +1,45 @@
 <template>
-  <div v-if="data">
+    <div v-if="data">
     <v-data-table
     :headers="headers"
     :items="data"
-    :items-per-page="5"
     class="elevation-1"
     no-data-text="-"
+    id="table"   
+    fixed-header
+    fixed-footer
 
-
+    height="85vh"
+    :footer-props="{
+      itemsPerPageOptions: [25,50,100],
+      showFirstLastPage: true,
+      height: '60px'
+    }"
+    
   >
   <template v-slot:item="{ item }" >
-    <tr >
-          <td v-for="header in headers" v-bind:key="header.text" class="truncate">
-            {{ item[header.value]}}
-          </td>
-        </tr>
-            </template>
-
-  <!-- <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">
-        More info about {{ item["message_type"] }}
+    <tr @click="rowClick" >
+      <td v-for="header in headers" v-bind:key="header.text" class="truncate">
+        {{ item[header.value] ? item[header.value]: "-"}}
       </td>
-    </template> -->
+    </tr>
+   </template>
 
+   <template v-slot:footer class="footerClass">
+   </template>
 </v-data-table>
-  </div>
+</div>
+
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-// show-expand
-//     :single-expand="true"
 
 export default {
 
   data() {
     return {
+      selectedRow: null,
       headers: [
       { text: 'Category', align: 'start', value: 'category' },
       { text: 'Length',  value: 'length' },
@@ -73,16 +77,52 @@ export default {
       data: "getData",
     }),
   },
+  methods:{
+    rowClick(value) {
+      console.log("click", value)
+      if(this.selectedRow){
+        this.selectedRow.target.classList.add('truncate')
+      }
+      const tr = value.target;
+      tr.classList.remove('truncate');
+      this.selectedRow=value;
+    },
+  }
 
 };
 </script>
   
 <style scoped>
 .truncate {
-        max-width: 1px;
+        max-width: 200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      .row{
+        display: table-row;
+}
+
+td:hover{
+  background-color: #013c58;  
+}
+td{
+  max-width: 200px;
+  overflow-x: auto;
+  overflow-y :auto;
+  height: auto;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+#table{
+  height: 100vh;
+  min-height: 100vh;
+}
+#footerClass{
+  min-height: 70px;
+}
+
+
 </style>
   
