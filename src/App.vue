@@ -2,7 +2,7 @@
   <v-app>
 
     <v-overlay :value="uploadProgress!=0" >
-      <v-progress-linear :value="uploadProgress"   power    color="amber"
+      <v-progress-linear :value="uploadProgress" color="amber"
       height="25" class="loadingBar">
       <strong>{{ Math.ceil(uploadProgress) }}%</strong>
 
