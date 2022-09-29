@@ -1,5 +1,16 @@
 <template>
   <v-app>
+
+    <v-overlay :value="uploadProgress!=0" >
+      <v-progress-linear :value="uploadProgress"   power    color="amber"
+      height="25" class="loadingBar">
+      <strong>{{ Math.ceil(uploadProgress) }}%</strong>
+
+      </v-progress-linear>
+  </v-overlay>
+    
+
+
     <v-toolbar id="toolbar" color="primary" >
       <v-toolbar-title>
         {{ title }}
@@ -71,6 +82,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { decode } from './decoder/decoder';
 
 
@@ -92,7 +104,10 @@ export default {
   computed: {
     buttonText() {
       return this.chosenFile ? this.chosenFile.name : this.defaultButtonText
-    }
+    },
+    ...mapGetters({
+      uploadProgress: "getUploadProgress",
+    }),
   },
   methods:{
     
@@ -153,5 +168,9 @@ html{
 
 ::-webkit-scrollbar-corner{
   background: #3e3e3e;
+}
+.loadingBar{
+  width: 300px;
+  background-color: rgb(40,40,40);
 }
 </style>

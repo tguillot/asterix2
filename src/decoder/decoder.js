@@ -52,8 +52,10 @@ export function decode(buffer) {
         framesParsed++;
         if (framesParsed % 30000 == 0) {
             console.log("*")
+            store.dispatch("setUploadProgress", 100 * i / arrayInts.length);
         }
     }
+    store.dispatch("setUploadProgress", 0);
 
     endTimer();
     console.log("framesParsed", framesParsed - 1)

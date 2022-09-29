@@ -4,17 +4,21 @@
 // Format:
 // Three-octet fixed length Data Item.
 
-import { int8Toint24 } from "../utils/bitUtils.js";
+import { int8Toint24, secondsToString } from "../utils/bitUtils.js";
 
 
 import { pushDataItem } from "../decoder";
 
 const name = "time_of_day";
+const name2 = "time_of_day_pretty";
+
 const byteLength = 3;
 const factorLSB = 1 / 128;
 export function parse(record) {
 
-    pushDataItem(name, int8Toint24(record[0], record[1], record[2]) * factorLSB);
+    let seconds = int8Toint24(record[0], record[1], record[2]) * factorLSB;
+    pushDataItem(name, seconds);
+    pushDataItem(name2, secondsToString(seconds));
 
     return record.subarray(byteLength);
 }

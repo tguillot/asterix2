@@ -3,16 +3,7 @@
       <div id="map-wrapper">
         <EsriMap id="map" />
       </div>
-    <v-toolbar  dark dense floating class="component-wrapper" id="toolbar">
-      <v-file-input
-       dark
-        accept=".ast"
-        label="File Input"
-        v-model="chosenFile"
-        @change="sendFile"
-      ></v-file-input>        
-    </v-toolbar>
-
+  
   </div>
 </template>
 
@@ -27,24 +18,7 @@ export default {
 
   data() {
     return {
-      chosenFile: null,
     }
-  },
-  methods: {
-    sendFile(){
-      console.log(this.chosenFile)
-      if (this.chosenFile) {
-        var reader = new FileReader();
-        reader.readAsArrayBuffer(this.chosenFile);
-        reader.onload = () => {
-          try {
-            decode(reader.result)
-          } catch (e) {
-           console.log(e)
-          }
-        };
-      }
-    },
   },
 
 };

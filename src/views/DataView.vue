@@ -28,8 +28,17 @@
    <template v-slot:footer class="footerClass">
    </template>
 </v-data-table>
-</div>
-
+  </div>
+  <div v-else class="alertDiv">
+    <v-alert 
+      dense
+      prominent
+      type="warning"
+    >
+     <h3>No file imported, please upload data!</h3> 
+    </v-alert>
+  </div>
+  
 </template>
 
 <script>
@@ -47,7 +56,7 @@ export default {
         { text: 'SIC', value: 'SIC' },
         { text: 'Message Type', value: 'message_type' },
         { text: 'Target Report Descriptor', value: 'target_report_descriptor' },
-        { text: 'Time of Day', value: 'time_of_day' },
+        { text: 'Time of Day', value: 'time_of_day_pretty' },
         { text: 'Position in WGS-84 Co-ordinates', value: 'position_in_WGS-84_co-ordinates' },
         { text: 'Measured Position in Polar Co-ordinates', value: 'measured_position_in_polar_co-ordinates' },
         { text: 'Position in Cartesian Co-ordinates', value: 'position_in_cartesian_co-ordinates' },
@@ -80,13 +89,20 @@ export default {
   },
   methods:{
     rowClick(value) {
-      console.log("click", value)
-      if(this.selectedRow){
-        this.selectedRow.target.classList.add('truncate')
+     
+      if(value.target==this.selectedRow && value.target.classList.length!=0){
+        value.target.classList.remove('truncate');
+      }else if(value.target==this.selectedRow && value.target.classList.length==0){
+        value.target.classList.add('truncate');
+      }else{
+        if(this.selectedRow){
+          this.selectedRow.classList.add('truncate')       
+        }
+        value.target.classList.remove('truncate');
       }
-      const tr = value.target;
-      tr.classList.remove('truncate');
-      this.selectedRow=value;
+
+      this.selectedRow=value.target;
+      
     },
   }
 
@@ -124,7 +140,12 @@ td{
 #footerClass{
   min-height: 70px;
 }
-
+.alertDiv{
+  margin: auto;
+  width: 450px;
+  padding: 10px;
+  margin-top: 5vh;
+}
 
 </style>
   
