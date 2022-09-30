@@ -8,8 +8,8 @@ import { int8Toint24, secondsToString } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "time_of_ASTERIX_report_transmission";
-const name2 = "time_of_ASTERIX_report_transmission_pretty";
+const name = "b077";
+const name2 = "b077p";
 
 const byteLength = 3;
 const factorLSB = 1 / 128;

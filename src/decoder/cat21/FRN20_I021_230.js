@@ -9,7 +9,7 @@ import { NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "roll_angle";
+const name = "b230";
 const byteLength = 2;
 const factorLSB = 0.01;
 export function parse(record) {

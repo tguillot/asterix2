@@ -9,7 +9,7 @@ import { maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "mode_S_MB_data";
+const name = "b250";
 let byteLength = 0;
 const multiple = 8;
 

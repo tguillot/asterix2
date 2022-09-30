@@ -9,7 +9,7 @@ import { ft_to_Meters, NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "trajectory_intent";
+const name = "b110";
 let byteLength = 0;
 const multiple = 15;
 const item = {

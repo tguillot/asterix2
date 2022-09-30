@@ -8,7 +8,7 @@ import { getNumBytesWithFX, int8Toint16, maskAndShift, twosComplementToInt } fro
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "met_information";
+const name = "b220";
 let byteLength = 0;
 const factorLSB = 0.25;
 export function parse(record) {

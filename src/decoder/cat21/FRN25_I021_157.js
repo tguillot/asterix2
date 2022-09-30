@@ -8,7 +8,7 @@ import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "geometric_vertical_rate";
+const name = "b157";
 const byteLength = 2;
 const item = ["Value in defined range", "Value exceeds defined range"];
 const factorLSB = 6.25 * ft_to_Meters / 60;
@@ -18,12 +18,7 @@ export function parse(record) {
     let geometricVerticalRate = maskAndShift(int8Toint16(record[0], record[1]), 15, 1);
     geometricVerticalRate = twosComplementToInt(geometricVerticalRate, 15) * factorLSB;
 
-    pushDataItem21(name,
-        {
-            RE: item[indexRE],
-            geometricVerticalRate: geometricVerticalRate,
-
-        });
+    pushDataItem21(name,geometricVerticalRate);
 
     return record.subarray(byteLength);
 }

@@ -7,7 +7,7 @@ import { getNumBytesWithFX, int8Toint32, intArrayToBits, maskAndShift } from "..
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "data_ages";
+const name = "b295";
 let byteLength = 0;
 const keys = ["AOS", "TRD", "M3A", "QI", "TI", "MAM", "GH", "FL", "ISA", "FSA", "AS", "TAS",
     "MH", "BVR", "GVR", "GV", "TAR", "TI", "TS", "MET", "ROA", "ARA", "SCC"];

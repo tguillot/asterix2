@@ -9,7 +9,7 @@ import { int8Toint16 } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "track_number";
+const name = "b161";
 const byteLength = 2;
 export function parse(record) {
 

@@ -4,7 +4,7 @@
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "service_identification";
+const name = "b015";
 const byteLength = 1;
 export function parse(record) {
 

@@ -8,7 +8,7 @@ import { int8Toint16, maskAndShift, mask, twosComplementToInt } from "../utils/b
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "flight_level";
+const name = "b145";
 const byteLength = 2;
 const factorLSB = 1 / 4;
 

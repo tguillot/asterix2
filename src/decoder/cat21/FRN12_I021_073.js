@@ -9,8 +9,8 @@ import { int8Toint24, secondsToString } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "time_of_message_reception_for_position";
-const name2 = "time_of_message_reception_for_position_pretty";
+const name = "b073";
+const name2 = "b073p";
 
 const byteLength = 3;
 const factorLSB = 1 / 128;

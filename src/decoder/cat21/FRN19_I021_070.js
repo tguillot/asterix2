@@ -8,7 +8,7 @@ import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "mode-3A_code_in_octal_representation";
+const name = "b070";
 const byteLength = 2;
 export function parse(record) {
 

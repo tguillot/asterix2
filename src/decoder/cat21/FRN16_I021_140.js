@@ -9,7 +9,7 @@ import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "geometric_height";
+const name = "b140";
 const byteLength = 2;
 const factorLSB = 6.25;
 const specialCase = '0111111111111111'

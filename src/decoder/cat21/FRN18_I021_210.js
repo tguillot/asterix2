@@ -7,10 +7,10 @@ import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "MOPS_version";
+const name = "b210";
 const byteLength = 1;
 const item = {
-    VNS: ["The MOPS Version is supported by the GS", "The MOPS Version is not supported by the GS"],
+    VNS: ["MOPS Version is supported", "MOPS Version not supported"],
     VN: ["ED102/DO-260", "DO-260A", "ED102A/DO-260B"],
     LTT: ["Other", "UAT", "1090 ES", "VDL 4", "Not assigned", "Not assigned", "Not assigned", "Not assigned"],
 }

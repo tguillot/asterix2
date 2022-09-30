@@ -11,7 +11,7 @@ import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "selected_altitude";
+const name = "b146";
 const byteLength = 2;
 const factorLSB = 25;
 const item = {

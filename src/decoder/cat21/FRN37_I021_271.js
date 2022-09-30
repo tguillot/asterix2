@@ -7,7 +7,7 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "surface_capabilities_and_characteristics";
+const name = "b271";
 let byteLength = 0;
 const item = {
     POA: ["Position transmitted is not ADS-B position reference point", "Position transmitted is ADS-B position reference point"],

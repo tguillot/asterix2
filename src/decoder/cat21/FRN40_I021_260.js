@@ -8,7 +8,7 @@ import { int8Toint16, int8Toint32, mask, maskAndShift } from "../utils/bitUtils.
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "ACAS_resolution_advisory_report";
+const name = "b260";
 const byteLength = 8;
 export function parse(record) {
 

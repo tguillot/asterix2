@@ -7,7 +7,7 @@ import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtil
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "track_angle_rate";
+const name = "b165";
 const byteLength = 2;
 const factorLSB = 1 / 32;
 export function parse(record) {

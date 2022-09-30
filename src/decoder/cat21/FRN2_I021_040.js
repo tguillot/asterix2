@@ -10,7 +10,7 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "target_report_descriptor";
+const name = "b040";
 let byteLength = 0;
 const item = {
     ATP: ["24-Bit ICAO address", "Duplicate address", "Surface vehicle address", "Anonymous address", "Reserved", "Reserved", "Reserved", "Reserved"],

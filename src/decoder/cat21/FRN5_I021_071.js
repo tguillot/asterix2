@@ -8,8 +8,8 @@ import { int8Toint24, secondsToString } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "time_of_applicability_for_position";
-const name2 = "time_of_applicability_for_position_pretty";
+const name = "b071";
+const name2 = "b071p";
 
 const byteLength = 3;
 const factorLSB = 1 / 128;

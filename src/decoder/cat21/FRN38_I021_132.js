@@ -8,7 +8,7 @@ import { twosComplementToInt } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "message_amplitude";
+const name = "b132";
 const byteLength = 1;
 export function parse(record) {
 

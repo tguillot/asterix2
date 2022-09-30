@@ -9,7 +9,7 @@ import { NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "airborne_ground_vector";
+const name = "b160";
 const byteLength = 4;
 const item = ["Value in defined range", "Value exceeds defined range"];
 const factorLSBSpeed = 2 ** -14;

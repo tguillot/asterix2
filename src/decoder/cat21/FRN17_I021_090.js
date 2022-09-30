@@ -11,7 +11,7 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "quality_indicators";
+const name = "b090";
 let byteLength = 0;
 const item = {
     TYP: ["SSR multilateration", "Mode S multilateration", "ADS-B", "PSR", "Magnetic Loop System", "HF multilateration", "Not defined", "Other types"],

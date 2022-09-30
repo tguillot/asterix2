@@ -7,15 +7,15 @@ import { maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "target_status";
+const name = "b200";
 const byteLength = 1;
 const item = {
     ICF: ["No intent change active", "Intent change flag raised"],
     LNAV: ["LNAV Mode engaged", "LNAV Mode not engaged"],
-    PS: ["No emergency / not reported", "General emergency", "Lifeguard / medical emergency", "Minimum fuel", "No communications",
+    PS: ["No emergency or reported", "General emergency", "Lifeguard/medical emergency", "Minimum fuel", "No communications",
         "Unlawful interference", "Downed Aircraft"],
-    SS: ["No condition reported", "Permanent Alert (Emergency condition)",
-        "Temporary Alert (change in Mode 3/A Code other than emergency)", "SPI set"],
+    SS: ["No condition reported", "Permanent Alert",
+        "Temporary Alert", "SPI set"],
 }
 export function parse(record) {
 

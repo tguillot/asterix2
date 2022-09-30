@@ -7,7 +7,7 @@ import { int8Toint16 } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "magnetic_heading";
+const name = "b152";
 const byteLength = 2;
 const factorLSB = 360 / 2 ** 16;
 export function parse(record) {

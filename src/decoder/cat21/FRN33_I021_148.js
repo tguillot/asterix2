@@ -8,7 +8,7 @@ import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtil
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "final_state_selected_altitude";
+const name = "b148";
 const byteLength = 2;
 const factorLSB = 25;
 const item = ["Not active or unknown", "Active"];
@@ -21,12 +21,7 @@ export function parse(record) {
     let altitude = maskAndShift(int8Toint16(record[0], record[1]), 13, 1);
     altitude = twosComplementToInt(altitude, 13) * factorLSB;
 
-    pushDataItem21(name, {
-        MV: item[indexMV],
-        AH: item[indexAH],
-        AM: item[indexAM],
-        altitude: altitude
-    });
+    pushDataItem21(name,altitude);
 
     return record.subarray(byteLength);
 }

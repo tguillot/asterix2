@@ -6,7 +6,7 @@ import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "target_identification";
+const name = "b170";
 const byteLength = 6;
 let bitsPerChar = 6;
 

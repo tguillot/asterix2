@@ -7,7 +7,7 @@ import { maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "aircraft_operational_status";
+const name = "b008";
 const byteLength = 1;
 const item = {
     RA: ["TCAS II or ACAS RA not active", "TCAS RA active"],
