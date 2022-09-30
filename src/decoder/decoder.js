@@ -18,6 +18,7 @@ const POINT_MLAT = {
 
 var records10 = [];
 var records21 = [];
+var empty = false;
 
 export function getRecords10() {
     return records10;

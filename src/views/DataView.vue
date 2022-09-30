@@ -1,5 +1,6 @@
 <template>
     <div v-if="dataFile">
+      <v-button @click="clearData">clear</v-button>
     <v-data-table
     :headers="headers"
     :items="dataFile"
@@ -15,7 +16,6 @@
       showFirstLastPage: true,
       height: '60px'
     }"
-    
   >
   <template v-slot:item="{ item }" >
     <tr @click="rowClick" >
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import  { getRecords10, makeRecordsPretty}  from "../decoder/decoder.js"
+import  { getRecords10, makeEmpty}  from "../decoder/decoder.js"
 
 export default {
 
@@ -59,9 +59,9 @@ export default {
         { text: 'SIC', value: 'SIC' },
         { text: 'Message Type', value: 'a000' },
         { text: 'Target Report Descriptor', value: 'a020', parse: this.makePretty},
-        { text: 'Time of Day', value: 'a020p' },
+        { text: 'Time of Day', value: 'a140p' },
         { text: 'Position in WGS-84 Co-ordinates', value: 'a041' },
-        { text: 'Measured Position in Polar Co-ordinates', value: 'a040' },
+        { text: 'Measured Position in Polar Co-ordinates', value: 'a040' , parse: this.makePretty},
         { text: 'Position in Cartesian Co-ordinates', value: 'a042' , parse: this.makePretty},
         { text: 'Calculated Track Velocity in Polar Co-ordinates', value: 'a200' , parse: this.makePretty},
         { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' , parse: this.makePretty},
@@ -74,7 +74,7 @@ export default {
         { text: 'Vehicle Fleet Identification', value: 'a300' },
         { text: 'Flight Level in Binary Representation', value: 'a090' ,parse: this.makePretty},
         { text: 'Measured Height', value: 'a091' },
-        { text: 'Target Size & Orientation', value: 'a270' },
+        { text: 'Target Size & Orientation', value: 'a270',parse: this.makePretty },
         { text: 'System Status', value: 'a550' ,parse: this.makePretty},
         { text: 'Pre-programmed Message', value: 'a310' },
         { text: 'Standard Deviation of Position', value: 'a500' },
@@ -108,6 +108,7 @@ export default {
     },
     clearData(){
       this.dataFile=null;
+      this.$forceUpdate();
       console.log("table cleared");
     }
   }
