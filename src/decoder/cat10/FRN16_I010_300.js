@@ -6,7 +6,7 @@
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "vehicle_fleet_identification";
+const name = "a300";
 const byteLength = 1;
 const item = ["Unknown", "ATC equipment maintenance", "Airport maintenance", "Fire", "Bird scarer", "Snow plough", "Runway sweeper",
     "Emergency", "Police", "Bus", "Tug (push/tow)", "Grass cutter", "Fuel", "Baggage", "Catering", "Aircraft maintenance", "Flyco (follow me)"]

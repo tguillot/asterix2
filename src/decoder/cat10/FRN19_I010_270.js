@@ -10,7 +10,7 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "target_size_&_orientation";
+const name = "a270";
 let byteLength = 0;
 const factorLSBOrientation = 360 / 128;
 

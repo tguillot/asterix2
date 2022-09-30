@@ -9,12 +9,12 @@ import { maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "pre-programmed_message";
+const name = "a310";
 const byteLength = 1;
 const item = {
     TRB: ["Default", "In Trouble"],
-    MSG: ["Towing aircraft", "“Follow me” operation", "Runway check", "Emergency operation (fire, medical…)",
-        "Work in progress (maintenance, birds scarer, sweepers…)"],
+    MSG: ["Towing aircraft", "“Follow me” operation", "Runway check", "Emergency operation",
+        "Work in progress"],
 }
 export function parse(record) {
 

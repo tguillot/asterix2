@@ -9,7 +9,7 @@ import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "flight_level_in_binary_representation";
+const name = "a090";
 const byteLength = 2;
 const factorLSB = 1 / 4;
 const item = {

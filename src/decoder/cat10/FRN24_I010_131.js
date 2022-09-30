@@ -6,7 +6,7 @@
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "amplitude_of_primary_plot";
+const name = "a131";
 const byteLength = 1;
 export function parse(record) {
 

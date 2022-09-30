@@ -11,7 +11,7 @@ import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "pressence";
+const name = "a280";
 let byteLength = 0;
 const multiple = 2;
 

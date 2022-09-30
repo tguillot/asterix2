@@ -9,7 +9,7 @@ import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "position_in_cartesian_co-ordinates";
+const name = "a042";
 const byteLength = 4;
 export function parse(record) {
 

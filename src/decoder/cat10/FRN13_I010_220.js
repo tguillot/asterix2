@@ -7,7 +7,7 @@ import { intArrayToCharsHex } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "target_address";
+const name = "a220";
 const byteLength = 3;
 const bitsPerChar = 4;
 export function parse(record) {
