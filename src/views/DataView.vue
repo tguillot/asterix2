@@ -20,7 +20,10 @@
   <template v-slot:item="{ item }" >
     <tr @click="rowClick" >
       <td v-for="header in headers" v-bind:key="header.text" class="truncate">
-        {{ item[header.value] ? item[header.value]: "-"}}
+        {{ item[header.value] ? 
+        (header.parse ? header["parse"](item[header.value]):
+         item[header.value])
+        : "-"}}
       </td>
     </tr>
    </template>
@@ -48,45 +51,54 @@ export default {
 
   data() {
     return {
-      dataFile: getRecords10(),
+    dataFile: null,
      headers: [
-      { text: 'Category', align: 'start', value: 'category' },
+      { text: 'Category', align: 'start', value: 'category'},
       { text: 'Length',  value: 'length' },
         { text: 'SAC', value: 'SAC' },
         { text: 'SIC', value: 'SIC' },
         { text: 'Message Type', value: 'a000' },
-        { text: 'Target Report Descriptor', value: 'a020' },
+        { text: 'Target Report Descriptor', value: 'a020', parse: this.makePretty},
         { text: 'Time of Day', value: 'a020p' },
         { text: 'Position in WGS-84 Co-ordinates', value: 'a041' },
         { text: 'Measured Position in Polar Co-ordinates', value: 'a040' },
-        { text: 'Position in Cartesian Co-ordinates', value: 'a042' },
-        { text: 'Calculated Track Velocity in Polar Co-ordinates', value: 'a200' },
-        { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' },
+        { text: 'Position in Cartesian Co-ordinates', value: 'a042' , parse: this.makePretty},
+        { text: 'Calculated Track Velocity in Polar Co-ordinates', value: 'a200' , parse: this.makePretty},
+        { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' , parse: this.makePretty},
         { text: 'Track Number', value: 'a161' },
-        { text: 'Track Status', value: 'a170' },
-        { text: 'Mode-3/A Code in Octal Representation', value: 'a060' },
+        { text: 'Track Status', value: 'a170' , parse: this.makePretty},
+        { text: 'Mode-3/A Code in Octal Representation', value: 'a060', parse: this.makePretty },
         { text: 'Target Address', value: 'a220' },
-        { text: 'Target Identification', value: 'a245' },
+        { text: 'Target Identification', value: 'a245',parse: this.makePretty },
         { text: 'Mode S MB Data', value: 'a250' },
         { text: 'Vehicle Fleet Identification', value: 'a300' },
-        { text: 'Flight Level in Binary Representation', value: 'a090' },
+        { text: 'Flight Level in Binary Representation', value: 'a090' ,parse: this.makePretty},
         { text: 'Measured Height', value: 'a091' },
         { text: 'Target Size & Orientation', value: 'a270' },
-        { text: 'System Status', value: 'a550' },
+        { text: 'System Status', value: 'a550' ,parse: this.makePretty},
         { text: 'Pre-programmed Message', value: 'a310' },
         { text: 'Standard Deviation of Position', value: 'a500' },
         { text: 'Presence', value: 'a280' },
         { text: 'Amplitude of Primary Plot', value: 'a131' },
-        { text: 'Calculated Acceleration', value: 'a210' },
+        { text: 'Calculated Acceleration', value: 'a210' , parse: this.makePretty},
 
       ],
     }
   },
 
+  mounted(){
+    console.log("table filled");
+    this.dataFile=getRecords10()
+    // this.dataFile=null;
 
+  },
   methods:{
+    makePretty(value){
+      // return value
+      return JSON.stringify(value, null, 2).replace(/[\"{},]/g, "") 
+    },
     rowClick(value) {
-     
+    
       if(value.target.classList.length!=0){
         value.target.classList.remove('truncate');
       }else if(value.target.classList.length==0){
@@ -94,6 +106,10 @@ export default {
       }
       
     },
+    clearData(){
+      this.dataFile=null;
+      console.log("table cleared");
+    }
   }
 
 };

@@ -27,15 +27,6 @@ export function getRecords21() {
 }
 
 
-// function makeRecordsPretty(records) {
-//     records.map(item => {
-//         Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "") });
-//         return item;
-//     })
-//     return records;
-// }
-
-
 function pushRecord10(category, length) {
     records10.push({ category: category, length: length });
 }
@@ -44,10 +35,10 @@ function pushRecord21(category, length) {
 }
 
 export function pushDataItem10(name, dataItem) {
-    records10[records10.length - 1][name] = JSON.stringify(dataItem, null, 2).replace(/[\"{},]/g, "");
+    records10[records10.length - 1][name] = dataItem;
 }
 export function pushDataItem21(name, dataItem) {
-    records21[records21.length - 1][name] = JSON.stringify(dataItem, null, 2).replace(/[\"{},]/g, "");
+    records21[records21.length - 1][name] = dataItem;
 }
 
 
@@ -55,7 +46,7 @@ export function decode(buffer) {
     records10 = [];
     records21 = [];
 
-    startTimer();
+    // startTimer();
     let arrayInts = new Uint8Array(buffer);
     let i = 0;
     let framesParsed = 1;
@@ -78,7 +69,7 @@ export function decode(buffer) {
         }
     }
 
-    endTimer();
+    // endTimer();
 
 }
 

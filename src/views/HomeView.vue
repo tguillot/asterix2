@@ -21,6 +21,13 @@ export default {
     }
   },
 
+  methods:
+  {
+    clearData(){
+      console.log("home cleared");
+    }
+  }
+
 };
 </script>
 
