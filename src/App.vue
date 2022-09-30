@@ -84,6 +84,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { decode } from './decoder/decoder';
+import store from './store'
 
 
 export default {
@@ -93,6 +94,7 @@ export default {
     return {
       defaultButtonText: 'Upload Data',
       chosenFile: null,
+      chosenFileName:"",
       isSelecting: false, 
       title: 'ASTERIX',
       items: [
@@ -103,7 +105,7 @@ export default {
   },
   computed: {
     buttonText() {
-      return this.chosenFile ? this.chosenFile.name : this.defaultButtonText
+      return this.chosenFileName ? this.chosenFileName : this.defaultButtonText
     },
     ...mapGetters({
       uploadProgress: "getUploadProgress",
@@ -124,13 +126,16 @@ export default {
       if (this.chosenFile) {
         var reader = new FileReader();
         reader.readAsArrayBuffer(this.chosenFile);
+        this.chosenFileName=this.chosenFile.name;
         reader.onload = () => {
           try {
+            store.dispatch("setUploadProgress", 1);
             decode(reader.result)
           } catch (e) {
            console.log(e)
           }
         };
+        this.chosenFile=null;
       }
       // do something
     }

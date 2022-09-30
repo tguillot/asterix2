@@ -4,3 +4,6 @@ vue add electron-builder
 vue add vuetify
 npm i @arcgis/core
 npm run electron:serve
+
+
+npm install webpack@latest 

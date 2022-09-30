@@ -21,13 +21,15 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    SET_DATA(state, data) {
-      data.map(item => {
+    SET_DATA(state, newData) {
+      if(state.data) console.log(newData.length, state.data.length)
+      newData.map(item => {
         Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "") });
         return item;
       })
-
-      state.data = data;
+      if(state.data) console.log(newData.length, state.data.length)
+      state.data = newData;
+      console.log(newData.length, state.data.length)
     },
     SET_UPLOAD_PROGRESS(state, uploadProgress) {
       state.uploadProgress = Math.floor(uploadProgress);
@@ -35,9 +37,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    setData(context, data) {
+    setData(context, newData) {
       console.log("SAVED DATA IN STORE")
-      context.commit("SET_DATA", data);
+      context.commit("SET_DATA", newData);
     },
     setUploadProgress(context, uploadProgress) {
       context.commit("SET_UPLOAD_PROGRESS", uploadProgress);

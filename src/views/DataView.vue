@@ -82,6 +82,10 @@ export default {
       ],
     }
   },
+
+  beforeDestroy: function () {
+    if (this.selectedRow) this.selectedRow.destroy();
+  }, 
   computed: {
     ...mapGetters({
       data: "getData",

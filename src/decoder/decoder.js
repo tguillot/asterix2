@@ -28,6 +28,7 @@ export function pushDataItem(name, dataItem) {
 
 
 export function decode(buffer) {
+    records = [];
     console.log("decode")
     startTimer();
     let arrayInts = new Uint8Array(buffer);
@@ -62,9 +63,8 @@ export function decode(buffer) {
     console.log(records[0])
 
     store.dispatch("setData", records);
+    
 
-    // for (let j = 0; j < 3; j++)
-    //     console.log(global.data.records[j])
 }
 
 
