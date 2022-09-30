@@ -6,13 +6,13 @@ import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "target_identification";
+const name = "a245";
 const byteLength = 7;
 const item = {
-    STI: ["Callsign or registration downlinked from transponder", "Callsign not downlinked from transponder",
+    STI: ["Callsign/registration downlinked from transponder", "Callsign not downlinked from transponder",
         "Registration not downlinked from transponder"],
     g: ["Default", "Garbled code"],
-    l: ["Mode-3/A code derived from the reply of the transponder", "Mode-3/A code not extracted during the last scan"],
+    l: ["Mode-3/A code from transponder reply", "Mode-3/A code not extracted during the last scan"],
 }
 let bitsPerChar = 6;
 export function parse(record) {

@@ -7,7 +7,7 @@ import { maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "system_status";
+const name = "a550";
 const byteLength = 1;
 const item = {
     NOGO: ["Operational", "Degraded", "NOGO"],

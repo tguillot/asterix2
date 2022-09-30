@@ -9,7 +9,7 @@ import { NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "calculated_track_velocity_in_polar_co-ordinates";
+const name = "a200";
 const byteLength = 4;
 const factorLSBSpeed = 2 ** -14;
 const factorLSBAngle = 360 / 2 ** 16;

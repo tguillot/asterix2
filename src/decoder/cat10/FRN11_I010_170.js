@@ -9,15 +9,15 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "track_status";
+const name = "a170";
 let byteLength = 0;
 const item = {
-    CNF: ["Confirmed track", "Track in initialisation phase"],
+    CNF: ["Confirmed track", "Track in init phase"],
     TRE: ["Default", "Last report for a track"],
-    CST: ["No extrapolation", "Predictable extrapolation", "Predictable extrapolation in masked area", "Extrapolation due to unpredictable absence of detection"],
+    CST: ["No extrapolation", "Predictable extrapolation", "Predictable extrapolation in masked area", "Extrapolation due to no detection"],
     MAH: ["Default", "Horizontal manoeuvre"],
     TCC: ["Tracking performed in 'Sensor Plane'",
-        "Slant range correction and a suitable projection technique"],
+        "Slant range correction and projection technique"],
     STH: ["Measured position", "Smoothed position"],
     TOM: ["Unknown type of movement", "Taking-off", "Landing", "Other types of movement"],
     DOU: ["No doubt", "Doubtful correlation", "Doubtful correlation in clutter", "Loss of accuracy",

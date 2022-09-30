@@ -8,12 +8,12 @@ import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "mode-3A_code_in_octal_representation";
+const name = "a060";
 const byteLength = 2;
 const item = {
     v: ["Code validated", "Code not validated"],
     g: ["Default", "Garbled code"],
-    l: ["Mode-3/A code derived from the reply of the transponder", "Mode-3/A code not extracted during the last scan"],
+    l: ["Mode-3/A from transponder reply", "Mode-3/A code not extracted during the last scan"],
 }
 export function parse(record) {
 

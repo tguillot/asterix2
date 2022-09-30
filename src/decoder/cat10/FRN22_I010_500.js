@@ -8,7 +8,7 @@ import { int8Toint16 } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "standard_deviation_of_position";
+const name = "a500";
 const byteLength = 4;
 const factorLSB = 0.25;
 export function parse(record) {

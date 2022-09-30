@@ -8,7 +8,7 @@
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "message_type";
+const name = "a000";
 const byteLength = 1;
 const typeNames = ["Target Report", "Start of Update Cycle", "Periodic Status Message", "Event-triggered Status Message"];
 export function parse(record) {

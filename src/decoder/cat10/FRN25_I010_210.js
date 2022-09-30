@@ -7,7 +7,7 @@ import { twosComplementToInt } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "calculated_acceleration";
+const name = "a210";
 const byteLength = 2;
 const factorLSB = 0.25;
 export function parse(record) {

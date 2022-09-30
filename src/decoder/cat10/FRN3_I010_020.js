@@ -9,7 +9,7 @@
 import { pushDataItem10 } from "../decoder.js";
 import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
-const name = "target_report_descriptor";
+const name = "a020";
 let byteLength = 0;
 const item = {
     TYP: ["SSR multilateration", "Mode S multilateration", "ADS-B", "PSR", "Magnetic Loop System", "HF multilateration", "Not defined", "Other types"],

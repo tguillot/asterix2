@@ -8,7 +8,7 @@ import { int8Toint32, twosComplementToInt } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "position_in_WGS-84_co-ordinates";
+const name = "a041";
 const byteLength = 8;
 const factorLSB = 180 / 2 ** 31;
 export function parse(record) {

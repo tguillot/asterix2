@@ -9,7 +9,7 @@ import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 
 import { pushDataItem10 } from "../decoder";
 
-const name = "calculated_track_velocity_in_cartesian_co-ordinates";
+const name = "a202";
 const byteLength = 4;
 const factorLSB = 0.25;
 export function parse(record) {
