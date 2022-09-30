@@ -1,9 +1,9 @@
 <template>
-    <div v-if="dataFile">
-      <v-button @click="clearData">clear</v-button>
+    <div v-if="true">
+      <v-button @click="renderData">clear</v-button>
     <v-data-table
     :headers="headers"
-    :items="dataFile"
+    :items="publishedData"
     class="elevation-1"
     no-data-text="-"
     id="table"   
@@ -45,13 +45,18 @@
 </template>
 
 <script>
-import  { getRecords10, makeEmpty}  from "../decoder/decoder.js"
+import  { getRecords10, clearAll}  from "../decoder/decoder.js"
 
 export default {
-
+  computed: {
+    publishedData() {
+      // `this` points to the component instance
+      return this.showData ? getRecords10() : []
+    }
+  },
   data() {
     return {
-    dataFile: null,
+    showData: false,
      headers: [
       { text: 'Category', align: 'start', value: 'category'},
       { text: 'Length',  value: 'length' },
@@ -87,18 +92,18 @@ export default {
   },
 
   mounted(){
-    console.log("table filled");
-    this.dataFile=getRecords10()
-    // this.dataFile=null;
-
+    console.log("table filled", this.showData);
+    this.showData=false;
   },
   methods:{
+    renderData(){
+      this.showData=!this.showData;
+    },
     makePretty(value){
       // return value
       return JSON.stringify(value, null, 2).replace(/[\"{},]/g, "") 
     },
     rowClick(value) {
-    
       if(value.target.classList.length!=0){
         value.target.classList.remove('truncate');
       }else if(value.target.classList.length==0){
@@ -107,9 +112,16 @@ export default {
       
     },
     clearData(){
-      this.dataFile=null;
-      this.$forceUpdate();
-      console.log("table cleared");
+      this.showData=false;
+      // console.log(this)
+      // this.$children[0].items=null;
+      // console.log((this.$children[0]))
+      // Object.assign(this.$children[0].items, null)
+
+
+
+      // clearAll()
+      console.log("table cleared", this.showData);
     }
   }
 

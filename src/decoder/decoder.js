@@ -27,7 +27,10 @@ export function getRecords21() {
     return records21;
 }
 
-
+export function clearAll() {
+    records10 = []
+    records21 = [];
+}
 function pushRecord10(category, length) {
     records10.push({ category: category, length: length });
 }
