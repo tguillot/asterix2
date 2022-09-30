@@ -5,7 +5,7 @@
 
 import { maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "aircraft_operational_status";
 const byteLength = 1;
@@ -35,7 +35,7 @@ export function parse(record) {
 
 
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         RA: item.RA[indexRA],
         TC: item.TC[indexTC],
         TS: item.TS[indexTS],

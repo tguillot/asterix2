@@ -5,7 +5,7 @@
 
 import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "surface_capabilities_and_characteristics";
 let byteLength = 0;
@@ -50,7 +50,7 @@ export function parse(record) {
     let extendedParts = extend(byteLength, record)
     let dataItem = { ...firstPart, ...extendedParts };
 
-    pushDataItem(name, dataItem);
+    pushDataItem21(name, dataItem);
 
     return record.subarray(byteLength);
 }

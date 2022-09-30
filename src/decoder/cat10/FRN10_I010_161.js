@@ -7,7 +7,7 @@
 
 import { int8Toint16 } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "track_number";
 const byteLength = 2;
@@ -15,7 +15,7 @@ export function parse(record) {
 
     let trackNumber = int8Toint16(record[0], record[1]);
 
-    pushDataItem(name, trackNumber);
+    pushDataItem10(name, trackNumber);
 
     return record.subarray(byteLength);
 }

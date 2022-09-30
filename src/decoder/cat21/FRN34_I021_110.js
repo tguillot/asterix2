@@ -7,7 +7,7 @@
 import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 import { ft_to_Meters, NM_to_Meters } from "../utils/unitsUtil.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "trajectory_intent";
 let byteLength = 0;
@@ -86,7 +86,7 @@ export function parse(record) {
         dataItem.pointArray = pointArray;
     }
 
-    pushDataItem(name, dataItem);
+    pushDataItem21(name, dataItem);
 
     return record.subarray(byteLength);
 }

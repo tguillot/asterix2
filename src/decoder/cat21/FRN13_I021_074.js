@@ -7,7 +7,7 @@
 
 import { int8Toint32, maskAndShift, secondsToString } from "../utils/bitUtils.js";
 //TODO: ask for help
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "time_of_message_reception_of_position-high_precision";
 const name2 = "time_of_message_reception_of_position-high_precision_pretty";
@@ -22,12 +22,12 @@ export function parse(record) {
 
     time = maskAndShift(time, 30, 1) * factorLSB;
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         FSI: item[indexFSI],
         time: time,
     })
 
-    pushDataItem(name2, {
+    pushDataItem21(name2, {
         FSI: item[indexFSI],
         time: secondsToString(time),
     })

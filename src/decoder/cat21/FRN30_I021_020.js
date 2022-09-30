@@ -4,7 +4,7 @@
 // One-Octet fixed length data item.
 
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "emitter_category";
 const byteLength = 1;
@@ -19,7 +19,7 @@ export function parse(record) {
 
     let indexECAT = record[0];
 
-    pushDataItem(name, item[indexECAT]);
+    pushDataItem21(name, item[indexECAT]);
 
     return record.subarray(byteLength);
 }

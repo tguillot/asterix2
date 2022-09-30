@@ -16,20 +16,45 @@ const POINT_MLAT = {
     lon: 2.07844700
 }
 
-var records = [];
+var records10 = [];
+var records21 = [];
 
-function pushRecord(category, length) {
-    records.push({ category: category, length: length });
+export function getRecords10() {
+    return records10;
+}
+export function getRecords21() {
+    return records21;
 }
 
-export function pushDataItem(name, dataItem) {
-    records[records.length - 1][name] = dataItem;
+
+// function makeRecordsPretty(records) {
+//     records.map(item => {
+//         Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "") });
+//         return item;
+//     })
+//     return records;
+// }
+
+
+function pushRecord10(category, length) {
+    records10.push({ category: category, length: length });
+}
+function pushRecord21(category, length) {
+    records21.push({ category: category, length: length });
+}
+
+export function pushDataItem10(name, dataItem) {
+    records10[records10.length - 1][name] = JSON.stringify(dataItem, null, 2).replace(/[\"{},]/g, "");
+}
+export function pushDataItem21(name, dataItem) {
+    records21[records21.length - 1][name] = JSON.stringify(dataItem, null, 2).replace(/[\"{},]/g, "");
 }
 
 
 export function decode(buffer) {
-    records = [];
-    console.log("decode")
+    records10 = [];
+    records21 = [];
+
     startTimer();
     let arrayInts = new Uint8Array(buffer);
     let i = 0;
@@ -41,29 +66,19 @@ export function decode(buffer) {
         i += length;
 
         if (category == CATEGORY_10) {
-            pushRecord(CATEGORY_10, length)
+            pushRecord10(CATEGORY_10, length)
             parseCat10(record)
         } else if (category == CATEGORY_21) {
-            pushRecord(CATEGORY_21, length)
+            pushRecord21(CATEGORY_21, length)
             parseCat21(record)
         }
-        // else {
-        //     console.log("Warning: category not supported ", category, "framesParsed", framesParsed)
-        // }
         framesParsed++;
         if (framesParsed % 30000 == 0) {
             console.log("*")
-            store.dispatch("setUploadProgress", 100 * i / arrayInts.length);
         }
     }
-    store.dispatch("setUploadProgress", 0);
 
     endTimer();
-    console.log("framesParsed", framesParsed - 1)
-    console.log(records[0])
-
-    store.dispatch("setData", records);
-    
 
 }
 

@@ -5,7 +5,7 @@
 
 import { maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "target_status";
 const byteLength = 1;
@@ -24,7 +24,7 @@ export function parse(record) {
     let indexPS = maskAndShift(record[0], 5, 3);
     let indexSS = maskAndShift(record[0], 2, 1);
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         ICF: item["ICF"][indexICF],
         LNAV: item["LNAV"][indexLNAV],
         PS: item["PS"][indexPS],

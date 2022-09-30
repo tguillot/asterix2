@@ -7,20 +7,20 @@
 
 import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "track_status";
 let byteLength = 0;
 const item = {
     CNF: ["Confirmed track", "Track in initialisation phase"],
     TRE: ["Default", "Last report for a track"],
-    CST: ["No extrapolation", "Predictable extrapolation due to sensor refresh period (see NOTE)", "Predictable extrapolation in masked area", "Extrapolation due to unpredictable absence of detection"],
+    CST: ["No extrapolation", "Predictable extrapolation", "Predictable extrapolation in masked area", "Extrapolation due to unpredictable absence of detection"],
     MAH: ["Default", "Horizontal manoeuvre"],
-    TCC: ["Tracking performed in 'Sensor Plane', i.e. neither slant range correction nor projection was applied.",
-        "Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Sensor Site co-ordinates."],
+    TCC: ["Tracking performed in 'Sensor Plane'",
+        "Slant range correction and a suitable projection technique"],
     STH: ["Measured position", "Smoothed position"],
     TOM: ["Unknown type of movement", "Taking-off", "Landing", "Other types of movement"],
-    DOU: ["No doubt", "Doubtful correlation (undetermined reason)", "Doubtful correlation in clutter", "Loss of accuracy",
+    DOU: ["No doubt", "Doubtful correlation", "Doubtful correlation in clutter", "Loss of accuracy",
         "Loss of accuracy in clutter", "Unstable track", "Previously coasted"],
     MRS: ["Merge or split indication undetermined", "Track merged by association to plot",
         "Track merged by non-association to plot", "Split track"],
@@ -51,7 +51,7 @@ export function parse(record) {
     let extendedParts = extend(byteLength, record)
     let dataItem = { ...firstPart, ...extendedParts };
 
-    pushDataItem(name, dataItem);
+    pushDataItem10(name, dataItem);
 
     return record.subarray(byteLength);
 }

@@ -7,7 +7,7 @@
 
 import { maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "pre-programmed_message";
 const byteLength = 1;
@@ -21,7 +21,7 @@ export function parse(record) {
     let indexTRB = maskAndShift(record[0], 8);
     let indexMSG = maskAndShift(record[0], 7, 1);
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         TRB: item["TRB"][indexTRB],
         MSG: item["MSG"][indexMSG - 1],
     });

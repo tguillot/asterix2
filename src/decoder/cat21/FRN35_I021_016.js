@@ -3,7 +3,7 @@
 //     SIC code).
 //     Format: One-octet fixed length Data Item.
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "service_management";
 const byteLength = 1;
@@ -12,7 +12,7 @@ export function parse(record) {
 
     let reportPeriod = record[0] * factorLSB;
 
-    pushDataItem(name, reportPeriod);
+    pushDataItem21(name, reportPeriod);
 
     return record.subarray(byteLength);
 }

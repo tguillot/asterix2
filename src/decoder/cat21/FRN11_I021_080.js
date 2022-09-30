@@ -5,7 +5,7 @@
 
 import { intArrayToCharsHex } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "target_address";
 const byteLength = 3;
@@ -13,7 +13,7 @@ const bitsPerChar = 4;
 export function parse(record) {
 
     let targetAdress = intArrayToCharsHex(record.subarray(0, 3), bitsPerChar);
-    pushDataItem(name, targetAdress);
+    pushDataItem21(name, targetAdress);
 
     return record.subarray(byteLength);
 }

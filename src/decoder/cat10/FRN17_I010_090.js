@@ -7,7 +7,7 @@
 
 import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "flight_level_in_binary_representation";
 const byteLength = 2;
@@ -23,7 +23,7 @@ export function parse(record) {
     let indexG = maskAndShift(record[0], 7);
     let FL = maskAndShift(int8Toint16(record[0], record[1]), 14, 1) * factorLSB;
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         v: item["v"][indexV],
         g: item["g"][indexG],
         FL: FL

@@ -4,7 +4,7 @@
 
 import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "target_identification";
 const byteLength = 7;
@@ -20,7 +20,7 @@ export function parse(record) {
     let indexSTI = maskAndShift(record[0], 8, 7);
     let targetId = intArrayToCharsAIS(record.subarray(1, 7), bitsPerChar)
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         STI: item["STI"][indexSTI],
         targetId: targetId,
     });

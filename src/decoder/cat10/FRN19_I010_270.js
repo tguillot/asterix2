@@ -8,7 +8,7 @@
 
 import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "target_size_&_orientation";
 let byteLength = 0;
@@ -25,7 +25,7 @@ export function parse(record) {
     let extendedParts = extend(byteLength, record)
     let dataItem = { ...firstPart, ...extendedParts };
 
-    pushDataItem(name, dataItem);
+    pushDataItem10(name, dataItem);
 
     return record.subarray(byteLength);
 }

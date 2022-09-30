@@ -3,46 +3,42 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    data: null,
-    dataPrettified: null,
+const getDefaultState = () => {
+  return {
     uploadProgress: 0,
-  },
+  }
+}
+
+
+export default new Vuex.Store({
+  state: getDefaultState(),
   getters: {
-    getData: (state) => {
-      return state.data;
-    },
-    getDataPrettified: (state) => {
-      return state.dataPrettified;
-    },
     getUploadProgress: (state) => {
       return state.uploadProgress;
     },
   },
   mutations: {
-    SET_DATA(state, newData) {
-      if(state.data) console.log(newData.length, state.data.length)
-      newData.map(item => {
-        Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "") });
-        return item;
-      })
-      if(state.data) console.log(newData.length, state.data.length)
-      state.data = newData;
-      console.log(newData.length, state.data.length)
-    },
+    // SET_DATA(state, newData) {
+    //   newData.map(item => {
+    //     Object.keys(item).forEach(function (key) { item[key] = JSON.stringify(item[key], null, 2).replace(/[\"{},]/g, "") });
+    //     return item;
+    //   })
+    //   state.data = newData;
+    // },
     SET_UPLOAD_PROGRESS(state, uploadProgress) {
       state.uploadProgress = Math.floor(uploadProgress);
       console.log(Math.floor(uploadProgress))
     },
+    resetState(state) {
+      Object.assign(state, getDefaultState())
+    }
   },
   actions: {
-    setData(context, newData) {
-      console.log("SAVED DATA IN STORE")
-      context.commit("SET_DATA", newData);
-    },
     setUploadProgress(context, uploadProgress) {
       context.commit("SET_UPLOAD_PROGRESS", uploadProgress);
+    },
+    resetSate({ commit }) {
+      commit('resetState')
     },
   },
 })

@@ -1,8 +1,8 @@
 <template>
-    <div v-if="data">
+    <div v-if="dataFile">
     <v-data-table
     :headers="headers"
-    :items="data"
+    :items="dataFile"
     class="elevation-1"
     no-data-text="-"
     id="table"   
@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import  { getRecords10, makeRecordsPretty}  from "../decoder/decoder.js"
 
 export default {
 
   data() {
     return {
-      selectedRow: null,
-      headers: [
+      dataFile: getRecords10(),
+     headers: [
       { text: 'Category', align: 'start', value: 'category' },
       { text: 'Length',  value: 'length' },
         { text: 'SAC', value: 'SAC' },
@@ -83,29 +83,15 @@ export default {
     }
   },
 
-  beforeDestroy: function () {
-    if (this.selectedRow) this.selectedRow.destroy();
-  }, 
-  computed: {
-    ...mapGetters({
-      data: "getData",
-    }),
-  },
+
   methods:{
     rowClick(value) {
      
-      if(value.target==this.selectedRow && value.target.classList.length!=0){
+      if(value.target.classList.length!=0){
         value.target.classList.remove('truncate');
-      }else if(value.target==this.selectedRow && value.target.classList.length==0){
+      }else if(value.target.classList.length==0){
         value.target.classList.add('truncate');
-      }else{
-        if(this.selectedRow){
-          this.selectedRow.classList.add('truncate')       
-        }
-        value.target.classList.remove('truncate');
       }
-
-      this.selectedRow=value.target;
       
     },
   }

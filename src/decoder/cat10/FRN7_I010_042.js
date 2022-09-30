@@ -7,7 +7,7 @@
 
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "position_in_cartesian_co-ordinates";
 const byteLength = 4;
@@ -18,7 +18,7 @@ export function parse(record) {
     x = twosComplementToInt(x, 16);
     y = twosComplementToInt(y, 16);
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         x: x,
         y: y,
     });

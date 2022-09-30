@@ -4,7 +4,7 @@
 // Format:
 // One octet fixed length Data Item.
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "vehicle_fleet_identification";
 const byteLength = 1;
@@ -14,7 +14,7 @@ export function parse(record) {
 
     let indexVFI = record[0];
 
-    pushDataItem(name, item[indexVFI])
+    pushDataItem10(name, item[indexVFI])
 
     return record.subarray(byteLength);
 }

@@ -6,7 +6,7 @@
 
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "measured_position_in_polar_co-ordinates";
 const byteLength = 4;
@@ -16,7 +16,7 @@ export function parse(record) {
     let rho = int8Toint16(record[0], record[1]);
     let theta = int8Toint16(record[2], record[3]) * factorLSBTheta;
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         rho: rho,
         theta: theta,
     });

@@ -5,7 +5,7 @@
 
 import { int8Toint16 } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "magnetic_heading";
 const byteLength = 2;
@@ -14,7 +14,7 @@ export function parse(record) {
 
     let magneticHeading = int8Toint16(record[0], record[1]) * factorLSB;
 
-    pushDataItem(name, magneticHeading);
+    pushDataItem21(name, magneticHeading);
 
     return record.subarray(byteLength);
 }

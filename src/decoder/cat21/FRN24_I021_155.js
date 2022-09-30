@@ -6,7 +6,7 @@
 import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
 import { ft_to_Meters } from "../utils/unitsUtil.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "barometric_vertical_rate";
 const byteLength = 2;
@@ -18,7 +18,7 @@ export function parse(record) {
     let barometricVerticalRate = maskAndShift(int8Toint16(record[0], record[1]), 15, 1);
     barometricVerticalRate = twosComplementToInt(barometricVerticalRate, 15) * factorLSB;
 
-    pushDataItem(name,
+    pushDataItem21(name,
         {
             RE: item[indexRE],
             barometricVerticalRate: barometricVerticalRate,

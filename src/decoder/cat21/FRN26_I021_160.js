@@ -7,7 +7,7 @@
 import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
 import { NM_to_Meters } from "../utils/unitsUtil.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "airborne_ground_vector";
 const byteLength = 4;
@@ -23,7 +23,7 @@ export function parse(record) {
 
     groundSpeed = groundSpeed * NM_to_Meters;
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         RE: item[indexRE],
         groundSpeed: groundSpeed,
         trackAngle: trackAngle,

@@ -6,7 +6,7 @@
 
 import { int8Toint16 } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "standard_deviation_of_position";
 const byteLength = 4;
@@ -17,7 +17,7 @@ export function parse(record) {
     let sigY = record[1] * factorLSB;
     let sigXY = int8Toint16(record[2], record[3]) * factorLSB;
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         sigX: sigX,
         sigY: sigY,
         sigXY: sigXY

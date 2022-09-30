@@ -5,7 +5,7 @@
 
 import { int8Toint16, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "true_air_speed";
 const byteLength = 2;
@@ -15,7 +15,7 @@ export function parse(record) {
     let indexRE = maskAndShift(record[0], 8);
     let TAS = maskAndShift(int8Toint16(record[0], record[1]), 15, 1);
 
-    pushDataItem(name,
+    pushDataItem21(name,
         {
             RE: item[indexRE],
             TAS: TAS,

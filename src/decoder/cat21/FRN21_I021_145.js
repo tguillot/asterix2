@@ -6,7 +6,7 @@
 
 import { int8Toint16, maskAndShift, mask, twosComplementToInt } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "flight_level";
 const byteLength = 2;
@@ -17,7 +17,7 @@ export function parse(record) {
     let FL = int8Toint16(record[0], record[1]);
     FL = twosComplementToInt(FL, 16) * factorLSB;
 
-    pushDataItem(name, FL);
+    pushDataItem21(name, FL);
 
     return record.subarray(byteLength);
 }

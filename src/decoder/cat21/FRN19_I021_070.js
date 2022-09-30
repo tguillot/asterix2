@@ -6,7 +6,7 @@
 
 import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "mode-3A_code_in_octal_representation";
 const byteLength = 2;
@@ -21,7 +21,7 @@ export function parse(record) {
 
     let mode = modeA * 1000 + modeB * 100 + modeC * 10 + modeD;
 
-    pushDataItem(name, mode);
+    pushDataItem21(name, mode);
 
     return record.subarray(byteLength);
 }

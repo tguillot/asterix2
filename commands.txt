@@ -7,3 +7,13 @@ npm run electron:serve
 
 
 npm install webpack@latest 
+
+
+//TODO
+- increase heap to 8gb
+- before upload file reset app
+
+//compoents are shown as <FileData
+// add a ref to it 
+//execute function in child to clear its data
+//remove ltos of text

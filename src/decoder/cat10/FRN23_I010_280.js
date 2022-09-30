@@ -9,7 +9,7 @@
 
 import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "pressence";
 let byteLength = 0;
@@ -31,7 +31,7 @@ export function parse(record) {
         pressenceArray.push(pressence);
     }
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         pressenceArray: [pressenceArray]
     });
 

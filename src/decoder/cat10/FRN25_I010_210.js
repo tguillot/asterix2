@@ -5,7 +5,7 @@
 
 import { twosComplementToInt } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "calculated_acceleration";
 const byteLength = 2;
@@ -15,7 +15,7 @@ export function parse(record) {
     let ax = twosComplementToInt(record[0], 8) * factorLSB;
     let ay = twosComplementToInt(record[1], 8) * factorLSB;
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         ax: ax,
         ay: ay,
     });

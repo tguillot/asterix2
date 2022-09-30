@@ -7,7 +7,7 @@
 
 import { maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "mode_S_MB_data";
 let byteLength = 0;
@@ -29,7 +29,7 @@ export function parse(record) {
         BDSArray.push(BDS);
     }
 
-    pushDataItem(name, BDSArray);
+    pushDataItem10(name, BDSArray);
     return record.subarray(byteLength);
 }
 

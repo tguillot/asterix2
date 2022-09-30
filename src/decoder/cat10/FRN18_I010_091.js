@@ -9,7 +9,7 @@
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 import { ft_to_Meters } from "../utils/unitsUtil.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "measured_height";
 const byteLength = 2;
@@ -24,7 +24,7 @@ export function parse(record) {
     measuredHeight = measuredHeight * ft_to_Meters
 
 
-    pushDataItem(name, measuredHeight);
+    pushDataItem10(name, measuredHeight);
 
     return record.subarray(byteLength);
 }

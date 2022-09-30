@@ -9,7 +9,7 @@ import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 //TODO: ask for help
 
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "quality_indicators";
 let byteLength = 0;
@@ -48,7 +48,7 @@ export function parse(record) {
     // let extendedParts = extend(byteLength, record)
     // let dataItem = { ...firstPart, ...extendedParts };
 
-    //pushDataItem(name,  dataItem;
+    //pushDataItem21(name,  dataItem;
 
     return record.subarray(byteLength);
 }

@@ -6,7 +6,7 @@
 
 import { getNumBytesWithFX, int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "met_information";
 let byteLength = 0;
@@ -37,7 +37,7 @@ export function parse(record) {
     }
 
 
-    pushDataItem(name, dataItem);
+    pushDataItem21(name, dataItem);
 
     return record.subarray(byteLength);
 }

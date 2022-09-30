@@ -4,14 +4,14 @@
 // Format:
 // One-Octet fixed length Data Item.
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "amplitude_of_primary_plot";
 const byteLength = 1;
 export function parse(record) {
 
     let PAM = record[0];
-    pushDataItem(name, PAM);
+    pushDataItem10(name, PAM);
 
     return record.subarray(byteLength);
 }

@@ -6,7 +6,7 @@
 // Variable length Data Item comprising a first part of one-octet,
 // followed by one-octet extents as necessary.
 
-import { pushDataItem } from "../decoder.js";
+import { pushDataItem10 } from "../decoder.js";
 import { getNumBytesWithFX, maskAndShift } from "../utils/bitUtils.js";
 
 const name = "target_report_descriptor";
@@ -19,7 +19,7 @@ const item = {
     CRT: ["No Corrupted reply in multilateration", "No Corrupted reply in multilateration"],
     SIM: ["Actual target report", "Simulated target report"],
     TST: ["Default", "Test Target"],
-    RAB: ["Report from target transponder", "Report from field monitor (fixed transponder)"],
+    RAB: ["Report from target transponder", "Report from fixed transponder"],
     LOP: ["Undetermined", "Loop start", "Loop finish"],
     TOT: ["Undetermined", "Aircraft", "Ground vehicle", "Helicopter"],
     SPI: ["End of Data Item", "Extension into next extent"],
@@ -46,7 +46,7 @@ export function parse(record) {
     let extendedParts = extend(byteLength, record)
     let dataItem = { ...firstPart, ...extendedParts };
 
-    pushDataItem(name, dataItem);
+    pushDataItem10(name, dataItem);
 
     return record.subarray(byteLength);
 }

@@ -6,7 +6,7 @@
 
 import { int8Toint16, int8Toint32, mask, maskAndShift } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "ACAS_resolution_advisory_report";
 const byteLength = 8;
@@ -17,7 +17,7 @@ export function parse(record) {
     let TID = int8Toint32(record[3], record[4], record[5], record[6])
 
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         TYP: maskAndShift(record[0], 8, 4),
         STYP: maskAndShift(record[0], 3, 1),
         ARA: maskAndShift(ARA, 16, 3),

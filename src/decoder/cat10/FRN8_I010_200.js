@@ -7,7 +7,7 @@
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
 import { NM_to_Meters } from "../utils/unitsUtil.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem10 } from "../decoder";
 
 const name = "calculated_track_velocity_in_polar_co-ordinates";
 const byteLength = 4;
@@ -20,7 +20,7 @@ export function parse(record) {
 
     groundSpeed = groundSpeed * NM_to_Meters;
 
-    pushDataItem(name, {
+    pushDataItem10(name, {
         groundSpeed: groundSpeed,
         trackAngle: trackAngle,
     });

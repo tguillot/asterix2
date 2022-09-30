@@ -5,7 +5,7 @@
 
 import { int8Toint16, maskAndShift, mask } from "../utils/bitUtils.js";
 
-import { pushDataItem } from "../decoder";
+import { pushDataItem21 } from "../decoder";
 
 const name = "MOPS_version";
 const byteLength = 1;
@@ -20,7 +20,7 @@ export function parse(record) {
     let indexVN = maskAndShift(record[0], 6, 4);
     let indexLTT = maskAndShift(record[0], 3, 1);
 
-    pushDataItem(name, {
+    pushDataItem21(name, {
         VNS: item["VNS"][indexVNS],
         VN: item["VN"][indexVN],
         LTT: item["LTT"][indexLTT],
