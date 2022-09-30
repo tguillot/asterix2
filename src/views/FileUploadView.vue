@@ -46,6 +46,9 @@ export default {
         };
         this.chosenFile=null;
       }
+    },
+    clearData(){
+      console.log("file cleared");
     }
   }
 };

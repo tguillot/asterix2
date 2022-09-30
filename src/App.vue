@@ -66,7 +66,7 @@
     </v-toolbar>
 
     <v-main>
-      <router-view/>
+      <router-view ref="currentView"></router-view>
     </v-main>
   </v-app>
 </template>
@@ -88,12 +88,12 @@ export default {
       ],
     }
   },
-
-  methods: {
-    refreshPage(){
-      this.$forceUpdate();
+  watch:{
+    $route(to,from){
+      this.$refs.currentView.clearData();
     }
   },
+
 
   computed: {
     ...mapGetters({
