@@ -1,6 +1,7 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { int8Toint16 } from './utils/bitUtils.js';
+import LatLon, { Ned } from 'geodesy/latlon-nvector-ellipsoidal.js'; // Node.js
 
 
 const CATEGORY_10 = 10;
@@ -19,6 +20,12 @@ var records10 = [];
 var records21 = [];
 var progress = 0;
 
+var planes = {
+    MLAT: [], //CAT 10 needs conversion SAC/SIC = 07
+    SMR: [], //CAT 10 needs conversion, SAC/SIC = 0/7
+    ADSB: [],
+}
+
 export function getRecords10() {
     return records10;
 }
@@ -33,7 +40,47 @@ export function pushDataItem10(name, dataItem) {
 export function pushDataItem21(name, dataItem) {
     records21[records21.length - 1][name] = dataItem;
 }
+function getCoordinates(cartesianCoordinates, referencePoint) {
+    const SMR = new LatLon(referencePoint.lat, referencePoint.lon, 0);
+    const ned = new Ned(cartesianCoordinates.x, cartesianCoordinates.y, 0);
 
+    return SMR.destinationPoint(ned);
+}
+
+function pushPlane10() {
+    let recordPlane = records10[records10.length - 1];
+    let plane = {};
+
+
+    if (recordPlane.SAC == 0 & recordPlane.SIC == 7 & recordPlane["a042"] != null) {
+        let position = getCoordinates(recordPlane["a042"], POINT_SMR)
+        plane.lat = position.lat;
+        plane.lon = position.lon;
+        plane.planeId = recordPlane["a161"];
+        plane.timestamp = recordPlane["a140"];
+        planes.SMR.push(plane);
+    } else if (recordPlane.SAC == 0 & recordPlane.SIC == 107 & recordPlane["a042"] != null) {
+        let position = getCoordinates(recordPlane["a042"], POINT_MLAT)
+        plane.lat = position.lat;
+        plane.lon = position.lon;
+        plane.planeId = recordPlane["a161"];
+        plane.timestamp = recordPlane["a140"];
+        planes.MLAT.push(plane);
+    };
+}
+
+function pushPlane21() {
+    let recordPlane = records21[records21.length - 1];
+    let plane = {};
+    if (recordPlane["b131"] != null) {
+        let position = recordPlane["b131"]
+        plane.lat = position.lat;
+        plane.lon = position.lon;
+        plane.planeId = recordPlane["b170"]
+        plane.timestamp = recordPlane["b073"];
+        planes.ADSB.push(plane);
+    }
+}
 
 export function decode(buffer) {
     records10 = [];
@@ -51,11 +98,13 @@ export function decode(buffer) {
 
         if (category == CATEGORY_10) {
             records10.push({ category: CATEGORY_10, length: length });
-            parseCat10(record)
+            parseCat10(record);
+            pushPlane10();
 
         } else if (category == CATEGORY_21) {
             records21.push({ category: CATEGORY_21, length: length });
             parseCat21(record)
+            pushPlane21();
         }
         framesParsed++;
         if (framesParsed % 30000 == 0) {
