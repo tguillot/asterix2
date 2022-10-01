@@ -18,7 +18,9 @@
   >
   <template v-slot:top>
         <v-text-field
-          v-model="search"
+          :value="search"
+          @keydown.enter="event => search = event.target.value"
+
           append-icon="mdi-magnify"
           label="Search"
           single-line
@@ -97,7 +99,7 @@ export default {
         { text: 'Time of Applicability for Velocity', value: 'b072p',filterable: false },
         { text: 'Air Speed', value: 'b150',filterable: false  },
         { text: 'True Air Speed', value: 'b151',filterable: false  },
-        { text: 'Target Address', value: 'b080' ,filterable: false },
+        { text: 'Target Address', value: 'b080'  },
         { text: 'Time of Message Reception of Position', value: 'b073p',filterable: false },
         { text: 'Time of Message Reception of Position-High Precision', value: 'b074p',filterable: false },
         { text: 'Time of Message Reception of Velocity', value: 'b075p',filterable: false },
@@ -132,11 +134,11 @@ export default {
     ],
 
      headers10: [
-      { text: 'Category', align: 'start', value: 'category', filterable: false},
-      { text: 'Length',  value: 'length', filterable: false },
+        { text: 'Category', align: 'start', value: 'category', filterable: false},
+        { text: 'Length',  value: 'length', filterable: false },
         { text: 'SAC', value: 'SAC',filterable: false  },
         { text: 'SIC', value: 'SIC' , filterable: false },
-        { text: 'Message Type', value: 'a000' },
+        { text: 'Message Type', value: 'a000',filterable: false },
         { text: 'Target Report Descriptor', value: 'a020', parse: this.makePretty},
         { text: 'Time of Day', value: 'a140p', filterable: false },
         { text: 'Position in WGS-84 Co-ordinates', value: 'a041' , filterable: false},
@@ -146,19 +148,19 @@ export default {
         { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' , parse: this.makePretty, filterable: false},
         { text: 'Track Number', value: 'a161' },
         { text: 'Track Status', value: 'a170' , parse: this.makePretty},
-        { text: 'Mode-3/A Code in Octal Representation', value: 'a060', parse: this.makePretty },
+        { text: 'Mode-3/A Code in Octal Representation', value: 'a060', parse: this.makePretty ,filterable: false},
         { text: 'Target Address', value: 'a220' },
         { text: 'Target Identification', value: 'a245',parse: this.makePretty },
-        { text: 'Mode S MB Data', value: 'a250' },
+        { text: 'Mode S MB Data', value: 'a250' ,filterable: false},
         { text: 'Vehicle Fleet Identification', value: 'a300' },
-        { text: 'Flight Level in Binary Representation', value: 'a090' ,parse: this.makePretty},
-        { text: 'Measured Height', value: 'a091' },
-        { text: 'Target Size & Orientation', value: 'a270',parse: this.makePretty },
-        { text: 'System Status', value: 'a550' ,parse: this.makePretty},
-        { text: 'Pre-programmed Message', value: 'a310' },
-        { text: 'Standard Deviation of Position', value: 'a500' },
-        { text: 'Presence', value: 'a280' },
-        { text: 'Amplitude of Primary Plot', value: 'a131' },
+        { text: 'Flight Level in Binary Representation', value: 'a090' ,parse: this.makePretty,filterable: false},
+        { text: 'Measured Height', value: 'a091' ,filterable: false},
+        { text: 'Target Size & Orientation', value: 'a270',parse: this.makePretty ,filterable: false},
+        { text: 'System Status', value: 'a550' ,parse: this.makePretty,filterable: false},
+        { text: 'Pre-programmed Message', value: 'a310',filterable: false },
+        { text: 'Standard Deviation of Position', value: 'a500' ,filterable: false},
+        { text: 'Presence', value: 'a280' ,filterable: false},
+        { text: 'Amplitude of Primary Plot', value: 'a131' ,filterable: false},
         { text: 'Calculated Acceleration', value: 'a210' , parse: this.makePretty, filterable: false},
 
       ],
