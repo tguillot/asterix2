@@ -72,7 +72,7 @@ export default {
     return {
       title: 'ASTERIX',
       items: [
-        { title: 'Cat 10', path: "/data" },
+        { title: 'Cat 10', path: "/data10"},
         { title: 'Cat 21', path: "/data21"},
       ],
     }

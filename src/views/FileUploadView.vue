@@ -8,7 +8,7 @@
       id="loader"
       :size="70"
       :width="7"
-          ></v-progress-circular>
+></v-progress-circular>
 
 
 <v-container id="container" rounded>

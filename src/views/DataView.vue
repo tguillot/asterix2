@@ -1,23 +1,34 @@
 <template>
     <div v-if="true">
     <v-data-table
-    :headers="headers"
-    :items="publishedData"
+    :headers="getHeaders"
+    :items="getRecords"
     class="elevation-1"
     id="table"   
     fixed-header
     fixed-footer
+    :search="search"
 
-    height="85vh"
+    height="80vh"
     :footer-props="{
       itemsPerPageOptions: [25,50,100],
       showFirstLastPage: true,
       height: '60px'
     }"
   >
+  <template v-slot:top>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+        ></v-text-field>
+      </template>
+
+
   <template v-slot:item="{ item }" >
     <tr @click="rowClick" >
-      <td v-for="header in headers" v-bind:key="header.text" class="truncate">
+      <td v-for="header in getHeaders" v-bind:key="header.text" class="truncate">
         {{ item[header.value] ? 
         (header.parse ? header["parse"](item[header.value]):
          item[header.value])
@@ -47,29 +58,92 @@
 </template>
 
 <script>
-import  { getRecords10}  from "../decoder/decoder.js"
+import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
 
 export default {
   computed: {
-    publishedData() {
-      return getRecords10();
+    getRecords() {
+      if(this.dataCategory=="data10"){
+        return getRecords10();
+      }else{
+        return getRecords21();
+      }
+    },
+    getHeaders() {
+      if(this.dataCategory=="data10"){
+        return this.headers10;
+      }else{
+        return this.headers21;
+      }
+    },
+    dataCategory(){
+      return this._routerRoot._route.name;
     }
   },
   data() {
     return {
-     headers: [
-      { text: 'Category', align: 'start', value: 'category'},
-      { text: 'Length',  value: 'length' },
-        { text: 'SAC', value: 'SAC' },
-        { text: 'SIC', value: 'SIC' },
+      search: '',
+      headers21: [
+      { text: 'Category', align: 'start', value: 'category', filterable: false},
+      { text: 'Length',  value: 'length', filterable: false },
+      { text: 'SAC', value: 'SAC',filterable: false  },
+        { text: 'SIC', value: 'SIC' , filterable: false },
+        { text: 'Target Report Descriptor', value: 'b040', parse: this.makePretty, filterable: false },
+        { text: 'Track Number', value: 'b161' },
+        { text: 'Service Identification', value: 'b015' , filterable: false },
+        { text: 'Time of Applicability for Position', value: 'b071p' , filterable: false},
+        { text: 'Position in WGS-84 co-ordinates', value: 'b130' , parse: this.makePretty,filterable: false},
+        { text: 'Position in WGS-84 co-ordinates, high res.', value: 'b131',parse: this.makePretty ,filterable: false},
+        { text: 'Time of Applicability for Velocity', value: 'b072p',filterable: false },
+        { text: 'Air Speed', value: 'b150',filterable: false  },
+        { text: 'True Air Speed', value: 'b151',filterable: false  },
+        { text: 'Target Address', value: 'b080' ,filterable: false },
+        { text: 'Time of Message Reception of Position', value: 'b073p',filterable: false },
+        { text: 'Time of Message Reception of Position-High Precision', value: 'b074p',filterable: false },
+        { text: 'Time of Message Reception of Velocity', value: 'b075p',filterable: false },
+        { text: 'Time of Message Reception of Velocity-High Precision', value: 'b076p',filterable: false },
+        { text: 'Geometric Height', value: 'b140',filterable: false  },
+        { text: 'Quality Indicators', value: 'b090',filterable: false  },
+        { text: 'MOPS Version', value: 'b210',parse: this.makePretty,filterable: false  },
+        { text: 'Mode 3/A Code', value: 'b070',filterable: false  },
+        { text: 'Roll Angle', value: 'b230' ,filterable: false },
+        { text: 'Flight Level', value: 'b145' ,filterable: false },
+        { text: 'Magnetic Heading', value: 'b152',filterable: false  },
+        { text: 'Target Status', value: 'b200' , parse: this.makePretty},
+        { text: 'Barometric Vertical Rate', value: 'b155' ,filterable: false },
+        { text: 'Geometric Vertical Rate', value: 'b157',filterable: false  },
+        { text: 'Airborne Ground Vector', value: 'b160', parse: this.makePretty ,filterable: false },
+        { text: 'Track Angle Rate', value: 'b165' },
+        { text: 'Time of Report Transmission', value: 'b077p',filterable: false },
+        { text: 'Target Identification', value: 'b170' },
+        { text: 'Emitter Category', value: 'b020',filterable: false  },
+        { text: 'Met Information', value: 'b220',filterable: false  },
+        { text: 'Selected Altitude', value: 'b146' , parse: this.makePretty,filterable: false },
+        { text: 'Final State Selected Altitude', value: 'b148',filterable: false  },
+        { text: 'Trajectory Intent', value: 'b110' ,filterable: false },
+        { text: 'Service Management', value: 'b016' ,filterable: false },
+        { text: 'Aircraft Operational Status', value: 'b008',parse: this.makePretty },
+        { text: 'Surface Capabilities and Characteristics', value: 'b271',parse: this.makePretty },
+        { text: 'Message Amplitude', value: 'b132',filterable: false },
+        { text: 'Mode S MB Data', value: 'b250' ,filterable: false },
+        { text: 'ACAS Resolution Advisory Report', value: 'b260' },
+        { text: 'Receiver ID', value: 'b400' ,filterable: false },
+        { text: 'Data Ages', value: 'b295',parse: this.makePretty ,filterable: false },
+    ],
+
+     headers10: [
+      { text: 'Category', align: 'start', value: 'category', filterable: false},
+      { text: 'Length',  value: 'length', filterable: false },
+        { text: 'SAC', value: 'SAC',filterable: false  },
+        { text: 'SIC', value: 'SIC' , filterable: false },
         { text: 'Message Type', value: 'a000' },
         { text: 'Target Report Descriptor', value: 'a020', parse: this.makePretty},
-        { text: 'Time of Day', value: 'a140p' },
-        { text: 'Position in WGS-84 Co-ordinates', value: 'a041' },
-        { text: 'Measured Position in Polar Co-ordinates', value: 'a040' , parse: this.makePretty},
-        { text: 'Position in Cartesian Co-ordinates', value: 'a042' , parse: this.makePretty},
-        { text: 'Calculated Track Velocity in Polar Co-ordinates', value: 'a200' , parse: this.makePretty},
-        { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' , parse: this.makePretty},
+        { text: 'Time of Day', value: 'a140p', filterable: false },
+        { text: 'Position in WGS-84 Co-ordinates', value: 'a041' , filterable: false},
+        { text: 'Measured Position in Polar Co-ordinates', value: 'a040' , parse: this.makePretty, filterable: false},
+        { text: 'Position in Cartesian Co-ordinates', value: 'a042' , parse: this.makePretty, filterable: false},
+        { text: 'Calculated Track Velocity in Polar Co-ordinates', value: 'a200' , parse: this.makePretty, filterable: false},
+        { text: 'Calculated Track Velocity in Cartesian Co-ordinates', value: 'a202' , parse: this.makePretty, filterable: false},
         { text: 'Track Number', value: 'a161' },
         { text: 'Track Status', value: 'a170' , parse: this.makePretty},
         { text: 'Mode-3/A Code in Octal Representation', value: 'a060', parse: this.makePretty },
@@ -85,12 +159,11 @@ export default {
         { text: 'Standard Deviation of Position', value: 'a500' },
         { text: 'Presence', value: 'a280' },
         { text: 'Amplitude of Primary Plot', value: 'a131' },
-        { text: 'Calculated Acceleration', value: 'a210' , parse: this.makePretty},
+        { text: 'Calculated Acceleration', value: 'a210' , parse: this.makePretty, filterable: false},
 
       ],
     }
   },
-
 
   methods:{
     makePretty(value){
@@ -151,6 +224,7 @@ td{
   position: absolute;
   left: 40vw;
 }
+
 
 </style>
   

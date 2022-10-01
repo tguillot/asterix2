@@ -9,7 +9,6 @@
 
 <script>
 import EsriMap from "../components/EsriMap";
-import {decode} from "../decoder/decoder.js"
 
 export default {
   components: {
@@ -38,7 +37,7 @@ export default {
   position: relative;
 }
 #map {
-  width: 100vw;
+  width: 00vw;
   height: 100vh;
 }
 .component-wrapper {

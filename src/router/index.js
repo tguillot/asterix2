@@ -13,8 +13,13 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/data',
-    name: 'data',
+    path: '/data10',
+    name: 'data10',
+    component: DataView
+  },
+  {
+    path: '/data21',
+    name: 'data21',
     component: DataView
   },
   {
