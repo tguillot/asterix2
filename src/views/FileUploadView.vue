@@ -1,6 +1,16 @@
 <template>
 
 <div id="imageBackground">
+  <v-progress-circular 
+      indeterminate
+      color="amber"
+      class="loadingCircle"
+      id="loader"
+      :size="70"
+      :width="7"
+          ></v-progress-circular>
+
+
 <v-container id="container" rounded>
   <v-file-input
   
@@ -9,7 +19,6 @@
     label="File input"
     v-model="chosenFile"
     @change="onFileChanged"
-
   ></v-file-input>
 
 </v-container>
@@ -19,7 +28,7 @@
 </template>
 
 <script>
-import { decode } from '../decoder/decoder';
+import { decode, getProgress } from '../decoder/decoder';
 
 
 export default {
@@ -31,21 +40,34 @@ export default {
     }
   },
 
+
   methods:{
-    onFileChanged(e) {
+    changeLoader(){
+      const loader = document.getElementById('loader');
+      loader.style.visibility = 'visible';
+    },
+    decodeFile(){
       if (this.chosenFile) {
         var reader = new FileReader();
         reader.readAsArrayBuffer(this.chosenFile);
         this.chosenFileName=this.chosenFile.name;
         reader.onload = () => {
           try {
+            this.offset=1;
+            this.$forceUpdate();
             decode(reader.result)
+            this.overlayOn=false;
           } catch (e) {
            console.log(e)
           }
         };
-        this.chosenFile=null;
       }
+      loader.style.visibility = 'hidden';
+    },
+    onFileChanged(e) {
+      this.changeLoader();
+
+      setTimeout(() => {  this.decodeFile(); }, 200);
     },
     clearData(){
       console.log("file cleared");
@@ -71,6 +93,11 @@ export default {
   background-size: cover;  
 
 }
-
+.loadingCircle{
+  position: absolute;
+  top: 20vh;
+  left: 50vw;
+  visibility: hidden;
+}
 </style>
   

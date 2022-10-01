@@ -1,16 +1,6 @@
 <template>
   <v-app>
 
-    <v-overlay  :key="uploadProgress" :value="uploadProgress!=0" >
-      <v-progress-linear :value="uploadProgress" color="amber"
-      height="25" class="loadingBar">
-      <strong>{{ Math.ceil(uploadProgress) }}%</strong>
-
-      </v-progress-linear>
-  </v-overlay>
-    
-
-
     <v-toolbar id="toolbar" color="primary" >
       <v-toolbar-title>
         {{ title }}
@@ -24,13 +14,13 @@
           Home
         </v-btn>
         <v-menu
-      open-on-hover
-      bottom
-      offset-y
-    >
+          open-on-hover
+          bottom
+          offset-y
+        >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-        color="primary"
+          color="primary"
         
           v-bind="attrs"
           v-on="on"
@@ -73,7 +63,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { decode } from './decoder/decoder';
 
 
 export default {
@@ -135,8 +124,5 @@ html{
 ::-webkit-scrollbar-corner{
   background: #3e3e3e;
 }
-.loadingBar{
-  width: 300px;
-  background-color: rgb(40,40,40);
-}
+
 </style>

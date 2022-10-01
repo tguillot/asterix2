@@ -1,7 +1,6 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { int8Toint16 } from './utils/bitUtils.js';
-import store from '../store'
 
 
 const CATEGORY_10 = 10;
@@ -18,7 +17,7 @@ const POINT_MLAT = {
 
 var records10 = [];
 var records21 = [];
-var empty = false;
+var progress = 0;
 
 export function getRecords10() {
     return records10;
@@ -27,16 +26,6 @@ export function getRecords21() {
     return records21;
 }
 
-export function clearAll() {
-    records10 = []
-    records21 = [];
-}
-function pushRecord10(category, length) {
-    records10.push({ category: category, length: length });
-}
-function pushRecord21(category, length) {
-    records21.push({ category: category, length: length });
-}
 
 export function pushDataItem10(name, dataItem) {
     records10[records10.length - 1][name] = dataItem;
@@ -61,20 +50,22 @@ export function decode(buffer) {
         i += length;
 
         if (category == CATEGORY_10) {
-            pushRecord10(CATEGORY_10, length)
+            records10.push({ category: CATEGORY_10, length: length });
             parseCat10(record)
+
         } else if (category == CATEGORY_21) {
-            pushRecord21(CATEGORY_21, length)
+            records21.push({ category: CATEGORY_21, length: length });
             parseCat21(record)
         }
         framesParsed++;
         if (framesParsed % 30000 == 0) {
-            console.log("*")
+            progress = Math.floor(100 * i / arrayInts.length);
+            console.log("*", progress);
         }
     }
 
+    progress = 0;
     // endTimer();
-
 }
 
 
