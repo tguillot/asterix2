@@ -4,14 +4,13 @@
 // Two-Octet fixed length data item.
 
 import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
-import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
 const name = "b155";
 const byteLength = 2;
 const item = ["Value in defined range", "Value exceeds defined range"];
-const factorLSB = 6.25 * ft_to_Meters * 60;
+const factorLSB = 6.25;
 export function parse(record) {
 
     let indexRE = maskAndShift(record[0], 8);

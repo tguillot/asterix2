@@ -5,7 +5,6 @@
 // Four-Octet fixed length data item.
 
 import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
-import { NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
@@ -21,7 +20,7 @@ export function parse(record) {
     let groundSpeed = maskAndShift(int8Toint16(record[0], record[1]), 15, 1) * factorLSBSpeed;
     let trackAngle = int8Toint16(record[2], record[3]) * factorLSBAngle;
 
-    groundSpeed = groundSpeed * NM_to_Meters;
+    groundSpeed = groundSpeed;
 
     pushDataItem21(name, {
         RE: item[indexRE],

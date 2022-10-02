@@ -7,7 +7,6 @@
 // Two-Octet fixed length data item.
 
 import { int8Toint16, maskAndShift, twosComplementToInt } from "../utils/bitUtils.js";
-import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
@@ -25,7 +24,7 @@ export function parse(record) {
     let indexSource = maskAndShift(record[0], 7, 6)
 
     let altitude = maskAndShift(int8Toint16(record[0], record[1]), 13, 1);
-    altitude = twosComplementToInt(altitude, 13) * factorLSB * ft_to_Meters;
+    altitude = twosComplementToInt(altitude, 13) * factorLSB;
 
     pushDataItem21(name, {
         SAS: item.SAS[indexSAS],

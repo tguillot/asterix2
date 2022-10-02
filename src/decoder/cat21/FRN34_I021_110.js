@@ -5,7 +5,6 @@
 // followed by the indicated subfields.
 
 import { intArrayToCharsAIS, maskAndShift } from "../utils/bitUtils.js";
-import { ft_to_Meters, NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
@@ -27,9 +26,9 @@ const item = {
     TRA: ["TTR not available", "TTR available"],
     TOA: ["TOV available", "TOV not available"],
 };
-const factorLSBaltitude = 10 * ft_to_Meters;
+const factorLSBaltitude = 10;
 const factorLSBcoor = 180 / 2 ** 23;
-const factorLSBTTR = 0.01 * NM_to_Meters;
+const factorLSBTTR = 0.01;
 
 export function parse(record) {
 

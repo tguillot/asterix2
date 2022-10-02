@@ -7,7 +7,6 @@
 // Two-octet fixed length Data Item.
 
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
-import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem10 } from "../decoder";
 
@@ -21,7 +20,7 @@ export function parse(record) {
     let measuredHeight = int8Toint16(record[0], record[1]);
     measuredHeight = twosComplementToInt(measuredHeight, 16) * factorLSB;
 
-    measuredHeight = measuredHeight * ft_to_Meters
+    measuredHeight = measuredHeight
 
 
     pushDataItem10(name, measuredHeight);

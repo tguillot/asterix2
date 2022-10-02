@@ -5,7 +5,6 @@
 // A two byte fixed length data item.
 
 import { int8Toint16, twosComplementToInt } from "../utils/bitUtils.js";
-import { NM_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 

@@ -5,11 +5,10 @@
 // Two-Octet fixed length data item.
 
 import { int8Toint16, mask, twosComplementToInt } from "../utils/bitUtils.js";
-import { ft_to_Meters } from "../utils/unitsUtil.js";
 
 import { pushDataItem21 } from "../decoder";
 
-const name = "b140";
+const name = "b076";
 const byteLength = 2;
 const factorLSB = 6.25;
 const specialCase = '0111111111111111'
@@ -20,7 +19,7 @@ export function parse(record) {
         measuredHeight = "greater than";
     } else {
         measuredHeight = twosComplementToInt(measuredHeight, 16) * factorLSB;
-        measuredHeight = measuredHeight * ft_to_Meters
+        measuredHeight = measuredHeight
     }
 
     pushDataItem21(name, measuredHeight);
