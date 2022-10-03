@@ -76,12 +76,13 @@ function pushPlane10() {
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
     let plane = {};
-    if (recordPlane["b131"] != null & recordPlane["b170"] != null) {
+    if (recordPlane["b131"] != null & recordPlane["b170"] != null & recordPlane["b160"] != null) {
         let position = recordPlane["b131"]
         plane.lat = position.lat;
         plane.lon = position.lon;
         plane.planeId = recordPlane["b170"]
-        plane.timestamp = recordPlane["b073"];
+        plane.timestamp = Math.floor(recordPlane["b073"]);
+        plane.heading = recordPlane["b160"]["trackAngle"];
         planes.ADSB.push(plane);
     }
 }

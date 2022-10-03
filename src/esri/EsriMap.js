@@ -1,5 +1,6 @@
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
+import Graphic from "@arcgis/core/Graphic";
 
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 
@@ -34,14 +35,15 @@ export function resetMap() {
 
 //initialize map layers and widgets
 export function loadLayers(map, view) {
-  console.log("load layers")
 
-  // resetMap();
-  createPlaneLayers(map, view);
+  createPlaneLayers(map)
 
 }
 
-function createPlaneLayers(map, view) {
+
+
+
+function createPlaneLayers(map) {
   let planesADSB = getPlanes()["ADSB"];
 
 
@@ -49,17 +51,23 @@ function createPlaneLayers(map, view) {
     console.log("planes found")
 
     let renderer = {
-      type: "simple", // autocasts as new SimpleRenderer()
+      type: "simple",
       symbol: {
-        type: "picture-marker", // autocasts as new SimpleMarkerSymbol()
+        type: "picture-marker",
         url: "plane.svg",
-        width: 14,
-        height: 14
+        width: 20,
+        height: 20,
+        angle: 90,
       },
+      visualVariables: [{
+        type: "rotation",
+        field: "heading",
+        rotationType: "geographic"
+      }]
     };
 
-    let features = [];
 
+    let features = [];
     planesADSB.forEach(plane => {
       features.push({
         geometry: {
@@ -68,21 +76,31 @@ function createPlaneLayers(map, view) {
           latitude: plane.lat,
           longitude: plane.lon,
         },
-        attributes: plane,
-      })
+        attributes: {
+          planeId: plane.planeId,
+          heading: plane.heading,
+        }
+      });
+
     })
+
 
     let featureLayer = new FeatureLayer({
       spatialReference: spatialReference,
       renderer: renderer,
-      objectIdField: "planeId",
+      // objectIdField: "planeId",
       source: features,
-      title: "PLANES LAYER"
+      title: "PLANES LAYER",
+      fields: [{
+        name: "planeId",
+        type: "oid"
+      }, {
+        name: "heading",
+        type: "double"
+      },
+      ],
     });
 
-    console.log("added layer to map")
     map.add(featureLayer);
   }
-
-
 }

@@ -9,7 +9,6 @@ import { loadLayers } from "../esri/EsriMap.js"
 export default {
   name: 'web-map',
   mounted() {
-    console.log("mounted")
     const map = new ArcGISMap({
       basemap: 'hybrid'
     });
@@ -23,7 +22,6 @@ export default {
     loadLayers(map, this.view);
   },
   beforeDestroy() {
-    console.log("destroyed")
     if (this.view) {
       this.view.destroy();
     }
