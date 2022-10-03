@@ -82,3 +82,10 @@ export function secondsToString(seconds) {
     return date.toISOString().substring(11, 23);
 }
 
+
+export function getDate(seconds) {
+    let date = new Date(0);
+    date.setSeconds(seconds);
+    date.setMilliseconds((seconds - Math.floor(seconds)) * 1000)
+    return date;
+}

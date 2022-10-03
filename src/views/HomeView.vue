@@ -1,7 +1,6 @@
 <template>
   <div>
     <EsriMap />
-    <TimeSlider />
   </div>
 </template>
 
