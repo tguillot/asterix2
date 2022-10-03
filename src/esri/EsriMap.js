@@ -4,42 +4,85 @@ import MapView from "@arcgis/core/views/MapView";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 
 import { SpatialReference } from "@arcgis/core/geometry";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import { getPlanes } from "../decoder/decoder";
 
-export let map;
-export let view;
-export let droneLayer;
-export let droneModelLayer;
-export let dronePathsLayer;
-export let layerFP;
-export let layerFP2;
-export let areaLayer;
-export let footprintLayer;
-export let radLayer;
 
 export const spatialReference = new SpatialReference({
   wkid: 102100,
 });
 
+export function resetMap() {
+  console.log("reset")
+
+  if (map) {
+    console.log("reset")
+
+    let featureLayer = map.getLayers().getArray()[0];
+    if (featureLayer) {
+      console.log("removed feature layer")
+      map.removeLayer(oldLayer);
+
+      // featureLayer.getSource().clear()
+      // featureLayer.setSource(undefined);
+
+    }
+  }
+
+
+}
 
 //initialize map layers and widgets
-export function initializeMap() {
-  map = new ArcGISMap({
-    basemap: "hybrid",
-  });
+export function loadLayers(map, view) {
+  console.log("load layers")
+
+  // resetMap();
+  createPlaneLayers(map, view);
+
+}
+
+function createPlaneLayers(map, view) {
+  let planesADSB = getPlanes()["ADSB"];
 
 
-  //  "streets" , "satellite" , "hybrid", "topo", "gray", "dark-gray", "oceans", "national-geographic",
-  // "terrain", "osm", "dark-gray-vector", gray-vector", "streets-vector", "streets-night-vector", 
-  //"streets-relief-vector", "streets-navigation-vector" and "topo-vector".
+  if (planesADSB.length > 0) {
+    console.log("planes found")
 
-  view = new MapView({
-    container: "viewDiv",
-    map: map,
-    // spatialReference: spatialReference,
-    center: [2.09511400, 41.29561800],
-    zoom: 15
-  });
+    let renderer = {
+      type: "simple", // autocasts as new SimpleRenderer()
+      symbol: {
+        type: "picture-marker", // autocasts as new SimpleMarkerSymbol()
+        url: "plane.svg",
+        width: 14,
+        height: 14
+      },
+    };
 
+    let features = [];
+
+    planesADSB.forEach(plane => {
+      features.push({
+        geometry: {
+          type: "point",
+          spatialReference: spatialReference,
+          latitude: plane.lat,
+          longitude: plane.lon,
+        },
+        attributes: plane,
+      })
+    })
+
+    let featureLayer = new FeatureLayer({
+      spatialReference: spatialReference,
+      renderer: renderer,
+      objectIdField: "planeId",
+      source: features,
+      title: "PLANES LAYER"
+    });
+
+    console.log("added layer to map")
+    map.add(featureLayer);
+  }
 
 
 }

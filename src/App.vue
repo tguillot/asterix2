@@ -68,6 +68,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'App',
 
+
    data(){
     return {
       title: 'ASTERIX',
@@ -78,9 +79,9 @@ export default {
     }
   },
   watch:{
-    $route(to,from){
-      this.$refs.currentView.clearData();
-    }
+    // $route(to,from){
+    //   this.$refs.currentView.clearData();
+    // }
   },
 
 

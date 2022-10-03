@@ -26,6 +26,10 @@ var planes = {
     ADSB: [],
 }
 
+export function getPlanes() {
+    return planes;
+}
+
 export function getRecords10() {
     return records10;
 }
@@ -72,7 +76,7 @@ function pushPlane10() {
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
     let plane = {};
-    if (recordPlane["b131"] != null) {
+    if (recordPlane["b131"] != null & recordPlane["b170"] != null) {
         let position = recordPlane["b131"]
         plane.lat = position.lat;
         plane.lon = position.lon;

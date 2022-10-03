@@ -179,9 +179,6 @@ export default {
       }
       
     },
-    clearData(){
-      console.log("table cleared");
-    }
   }
 
 };
