@@ -26,8 +26,21 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 //     };
 //   });
 
+// timeSlider.watch("timeExtent", () => {
+//   // gray out earthquakes that are outside of the current timeExtent
+//   layerView.featureEffect = {
+//     filter: {
+//       timeExtent: timeSlider.timeExtent,
+//       geometry: view.extent
+//     },
+//     excludedEffect: "grayscale(20%) opacity(12%)"
+//   };
+// });
 
 
 
 
 // }
+
+
+//https://developers.arcgis.com/javascript/latest/sample-code/timeslider-filter/

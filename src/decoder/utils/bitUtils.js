@@ -84,8 +84,14 @@ export function secondsToString(seconds) {
 
 
 export function getDate(seconds) {
-    let date = new Date(0);
-    date.setSeconds(seconds);
-    date.setMilliseconds((seconds - Math.floor(seconds)) * 1000)
-    return date;
+    let date = new Date();
+    // date.setSeconds(seconds);
+    // date.setMilliseconds((seconds - Math.floor(seconds)) * 1000)
+
+
+    let datUTC = Date.UTC(date.getFullYear(), date.getMonth(),
+        date.getDay(), 0, 0, seconds)
+
+    return datUTC;
 }
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setTime

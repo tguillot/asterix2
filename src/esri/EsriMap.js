@@ -14,37 +14,16 @@ export const spatialReference = new SpatialReference({
   wkid: 102100,
 });
 
-export function resetMap() {
-  console.log("reset")
-
-  if (map) {
-    console.log("reset")
-
-    let featureLayer = map.getLayers().getArray()[0];
-    if (featureLayer) {
-      console.log("removed feature layer")
-      map.removeLayer(oldLayer);
-
-      // featureLayer.getSource().clear()
-      // featureLayer.setSource(undefined);
-
-    }
-  }
-
-
-}
 
 //initialize map layers and widgets
-export function loadLayers(map, view) {
+export function loadLayers(map, view, timeSlider) {
 
-  createPlaneLayers(map, view)
+  createPlaneLayers(map, view, timeSlider)
 
 }
 
 
-
-
-function createPlaneLayers(map, view) {
+function createPlaneLayers(map, view, timeSlider) {
   let planesADSB = getPlanes()["ADSB"];
 
 
@@ -58,7 +37,7 @@ function createPlaneLayers(map, view) {
         url: "plane.svg",
         width: 20,
         height: 20,
-        angle: 90,
+        angle: 270,
       },
       visualVariables: [{
         type: "rotation",
@@ -78,7 +57,6 @@ function createPlaneLayers(map, view) {
           longitude: plane.lon,
         },
         attributes: {
-          planeId: plane.planeId,
           heading: plane.heading,
           timestamp: plane.timestamp,
         }
@@ -90,49 +68,74 @@ function createPlaneLayers(map, view) {
     let layer = new FeatureLayer({
       spatialReference: spatialReference,
       renderer: renderer,
-      objectIdField: "planeId",
+      objectIdField: "ObjectID",
       source: features,
       title: "PLANES LAYER",
       fields: [{
-        name: "planeId",
+        name: "ObjectID",
+        alias: "ObjectID",
         type: "oid"
       }, {
         name: "heading",
         type: "double"
       }, {
         name: "timestamp",
-        type: "double"
+        type: "date"
       },
       ],
       timeInfo: {
-        startField: "timestamp", // name of the date field
-        endField: "timestamp", // name of the date field
+        startField: "timestamp",
+        interval: {
+          unit: "seconds",
+          value: 3 //want to be able to swauch planes in this inteval so no dupes
+        }
       },
     });
 
     map.add(layer);
     console.log(features[2])
+    console.log(features.length)
 
 
 
 
-    // const timeSlider = new TimeSlider({
-    //   container: "timeSlider",
-    //   mode: "instant",
-    //   timeVisible: true,
-    //   stops: {
-    //     interval: {
-    //       value: 1,
-    //       unit: "seconds"
-    //     }
-    //   }
-    // });
-    // view.ui.add(timeSlider, "bottom-left");
+    let layerView;
 
-    // view.whenLayerView(layer).then(function (lv) {
-    //   const fullTimeExtent = layer.timeInfo.fullTimeExtent;
-    //   timeSlider.fullTimeExtent = fullTimeExtent;
-    // });
+    view.whenLayerView(layer).then(function (lv) {
+      layerView = lv;
+
+      const fullTimeExtent = layer.timeInfo.fullTimeExtent;
+      timeSlider.fullTimeExtent = fullTimeExtent;
+      timeSlider.stops = {
+        interval: layer.timeInfo.interval
+      };
+    });
+
+    timeSlider.watch("timeExtent", () => {
+      console.log("changed value")
+      // gray out earthquakes that are outside of the current timeExtent
+      layerView.featureEffect = {
+        filter: {
+          timeExtent: timeSlider.timeExtent,
+          geometry: view.extent
+        },
+        excludedEffect: "grayscale(20%) opacity(12%)"
+      };
+    });
+
+
+
+
   }
 
 }
+
+ //https://developers.arcgis.com/javascript/latest/sample-code/timeslider-filter/
+
+    //Feature filter https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureFilter.html
+
+//feature filter https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-support-FeatureFilter.html
+
+//POPUP and no endtime https://developers.arcgis.com/javascript/latest/sample-code/timeslider-filter/
+
+//feasture effect to exclude stuff https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html

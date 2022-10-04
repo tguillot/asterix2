@@ -69,9 +69,6 @@ export default {
 
       setTimeout(() => {  this.decodeFile(); }, 200);
     },
-    clearData(){
-      console.log("file cleared");
-    }
   }
 };
 </script>

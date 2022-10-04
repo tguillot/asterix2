@@ -1,6 +1,6 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
-import { int8Toint16 } from './utils/bitUtils.js';
+import { getDate, int8Toint16 } from './utils/bitUtils.js';
 import LatLon, { Ned } from 'geodesy/latlon-nvector-ellipsoidal.js'; // Node.js
 
 
@@ -76,12 +76,12 @@ function pushPlane10() {
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
     let plane = {};
-    if (recordPlane["b131"] != null & recordPlane["b170"] != null & recordPlane["b160"] != null) {
+    if (recordPlane["b131"] != null & recordPlane["b160"] != null) {
         let position = recordPlane["b131"]
         plane.lat = position.lat;
         plane.lon = position.lon;
         plane.planeId = recordPlane["b170"]
-        plane.timestamp = Math.floor(recordPlane["b073"]);
+        plane.timestamp = getDate(recordPlane["b073"]);
         plane.heading = recordPlane["b160"]["trackAngle"];
         planes.ADSB.push(plane);
     }

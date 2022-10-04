@@ -1,11 +1,17 @@
 <template>
-  <div></div>
+  <div>
+   <div id="esriMap" class="esriMap"></div>
+   <div id="timeSlider" class="timeSlider"></div>
+
+  </div>
 </template>
 
 <script>
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import { loadLayers } from "../esri/EsriMap.js"
+import TimeSlider from "@arcgis/core/widgets/TimeSlider";
+
 export default {
   name: 'web-map',
   mounted() {
@@ -13,13 +19,24 @@ export default {
       basemap: 'hybrid'
     });
     this.view = new MapView({
-      container: this.$el,
+      container: "esriMap",
       map: map,
       center: [2.09511400, 41.29561800],
       zoom: 15
     });
 
-    loadLayers(map, this.view);
+    const timeSlider = new TimeSlider({
+      container: "timeSlider",
+      mode: "instant",
+      timeVisible: true,
+      stops: {
+        interval: {
+          value: 1,
+          unit: "seconds"
+        }
+      }
+    });
+    loadLayers(map, this.view, timeSlider);
   },
   beforeDestroy() {
     if (this.view) {
@@ -30,10 +47,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div {
+.esriMap {
   padding: 0;
   margin: 0;
   width: 100vw;
   height: 100vh;
 }
+.timeSlider {
+  position: fixed;
+  left: 5%;
+  right: 5%;
+  bottom: 20px;
+}
+
 </style>
