@@ -21,10 +21,15 @@ var records21 = [];
 var progress = 0;
 
 var planes = {
-    MLAT: [], //CAT 10 needs conversion SAC/SIC = 07
-    SMR: [], //CAT 10 needs conversion, SAC/SIC = 0/7
-    ADSB: [],
+    MLAT: {}, //CAT 10 needs conversion SAC/SIC = 07
+    SMR: {}, //CAT 10 needs conversion, SAC/SIC = 0/7
+    ADSB: {},
 }
+
+var today = new Date();
+var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
+//no heading planes need to be in thei own unknow or others
+
 
 export function getPlanes() {
     return planes;
@@ -75,16 +80,32 @@ function pushPlane10() {
 
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
-    let plane = {};
-    if (recordPlane["b131"] != null & recordPlane["b160"] != null) {
-        let position = recordPlane["b131"]
-        plane.lat = position.lat;
-        plane.lon = position.lon;
-        plane.planeId = recordPlane["b170"]
-        plane.timestamp = getDate(recordPlane["b073"]);
-        plane.heading = recordPlane["b160"]["trackAngle"];
-        planes.ADSB.push(plane);
+    let targetAdress = recordPlane["b080"];
+    if (targetAdress != null) { //Target address
+
+        if (planes.ADSB[targetAdress] == null) { //Init array
+            planes.ADSB[targetAdress] = [];
+        }
+
+        if (recordPlane["b131"] != null & recordPlane["b073"] != null) { //Postion and time
+            let plane = {};
+            let position = recordPlane["b131"]
+            plane.lat = position.lat;
+            plane.lon = position.lon;
+            plane.targetId = recordPlane["b170"]
+            plane.timestamp1 = Math.floor(recordPlane["b073"]) * 1000 + milisToday;
+            plane.timestamp2 = plane.timestamp1;
+            plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : 0;
+
+            if (planes.ADSB[targetAdress].length > 0) { //If first position exists make previouse extent
+                planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
+            }
+            planes.ADSB[targetAdress].push(plane);
+        }
     }
+
+
+
 }
 
 export function decode(buffer) {

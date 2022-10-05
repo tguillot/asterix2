@@ -27,7 +27,7 @@ function createPlaneLayers(map, view, timeSlider) {
   let planesADSB = getPlanes()["ADSB"];
 
 
-  if (planesADSB.length > 0) {
+  if (Object.keys(planesADSB).length != 0) {
     console.log("planes found")
 
     let renderer = {
@@ -48,20 +48,23 @@ function createPlaneLayers(map, view, timeSlider) {
 
 
     let features = [];
-    planesADSB.forEach(plane => {
-      features.push({
-        geometry: {
-          type: "point",
-          spatialReference: spatialReference,
-          latitude: plane.lat,
-          longitude: plane.lon,
-        },
-        attributes: {
-          heading: plane.heading,
-          timestamp: plane.timestamp,
-        }
-      });
+    Object.keys(planesADSB).forEach(function (key) {
+      planesADSB[key].forEach(plane => {
+        features.push({
+          geometry: {
+            type: "point",
+            spatialReference: spatialReference,
+            latitude: plane.lat,
+            longitude: plane.lon,
+          },
+          attributes: {
+            heading: plane.heading,
+            timestamp1: plane.timestamp1,
+            timestamp2: plane.timestamp2,
+          }
+        });
 
+      })
     })
 
 
@@ -79,23 +82,28 @@ function createPlaneLayers(map, view, timeSlider) {
         name: "heading",
         type: "double"
       }, {
-        name: "timestamp",
+        name: "timestamp1",
+        type: "date"
+      },
+      {
+        name: "timestamp2",
         type: "date"
       },
       ],
       timeInfo: {
-        startField: "timestamp",
+        startField: "timestamp1",
+        endField: "timestamp2",
         interval: {
           unit: "seconds",
-          value: 3 //want to be able to swauch planes in this inteval so no dupes
+          value: 1 //want to be able to swauch planes in this inteval so no dupes
         }
       },
     });
-
     map.add(layer);
-    console.log(features[2])
-    console.log(features.length)
 
+    console.log(planesADSB)
+    console.log(features[1])
+    console.log(features[2])
 
 
 
@@ -103,7 +111,6 @@ function createPlaneLayers(map, view, timeSlider) {
 
     view.whenLayerView(layer).then(function (lv) {
       layerView = lv;
-
       const fullTimeExtent = layer.timeInfo.fullTimeExtent;
       timeSlider.fullTimeExtent = fullTimeExtent;
       timeSlider.stops = {
@@ -122,10 +129,6 @@ function createPlaneLayers(map, view, timeSlider) {
         excludedEffect: "grayscale(20%) opacity(12%)"
       };
     });
-
-
-
-
   }
 
 }
