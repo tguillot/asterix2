@@ -8,6 +8,7 @@ import TimeExtent from "@arcgis/core/TimeExtent";
 import { SpatialReference } from "@arcgis/core/geometry";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { getPlanes } from "../decoder/decoder";
+import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 
 
 export const spatialReference = new SpatialReference({
@@ -101,7 +102,7 @@ function createPlaneLayers(map, view, timeSlider) {
     });
     map.add(layer);
 
-    console.log(planesADSB)
+
     console.log(features[1])
     console.log(features[2])
 
@@ -119,14 +120,26 @@ function createPlaneLayers(map, view, timeSlider) {
     });
 
     timeSlider.watch("timeExtent", () => {
-      console.log("changed value")
+
+      const timePathFilter = new TimeExtent({
+        start: timeSlider.fullTimeExtent.start,
+        end: timeSlider.timeExtent.end
+      });
+
+
+      layerView.filter = {
+        timeExtent: timePathFilter,
+        geometry: view.extent
+      };
+
+
       // gray out earthquakes that are outside of the current timeExtent
       layerView.featureEffect = {
         filter: {
           timeExtent: timeSlider.timeExtent,
           geometry: view.extent
         },
-        excludedEffect: "grayscale(20%) opacity(12%)"
+        excludedEffect: "grayscale(20%) opacity(30%)"
       };
     });
   }

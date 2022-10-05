@@ -25,7 +25,7 @@ export default {
       zoom: 15
     });
 
-    const timeSlider = new TimeSlider({
+    this.timeSlider = new TimeSlider({
       container: "timeSlider",
       mode: "instant",
       timeVisible: true,
@@ -36,11 +36,14 @@ export default {
         }
       }
     });
-    loadLayers(map, this.view, timeSlider);
+    loadLayers(map, this.view, this.timeSlider);
   },
   beforeDestroy() {
     if (this.view) {
       this.view.destroy();
+    }
+    if(this.timeSlider){
+      this.timeSlider.destroy();
     }
   }
 };

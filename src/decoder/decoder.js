@@ -24,12 +24,12 @@ var planes = {
     MLAT: {}, //CAT 10 needs conversion SAC/SIC = 07
     SMR: {}, //CAT 10 needs conversion, SAC/SIC = 0/7
     ADSB: {},
+    others: {},
 }
 
 var today = new Date();
 var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
-//no heading planes need to be in thei own unknow or others
-
+//layer is under streets, popup template, 
 
 export function getPlanes() {
     return planes;
@@ -81,26 +81,40 @@ function pushPlane10() {
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
     let targetAdress = recordPlane["b080"];
-    if (targetAdress != null) { //Target address
+    if (targetAdress != null & recordPlane["b131"] != null & recordPlane["b073"] != null) { //Target address, Postion and time
 
-        if (planes.ADSB[targetAdress] == null) { //Init array
-            planes.ADSB[targetAdress] = [];
-        }
+        let plane = {};
+        let position = recordPlane["b131"]
+        plane.lat = position.lat;
+        plane.lon = position.lon;
+        plane.targetId = recordPlane["b170"]
+        plane.timestamp1 = Math.floor(recordPlane["b073"]) * 1000 + milisToday;
+        plane.timestamp2 = plane.timestamp1;
+        plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : null;
 
-        if (recordPlane["b131"] != null & recordPlane["b073"] != null) { //Postion and time
-            let plane = {};
-            let position = recordPlane["b131"]
-            plane.lat = position.lat;
-            plane.lon = position.lon;
-            plane.targetId = recordPlane["b170"]
-            plane.timestamp1 = Math.floor(recordPlane["b073"]) * 1000 + milisToday;
-            plane.timestamp2 = plane.timestamp1;
-            plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : 0;
+
+
+        if (plane.heading != null) { //if no heading consider other obejct           
+            if (planes.ADSB[targetAdress] == null) { //Init array
+                planes.ADSB[targetAdress] = [];
+            }
 
             if (planes.ADSB[targetAdress].length > 0) { //If first position exists make previouse extent
                 planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
-            planes.ADSB[targetAdress].push(plane);
+
+            planes.ADSB[targetAdress].push(plane); //add plane
+
+        } else {
+            if (planes.others[targetAdress] == null) { //Init array
+                planes.others[targetAdress] = [];
+            }
+
+            if (planes.others[targetAdress].length > 0) { //If first position exists make previouse extent
+                planes.others[targetAdress][planes.others[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
+            }
+
+            planes.others[targetAdress].push(plane); //add plane
         }
     }
 
@@ -111,6 +125,12 @@ function pushPlane21() {
 export function decode(buffer) {
     records10 = [];
     records21 = [];
+    planes = {
+        MLAT: {},
+        SMR: {},
+        ADSB: {},
+        others: {},
+    };
 
     // startTimer();
     let arrayInts = new Uint8Array(buffer);
@@ -125,7 +145,7 @@ export function decode(buffer) {
         if (category == CATEGORY_10) {
             records10.push({ category: CATEGORY_10, length: length });
             parseCat10(record);
-            pushPlane10();
+            // pushPlane10();
 
         } else if (category == CATEGORY_21) {
             records21.push({ category: CATEGORY_21, length: length });
