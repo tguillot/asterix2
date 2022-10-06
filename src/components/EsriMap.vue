@@ -55,12 +55,14 @@ export default {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  position: fixed;
 }
 .timeSlider {
   position: fixed;
-  left: 5%;
+  left: 7%;
   right: 5%;
   bottom: 20px;
+  max-width: 1360px;
 }
 
 </style>

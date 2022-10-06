@@ -31,10 +31,7 @@
   <template v-slot:item="{ item }" >
     <tr @click="rowClick" >
       <td v-for="header in getHeaders" v-bind:key="header.text" class="truncate">
-        {{ item[header.value] ? 
-        (header.parse ? header["parse"](item[header.value]):
-         item[header.value])
-        : "-"}}
+        {{ getValue(item, header)}}
       </td>
     </tr>
    </template>
@@ -107,7 +104,7 @@ export default {
         { text: 'Geometric Height (ft)', value: 'b140',filterable: false  },
         { text: 'Quality Indicators', value: 'b090',filterable: false  },
         { text: 'MOPS Version', value: 'b210',parse: this.makePretty,filterable: false  },
-        { text: 'Mode 3/A Code', value: 'b070',filterable: false  },
+        { text: 'Mode 3/A Code', value: 'b070' },
         { text: 'Roll Angle (°)', value: 'b230' ,filterable: false },
         { text: 'Flight Level', value: 'b145' ,filterable: false },
         { text: 'Magnetic Heading (°)', value: 'b152',filterable: false  },
@@ -168,6 +165,12 @@ export default {
   },
 
   methods:{
+    getValue(item, header){
+      return (item[header.value]!=null) ? 
+        (header.parse ? header["parse"](item[header.value]):
+         item[header.value])
+        : "-";
+    },
     makePretty(value){
       return JSON.stringify(value, null, 2).replace(/[\"{},]/g, "") 
     },

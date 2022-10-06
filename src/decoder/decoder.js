@@ -29,7 +29,7 @@ var planes = {
 
 var today = new Date();
 var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
-//layer is under streets, popup template, 
+//layer is under streets
 
 export function getPlanes() {
     return planes;
@@ -87,11 +87,10 @@ function pushPlane21() {
         let position = recordPlane["b131"]
         plane.lat = position.lat;
         plane.lon = position.lon;
-        plane.targetId = recordPlane["b170"]
+        plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"
         plane.timestamp1 = Math.floor(recordPlane["b073"]) * 1000 + milisToday;
         plane.timestamp2 = plane.timestamp1;
         plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : null;
-
 
 
         if (plane.heading != null) { //if no heading consider other obejct           
@@ -102,6 +101,12 @@ function pushPlane21() {
             if (planes.ADSB[targetAdress].length > 0) { //If first position exists make previouse extent
                 planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
+            //Popup info for AIR targets
+            plane.targetAdress = recordPlane["b080"] != null ? recordPlane["b080"] : "Unknown";
+            plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"].toString() : "Unknown";
+            plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
+            plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
+
 
             planes.ADSB[targetAdress].push(plane); //add plane
 
@@ -113,6 +118,8 @@ function pushPlane21() {
             if (planes.others[targetAdress].length > 0) { //If first position exists make previouse extent
                 planes.others[targetAdress][planes.others[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
+
+            //Popup info for GROUND targets
 
             planes.others[targetAdress].push(plane); //add plane
         }

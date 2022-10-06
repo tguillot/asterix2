@@ -18,6 +18,10 @@ export const spatialReference = new SpatialReference({
 
 //initialize map layers and widgets
 export function loadLayers(map, view, timeSlider) {
+  //Configuration
+  view.popup.visibleElements.featureNavigation = false;
+
+
 
   createPlaneLayers(map, view, timeSlider)
 
@@ -59,9 +63,14 @@ function createPlaneLayers(map, view, timeSlider) {
             longitude: plane.lon,
           },
           attributes: {
+            targetId: plane.targetId,
             heading: plane.heading,
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
+            targetAdress: plane.targetAdress,
+            mode3ACode: plane.mode3ACode,
+            flightLevel: plane.flightLevel,
+            category: plane.category,
           }
         });
 
@@ -79,6 +88,21 @@ function createPlaneLayers(map, view, timeSlider) {
         name: "ObjectID",
         alias: "ObjectID",
         type: "oid"
+      }, {
+        name: "targetAdress",
+        type: "string"
+      }, {
+        name: "mode3ACode",
+        type: "string"
+      }, {
+        name: "flightLevel",
+        type: "string"
+      }, {
+        name: "category",
+        type: "string"
+      }, {
+        name: "targetId",
+        type: "string"
       }, {
         name: "heading",
         type: "double"
@@ -99,7 +123,46 @@ function createPlaneLayers(map, view, timeSlider) {
           value: 1 //want to be able to swauch planes in this inteval so no dupes
         }
       },
+      popupTemplate: {
+        title: "{targetId}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "heading",
+                label: "Heading",
+                visible: true,
+                format: {
+                  places: 2
+                }
+              },
+              {
+                fieldName: "targetAdress",
+                label: "Target Adress",
+                visible: true,
+              },
+              {
+                fieldName: "mode3ACode",
+                label: "Mode 3A Code",
+                visible: true,
+              },
+              {
+                fieldName: "flightLevel",
+                label: "Flight Level",
+                visible: true,
+              },
+              {
+                fieldName: "category",
+                label: "Emitter Category",
+                visible: true,
+              },
+            ]
+          }
+        ]
+      }
     });
+
     map.add(layer);
 
 

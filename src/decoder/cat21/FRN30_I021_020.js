@@ -9,7 +9,7 @@ import { pushDataItem21 } from "../decoder";
 const name = "b020";
 const byteLength = 1;
 const item = ["No Information", "light aircraft", "small aircraft",
-    "medium a/c", "High Vortex Large",
+    "medium aircraft", "High Vortex Large",
     "heavy aircraft", "highly manoeuvrable high speed",
     "reserved", "reserved", "reserved", "rotocraft", "glider/sailplane", "lighter-than-air",
     "unmanned aerial vehicle", "space or transatmospheric vehicle", "ultralight/handglider/paraglider",
