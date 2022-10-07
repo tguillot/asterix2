@@ -12,7 +12,7 @@
         <div v-else>x{{selectedSpeed}}</div>
       </v-btn>
     </template>
-    <div v-for="(item, index) in items" v-bind:key="index" class="my-1">
+    <div v-for="(item, index) in itemsPlaySpeed" v-bind:key="index" class="my-1">
       <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -31,6 +31,9 @@
       </v-tooltip>
     </div>
   </v-menu>
+  <v-btn icon @click.stop="layerHandler">
+    <v-icon> mdi-layers-outline </v-icon>
+  </v-btn>
    
   </v-toolbar>
 </template>
@@ -44,7 +47,7 @@ export default {
   data() {
     return {
       selectedSpeed: null,
-      items: [
+      itemsPlaySpeed: [
              {
               name: "Playback Speed x0.5",
               text: "x0.5",
@@ -73,7 +76,7 @@ export default {
         ]
     };
   },
-
+ 
   methods: {
     selectSpeed(x) {
       this.selectedSpeed=x;
@@ -82,7 +85,12 @@ export default {
     },
     ...mapActions({
         setSpeed: "setSpeed",
+        toggleLayerMenu: "toggleLayerMenu",
+
     }),
+    layerHandler(){
+      this.toggleLayerMenu();
+    }
   },
 };
 </script>

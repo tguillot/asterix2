@@ -46,35 +46,36 @@ export function loadLayers(map, view, timeSlider) {
       }
 
       timeSlider.fullTimeExtent = allTimeExtents;
-      timeSlider.stops = {
-        interval: {
-          unit: "seconds",
-          value: 1
-        }
-      };
+
+      //avoids flash of all planes that then disappears
+      setTimeout(() => {
+        allLayers.forEach(l => l.visible = true);
+      }, 500); //allow for inital filters to apply before showing layers
+
+
     });
 
-    // timeSlider.watch("timeExtent", () => {
-    //   const timePathFilter = new TimeExtent({
-    //     start: timeSlider.fullTimeExtent.start,
-    //     end: timeSlider.timeExtent.end
-    //   });
-    //   const effect = {
-    //     filter: {
-    //       timeExtent: timeSlider.timeExtent,
-    //       geometry: view.extent
-    //     },
-    //     excludedEffect: "grayscale(20%) opacity(30%)"
-    //   };
+    timeSlider.watch("timeExtent", () => {
+      const timePathFilter = new TimeExtent({
+        start: timeSlider.fullTimeExtent.start,
+        end: timeSlider.timeExtent.end
+      });
+      const effect = {
+        filter: {
+          timeExtent: timeSlider.timeExtent,
+          geometry: view.extent
+        },
+        excludedEffect: "grayscale(20%) opacity(30%)"
+      };
 
-    //   //APLY TO LAYERS
-    //   layerViewADSB.filter = {
-    //     timeExtent: timePathFilter,
-    //     geometry: view.extent
-    //   };
-
-    //   layerViewADSB.featureEffect = effect;
-    // });
+      allLayerViews.forEach(layerView => {
+        layerView.filter = {
+          timeExtent: timePathFilter,
+          geometry: view.extent
+        };
+        layerView.featureEffect = effect;
+      })
+    });
   }
 
 
@@ -134,11 +135,12 @@ function createADSBLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
+      title: "ADSB Layer",
+      visible: false,
       spatialReference: spatialReference,
       renderer: renderer,
       objectIdField: "ObjectID",
       source: features,
-      title: "PLANES LAYER",
       fields: [{
         name: "ObjectID",
         alias: "ObjectID",
@@ -273,11 +275,12 @@ function createSMRLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
+      title: "SMR Layer",
+      visible: false,
       spatialReference: spatialReference,
       renderer: renderer,
       objectIdField: "ObjectID",
       source: features,
-      title: "PLANES LAYER",
       fields: [{
         name: "ObjectID",
         alias: "ObjectID",

@@ -2,6 +2,7 @@
   <div>
    <div id="esriMap" class="esriMap"></div>
    <div id="timeSlider" class="timeSlider"></div>
+   <div id="layerMenu" class="layerMenu"></div>
 
   </div>
 </template>
@@ -12,7 +13,7 @@ import MapView from "@arcgis/core/views/MapView";
 import { loadLayers } from "../esri/EsriMap.js"
 import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import { mapGetters } from "vuex";
-import store from '../store'
+import LayerList from "@arcgis/core/widgets/LayerList";
 
 
 export default {
@@ -39,14 +40,37 @@ export default {
         }
       },
     });
+
+  
     loadLayers(map, this.view, this.timeSlider);
+
+    this.layerList = new LayerList({
+      container: "layerMenu",
+      view: this.view,
+      listItemCreatedFunction: function (event) {
+        let item = event.item;
+        if (!item.title) {
+          item.layer.listMode = "hide";
+        }
+      },
+      visible:false,
+    });
   },
+
   computed: mapGetters({
-    speed: "getSpeed"
+    speed: "getSpeed",
+    layerMenuOn: "getLayerMenu",
+
   }),
   watch: {
     speed (newSpeed, old) {
       this.timeSlider.playRate = 1000/newSpeed;
+   },
+   layerMenuOn (newValue, old) {
+      this.layerList.visible = newValue;
+      if(newValue){
+        this.timeSlider.stop();
+      }
    }
   },
 
@@ -56,6 +80,9 @@ export default {
     }
     if(this.timeSlider){
       this.timeSlider.destroy();
+    }
+    if (this.layerList) {
+      this.layerList.destroy();
     }
   },
   
@@ -76,6 +103,11 @@ export default {
   right: 5%;
   bottom: 20px;
   max-width: 1360px;
+}
+.layerMenu{
+  position: fixed;
+  top: 150px;
+  left: 64px;
 }
 
 </style>

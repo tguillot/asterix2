@@ -78,19 +78,7 @@ export default {
       ],
     }
   },
-  watch:{
-    // $route(to,from){
-    //   this.$refs.currentView.clearData();
-    // }
-  },
-
-
-  computed: {
-    ...mapGetters({
-      uploadProgress: "getUploadProgress",
-    }),
-  },
-
+ 
 };
 </script>
 
