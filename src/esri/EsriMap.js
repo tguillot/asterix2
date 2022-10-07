@@ -33,7 +33,6 @@ function createPlaneLayers(map, view, timeSlider) {
 
 
   if (Object.keys(planesADSB).length != 0) {
-    console.log("planes found")
 
     let renderer = {
       type: "simple",
@@ -164,10 +163,6 @@ function createPlaneLayers(map, view, timeSlider) {
     });
 
     map.add(layer);
-
-
-    console.log(features[1])
-    console.log(features[2])
 
 
 

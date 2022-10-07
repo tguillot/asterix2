@@ -11,6 +11,9 @@ import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import { loadLayers } from "../esri/EsriMap.js"
 import TimeSlider from "@arcgis/core/widgets/TimeSlider";
+import { mapGetters } from "vuex";
+import store from '../store'
+
 
 export default {
   name: 'web-map',
@@ -34,10 +37,19 @@ export default {
           value: 1,
           unit: "seconds"
         }
-      }
+      },
     });
     loadLayers(map, this.view, this.timeSlider);
   },
+  computed: mapGetters({
+    speed: "getSpeed"
+  }),
+  watch: {
+    speed (newSpeed, old) {
+      this.timeSlider.playRate = 1000/newSpeed;
+   }
+  },
+
   beforeDestroy() {
     if (this.view) {
       this.view.destroy();
@@ -45,7 +57,8 @@ export default {
     if(this.timeSlider){
       this.timeSlider.destroy();
     }
-  }
+  },
+  
 };
 </script>
 
