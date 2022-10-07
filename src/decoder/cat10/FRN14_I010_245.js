@@ -20,10 +20,12 @@ export function parse(record) {
     let indexSTI = maskAndShift(record[0], 8, 7);
     let targetId = intArrayToCharsAIS(record.subarray(1, 7), bitsPerChar)
 
-    pushDataItem10(name, {
-        STI: item["STI"][indexSTI],
-        targetId: targetId,
-    });
+    pushDataItem10(name, targetId);
+
+    // pushDataItem10(name, {
+    //     STI: item["STI"][indexSTI],
+    //     targetId: targetId,
+    // });
 
     return record.subarray(byteLength);
 }

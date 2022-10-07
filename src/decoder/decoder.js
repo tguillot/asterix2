@@ -56,26 +56,51 @@ function getCoordinates(cartesianCoordinates, referencePoint) {
     return SMR.destinationPoint(ned);
 }
 
-function pushPlane10() {
+// if (recordPlane.SAC == 0 & recordPlane.SIC == 7 & recordPlane["a042"] != null) {
+//     let position = getCoordinates(recordPlane["a042"], POINT_SMR)
+//     plane.lat = position.lat;
+//     plane.lon = position.lon;
+//     plane.planeId = recordPlane["a161"];
+//     plane.timestamp = recordPlane["a140"];
+//     planes.SMR.push(plane);
+// } else if (recordPlane.SAC == 0 & recordPlane.SIC == 107 & recordPlane["a042"] != null) {
+//     let position = getCoordinates(recordPlane["a042"], POINT_MLAT)
+//     plane.lat = position.lat;
+//     plane.lon = position.lon;
+//     plane.planeId = recordPlane["a161"];
+//     plane.timestamp = recordPlane["a140"];
+//     planes.MLAT.push(plane);
+// };
+function pushPlane10SMR() {
     let recordPlane = records10[records10.length - 1];
-    let plane = {};
+    if (recordPlane.SAC == 0 & recordPlane.SIC == 7) {
 
+        let targetId = recordPlane["a161"]; //trackNumber
+        if (targetId != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
 
-    if (recordPlane.SAC == 0 & recordPlane.SIC == 7 & recordPlane["a042"] != null) {
-        let position = getCoordinates(recordPlane["a042"], POINT_SMR)
-        plane.lat = position.lat;
-        plane.lon = position.lon;
-        plane.planeId = recordPlane["a161"];
-        plane.timestamp = recordPlane["a140"];
-        planes.SMR.push(plane);
-    } else if (recordPlane.SAC == 0 & recordPlane.SIC == 107 & recordPlane["a042"] != null) {
-        let position = getCoordinates(recordPlane["a042"], POINT_MLAT)
-        plane.lat = position.lat;
-        plane.lon = position.lon;
-        plane.planeId = recordPlane["a161"];
-        plane.timestamp = recordPlane["a140"];
-        planes.MLAT.push(plane);
-    };
+            let plane = {};
+            let position = getCoordinates(recordPlane["a042"], POINT_SMR)
+            plane.lat = position.lat;
+            plane.lon = position.lon;
+            plane.targetId = targetId.toString();
+            plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
+            plane.timestamp1 = Math.floor(recordPlane["a140"]) * 1000 + milisToday;
+            plane.timestamp2 = plane.timestamp1;
+
+            if (planes.SMR[targetId] == null) { //Init array
+                planes.SMR[targetId] = [];
+            }
+
+            if (planes.SMR[targetId].length > 0) { //If first position exists make previouse extent
+                planes.SMR[targetId][planes.SMR[targetId].length - 1].timestamp2 = plane.timestamp1 - 1000;
+            }
+
+            //Popup info for SMR targets
+            // plane.trackNumber = recordPlane["a161"] != null ? recordPlane["a161"].toString() : "Unknown";
+
+            planes.SMR[targetId].push(plane); //add plane
+        }
+    }
 }
 
 function pushPlane21() {
@@ -152,7 +177,9 @@ export function decode(buffer) {
         if (category == CATEGORY_10) {
             records10.push({ category: CATEGORY_10, length: length });
             parseCat10(record);
-            // pushPlane10();
+            pushPlane10SMR();
+            // pushPlane10MLAT();
+
 
         } else if (category == CATEGORY_21) {
             records21.push({ category: CATEGORY_21, length: length });

@@ -9,6 +9,7 @@ import { SpatialReference } from "@arcgis/core/geometry";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { getPlanes } from "../decoder/decoder";
 import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
+import * as watchUtils from "@arcgis/core/core/watchUtils";
 
 
 export const spatialReference = new SpatialReference({
@@ -22,14 +23,69 @@ export function loadLayers(map, view, timeSlider) {
   view.popup.visibleElements.featureNavigation = false;
 
 
+  let allLayers = [];
+  let allLayerViews = [];
 
-  createPlaneLayers(map, view, timeSlider)
+  createADSBLayer(map, allLayers);
+  createSMRLayer(map, allLayers);
+
+  console.log("number of layers", allLayers.length)
+  if (allLayers.length != 0) {
+
+    let promises = allLayers.map(l => view.whenLayerView(l));
+    Promise.all(promises).then((layerViews) => {
+      allLayerViews = layerViews;
+      let promisesLV = layerViews.map(lv => watchUtils.whenFalseOnce(lv, "updating"));
+      return Promise.all(promisesLV);
+    }).then(() => {
+      console.log("done updating");
+
+      let allTimeExtents = allLayerViews[0].layer.timeInfo.fullTimeExtent;
+      for (let i = 1; i < allLayerViews.length; i++) {
+        allTimeExtents = allTimeExtents.union(allLayerViews[i].layer.timeInfo.fullTimeExtent)
+      }
+
+      timeSlider.fullTimeExtent = allTimeExtents;
+      timeSlider.stops = {
+        interval: {
+          unit: "seconds",
+          value: 1
+        }
+      };
+    });
+
+    // timeSlider.watch("timeExtent", () => {
+    //   const timePathFilter = new TimeExtent({
+    //     start: timeSlider.fullTimeExtent.start,
+    //     end: timeSlider.timeExtent.end
+    //   });
+    //   const effect = {
+    //     filter: {
+    //       timeExtent: timeSlider.timeExtent,
+    //       geometry: view.extent
+    //     },
+    //     excludedEffect: "grayscale(20%) opacity(30%)"
+    //   };
+
+    //   //APLY TO LAYERS
+    //   layerViewADSB.filter = {
+    //     timeExtent: timePathFilter,
+    //     geometry: view.extent
+    //   };
+
+    //   layerViewADSB.featureEffect = effect;
+    // });
+  }
+
+
 
 }
 
 
-function createPlaneLayers(map, view, timeSlider) {
+function createADSBLayer(map, allLayers) {
   let planesADSB = getPlanes()["ADSB"];
+  console.log("ADSB planes: ", Object.keys(planesADSB).length)
+
 
 
   if (Object.keys(planesADSB).length != 0) {
@@ -163,44 +219,117 @@ function createPlaneLayers(map, view, timeSlider) {
     });
 
     map.add(layer);
+    allLayers.push(layer)
 
-
-
-    let layerView;
-
-    view.whenLayerView(layer).then(function (lv) {
-      layerView = lv;
-      const fullTimeExtent = layer.timeInfo.fullTimeExtent;
-      timeSlider.fullTimeExtent = fullTimeExtent;
-      timeSlider.stops = {
-        interval: layer.timeInfo.interval
-      };
-    });
-
-    timeSlider.watch("timeExtent", () => {
-
-      const timePathFilter = new TimeExtent({
-        start: timeSlider.fullTimeExtent.start,
-        end: timeSlider.timeExtent.end
-      });
-
-
-      layerView.filter = {
-        timeExtent: timePathFilter,
-        geometry: view.extent
-      };
-
-
-      // gray out earthquakes that are outside of the current timeExtent
-      layerView.featureEffect = {
-        filter: {
-          timeExtent: timeSlider.timeExtent,
-          geometry: view.extent
-        },
-        excludedEffect: "grayscale(20%) opacity(30%)"
-      };
-    });
   }
+
+
+}
+
+function createSMRLayer(map, allLayers) {
+  let planesSMR = getPlanes()["SMR"];
+  console.log("SMR planes: ", Object.keys(planesSMR).length)
+
+
+  if (Object.keys(planesSMR).length != 0) {
+
+    let renderer = {
+      type: "simple",
+      symbol: {
+        type: "picture-marker",
+        url: "plane.svg",
+        width: 20,
+        height: 20,
+        angle: 270,
+      },
+      visualVariables: [{
+        type: "rotation",
+        field: "heading",
+        rotationType: "geographic"
+      }]
+    };
+
+
+    let features = [];
+    Object.keys(planesSMR).forEach(function (key) {
+      planesSMR[key].forEach(plane => {
+        features.push({
+          geometry: {
+            type: "point",
+            spatialReference: spatialReference,
+            latitude: plane.lat,
+            longitude: plane.lon,
+          },
+          attributes: {
+            targetId: plane.targetId,
+            heading: plane.heading,
+            timestamp1: plane.timestamp1,
+            timestamp2: plane.timestamp2,
+          }
+        });
+
+      })
+    })
+
+
+    let layer = new FeatureLayer({
+      spatialReference: spatialReference,
+      renderer: renderer,
+      objectIdField: "ObjectID",
+      source: features,
+      title: "PLANES LAYER",
+      fields: [{
+        name: "ObjectID",
+        alias: "ObjectID",
+        type: "oid"
+      }, {
+        name: "targetId",
+        type: "string"
+      }, {
+        name: "heading",
+        type: "double"
+      }, {
+        name: "timestamp1",
+        type: "date"
+      },
+      {
+        name: "timestamp2",
+        type: "date"
+      },
+      ],
+      timeInfo: {
+        startField: "timestamp1",
+        endField: "timestamp2",
+        interval: {
+          unit: "seconds",
+          value: 1 //want to be able to swauch planes in this inteval so no dupes
+        }
+      },
+      popupTemplate: {
+        title: "{targetId}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "heading",
+                label: "Heading",
+                visible: true,
+                format: {
+                  places: 2
+                }
+              },
+            ]
+          }
+        ]
+      }
+    });
+
+    map.add(layer);
+    allLayers.push(layer);
+
+  }
+
 
 }
 
