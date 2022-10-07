@@ -1,7 +1,7 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { getDate, int8Toint16 } from './utils/bitUtils.js';
-import LatLon, { Ned } from 'geodesy/latlon-nvector-ellipsoidal.js'; // Node.js
+import LatLon, { Ned } from 'geodesy/latlon-ellipsoidal-vincenty.js'; // Node.js
 
 
 const CATEGORY_10 = 10;
@@ -49,11 +49,10 @@ export function pushDataItem10(name, dataItem) {
 export function pushDataItem21(name, dataItem) {
     records21[records21.length - 1][name] = dataItem;
 }
-function getCoordinates(cartesianCoordinates, referencePoint) {
-    const SMR = new LatLon(referencePoint.lat, referencePoint.lon, 0);
-    const ned = new Ned(cartesianCoordinates.x, cartesianCoordinates.y, 0);
+function getCoordinates(displacement, referencePoint) {
+    const SMR = new LatLon(referencePoint.lat, referencePoint.lon, 0);;
 
-    return SMR.destinationPoint(ned);
+    return SMR.destinationPoint(displacement.rho, displacement.theta);
 }
 
 // if (recordPlane.SAC == 0 & recordPlane.SIC == 7 & recordPlane["a042"] != null) {
@@ -79,7 +78,7 @@ function pushPlane10SMR() {
         if (targetId != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
 
             let plane = {};
-            let position = getCoordinates(recordPlane["a042"], POINT_SMR)
+            let position = getCoordinates(recordPlane["a040"], POINT_SMR)
             plane.lat = position.lat;
             plane.lon = position.lon;
             plane.targetId = targetId.toString();
