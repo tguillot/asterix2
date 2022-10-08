@@ -90,6 +90,11 @@ export function loadLayers(map, view, timeSlider) {
 
 }
 
+const saveToKMLAction = {
+  title: "Save path as KML",
+  id: "save-kml",
+  className: "esri-icon-globe"
+}
 
 function createADSBLayer(map, allLayers) {
   let planesADSB = getPlanes()["ADSB"];
@@ -238,6 +243,8 @@ function createADSBLayer(map, allLayers) {
       }
     });
 
+    layer.popupTemplate.actions = [saveToKMLAction];
+
     map.add(layer);
     allLayers.push(layer)
     store.dispatch("setShowPathsMap", { key: "ADSB", value: false })
@@ -366,6 +373,8 @@ function createMLATLayer(map, allLayers) {
       }
     });
 
+    layer.popupTemplate.actions = [saveToKMLAction];
+
     map.add(layer);
     allLayers.push(layer)
     store.dispatch("setShowPathsMap", { key: "MLAT", value: false })
@@ -412,7 +421,7 @@ function createSMRLayer(map, allLayers) {
             heading: plane.heading,
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
-            trackNumber: plane.trackNumber,
+            targetId: plane.trackNumber, //save as targetId for consistency
           }
         });
 
@@ -433,7 +442,7 @@ function createSMRLayer(map, allLayers) {
         alias: "ObjectID",
         type: "oid"
       }, {
-        name: "trackNumber",
+        name: "targetId",
         type: "string"
       }, {
         name: "heading",
@@ -456,7 +465,7 @@ function createSMRLayer(map, allLayers) {
         }
       },
       popupTemplate: {
-        title: "{trackNumber}",
+        title: "{targetId}",
         content: [
           {
             type: "fields",
@@ -471,9 +480,11 @@ function createSMRLayer(map, allLayers) {
               },
             ]
           }
-        ]
+        ],
       }
     });
+
+    layer.popupTemplate.actions = [saveToKMLAction];
 
     map.add(layer);
     allLayers.push(layer);
@@ -485,3 +496,20 @@ function createSMRLayer(map, allLayers) {
 }
 
 
+export function getPathAsKML(selectedFeature) {
+  let listKey = selectedFeature.layer.id;
+  let track = getPlanes()[listKey][selectedFeature.attributes.targetId];
+  //track.foreach point, lat, lon
+
+
+  const geojsonObject = geojson.parse(track, { Point: ['lat', 'lon'] });
+  const name = getKMLFileName(selectedFeature);
+
+  const response = tokml(geojsonObject, { documentName: name, documentDescription: 'KML Export' });
+
+  return ("test")
+
+}
+export function getKMLFileName(selectedFeature) {
+  return (selectedFeature.layer.id + "_" + selectedFeature.attributes.targetId);
+}

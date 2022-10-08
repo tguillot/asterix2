@@ -29,7 +29,7 @@ var planes = {
 
 var today = new Date();
 var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
-//layer is under streets
+//TODO: layer with other targets, save to kml (with action in pop up template), export to csv
 
 export function getPlanes() {
     return planes;

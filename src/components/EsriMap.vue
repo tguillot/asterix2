@@ -10,7 +10,7 @@
 <script>
 import ArcGISMap from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import { loadLayers } from "../esri/EsriMap.js"
+import { getKMLFileName, getPathAsKML, loadLayers } from "../esri/EsriMap.js"
 import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import { mapGetters } from "vuex";
 import LayerList from "@arcgis/core/widgets/LayerList";
@@ -67,11 +67,17 @@ export default {
       },
       visible:false,
     });
+
     this.layerList.on("trigger-action", (event) => {
-      this.toggleShowPathMaps(event.action.id);
-      this.timeSlider.timeExtent=this.timeSlider.timeExtent.clone();
+      this.toggleShowPathMaps(event.action.id); //toggle which paths to show
+      this.timeSlider.timeExtent=this.timeSlider.timeExtent.clone(); //force rerender on timesldier
     });
 
+    this.view.popup.on("trigger-action", function(event){
+      if(event.action.id === "save-kml"){
+        this.saveKMLFile(this.view.popup.selectedFeature);
+      }
+    }.bind(this));
   },
 
   computed:mapGetters({
@@ -90,7 +96,6 @@ export default {
       }
    }
   },
-  //if we wanted instead of destorying could check if mounted, but nahhhh this is safer too
   beforeDestroy() {
     if (this.view) {
       this.view.destroy();
@@ -103,6 +108,20 @@ export default {
     }
   },
   methods:{
+    saveKMLFile(selectedFeature){
+      const fileName = getKMLFileName(selectedFeature);
+      const kmlText = getPathAsKML(selectedFeature);
+      // let element = document.createElement("a");
+      // element.setAttribute(
+      //   "href",
+      //   "data:text/plain;charset=utf-8," + encodeURIComponent(kmlText)
+      // );
+      // element.setAttribute("download", fileName + ".kml");
+      // element.style.display = "none";
+      // document.body.appendChild(element);
+      // element.click();
+      // document.body.removeChild(element);
+    },
     ...mapActions({
         offLayerMenu: "offLayerMenu",
         toggleShowPathMaps: "toggleShowPathMaps",
