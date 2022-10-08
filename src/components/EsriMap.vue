@@ -111,16 +111,16 @@ export default {
     saveKMLFile(selectedFeature){
       const fileName = getKMLFileName(selectedFeature);
       const kmlText = getPathAsKML(selectedFeature);
-      // let element = document.createElement("a");
-      // element.setAttribute(
-      //   "href",
-      //   "data:text/plain;charset=utf-8," + encodeURIComponent(kmlText)
-      // );
-      // element.setAttribute("download", fileName + ".kml");
-      // element.style.display = "none";
-      // document.body.appendChild(element);
-      // element.click();
-      // document.body.removeChild(element);
+      let element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(kmlText)
+      );
+      element.setAttribute("download", fileName + ".kml");
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     },
     ...mapActions({
         offLayerMenu: "offLayerMenu",

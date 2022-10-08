@@ -1,17 +1,12 @@
-import ArcGISMap from "@arcgis/core/Map";
-import MapView from "@arcgis/core/views/MapView";
-import Graphic from "@arcgis/core/Graphic";
-import TimeSlider from "@arcgis/core/widgets/TimeSlider";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import TimeExtent from "@arcgis/core/TimeExtent";
 
 import { SpatialReference } from "@arcgis/core/geometry";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { getPlanes } from "../decoder/decoder";
-import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import * as watchUtils from "@arcgis/core/core/watchUtils";
 import store from "../store";
-
+import geojson from "geojson";
+import tokml from "@maphubs/tokml";
 
 const ADSB_PLANE = "plane-yellow.svg"
 const MLAT_PLANE = "plane-blue.svg"
@@ -498,16 +493,15 @@ function createSMRLayer(map, allLayers) {
 
 export function getPathAsKML(selectedFeature) {
   let listKey = selectedFeature.layer.id;
-  let track = getPlanes()[listKey][selectedFeature.attributes.targetId];
-  //track.foreach point, lat, lon
+  let linePoints = getPlanes()[listKey][selectedFeature.attributes.targetId].map(point => [point.lon, point.lat])
 
-
-  const geojsonObject = geojson.parse(track, { Point: ['lat', 'lon'] });
+  const geojsonObject = geojson.parse({ line: linePoints }, { LineString: "line" });
   const name = getKMLFileName(selectedFeature);
 
-  const response = tokml(geojsonObject, { documentName: name, documentDescription: 'KML Export' });
-
-  return ("test")
+  let response = tokml(geojsonObject, { documentName: name, documentDescription: 'KML Export' });
+  const lineStyle = "<Style><LineStyle><color>ff00ffff</color><width>8</width></LineStyle></Style>";
+  response = response.replace("<LineString>", lineStyle + "<LineString>");
+  return response;
 
 }
 export function getKMLFileName(selectedFeature) {
