@@ -73,7 +73,7 @@ export default {
       }
    }
   },
-
+  //if we wanted instead of destorying could check if mounted, but nahhhh this is safer too
   beforeDestroy() {
     if (this.view) {
       this.view.destroy();

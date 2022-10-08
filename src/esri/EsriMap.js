@@ -95,7 +95,7 @@ function createADSBLayer(map, allLayers) {
       type: "simple",
       symbol: {
         type: "picture-marker",
-        url: "plane.svg",
+        url: "plane-blue.svg",
         width: 20,
         height: 20,
         angle: 270,
@@ -305,7 +305,7 @@ function createSMRLayer(map, allLayers) {
         endField: "timestamp2",
         interval: {
           unit: "seconds",
-          value: 1 //want to be able to swauch planes in this inteval so no dupes
+          value: 1
         }
       },
       popupTemplate: {
