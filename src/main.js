@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import "@arcgis/core/assets/esri/themes/dark/main.css";
 
+
 Vue.config.productionTip = false
 Vue.config.devtools = false
 

@@ -7,10 +7,12 @@ import * as watchUtils from "@arcgis/core/core/watchUtils";
 import store from "../store";
 import geojson from "geojson";
 import tokml from "@maphubs/tokml";
+import { isProductionelectron } from "../utils/electron";
 
-const ADSB_PLANE = "plane-yellow.svg"
-const MLAT_PLANE = "plane-blue.svg"
-const SMR_PLANE = "plane-orange.svg"
+
+const ADSB_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-yellow.svg"
+const MLAT_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-blue.svg"
+const SMR_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-orange.svg"
 
 export const spatialReference = new SpatialReference({
   wkid: 102100,
@@ -131,7 +133,7 @@ function createADSBLayer(map, allLayers) {
             timestamp2: plane.timestamp2,
             targetId: plane.targetId,
             trackNumber: plane.trackNumber,
-            targetAdress: plane.targetAdress,
+            key: plane.key,
             mode3ACode: plane.mode3ACode,
             flightLevel: plane.flightLevel,
             category: plane.category,
@@ -155,7 +157,7 @@ function createADSBLayer(map, allLayers) {
         alias: "ObjectID",
         type: "oid"
       }, {
-        name: "targetAdress",
+        name: "key",
         type: "string"
       },
       {
@@ -208,7 +210,7 @@ function createADSBLayer(map, allLayers) {
                 }
               },
               {
-                fieldName: "targetAdress",
+                fieldName: "key",
                 label: "Target Adress",
                 visible: true,
               },
@@ -287,7 +289,7 @@ function createMLATLayer(map, allLayers) {
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
             targetId: plane.targetId,
-            targetAdress: plane.targetAdress,
+            key: plane.key,
             trackNumber: plane.trackNumber,
           }
         });
@@ -309,7 +311,7 @@ function createMLATLayer(map, allLayers) {
         alias: "ObjectID",
         type: "oid"
       }, {
-        name: "targetAdress",
+        name: "key",
         type: "string"
       },
       {
@@ -353,7 +355,7 @@ function createMLATLayer(map, allLayers) {
                 }
               },
               {
-                fieldName: "targetAdress",
+                fieldName: "key",
                 label: "Target Adress",
                 visible: true,
               },
@@ -416,7 +418,7 @@ function createSMRLayer(map, allLayers) {
             heading: plane.heading,
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
-            targetId: plane.trackNumber, //save as targetId for consistency
+            key: plane.key, //save as key for consistency
           }
         });
 
@@ -437,7 +439,7 @@ function createSMRLayer(map, allLayers) {
         alias: "ObjectID",
         type: "oid"
       }, {
-        name: "targetId",
+        name: "key",
         type: "string"
       }, {
         name: "heading",
@@ -460,7 +462,7 @@ function createSMRLayer(map, allLayers) {
         }
       },
       popupTemplate: {
-        title: "{targetId}",
+        title: "{key}",
         content: [
           {
             type: "fields",
@@ -493,7 +495,7 @@ function createSMRLayer(map, allLayers) {
 
 export function getPathAsKML(selectedFeature) {
   let listKey = selectedFeature.layer.id;
-  let linePoints = getPlanes()[listKey][selectedFeature.attributes.targetId].map(point => [point.lon, point.lat])
+  let linePoints = getPlanes()[listKey][selectedFeature.attributes.key].map(point => [point.lon, point.lat])
 
   const geojsonObject = geojson.parse({ line: linePoints }, { LineString: "line" });
   const name = getKMLFileName(selectedFeature);
@@ -505,5 +507,5 @@ export function getPathAsKML(selectedFeature) {
 
 }
 export function getKMLFileName(selectedFeature) {
-  return (selectedFeature.layer.id + "_" + selectedFeature.attributes.targetId);
+  return (selectedFeature.layer.id + "_" + selectedFeature.attributes.key);
 }

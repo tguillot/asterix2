@@ -28,7 +28,9 @@
 </template>
 
 <script>
-import { decode, getProgress } from '../decoder/decoder';
+import { decode } from '../decoder/decoder';
+
+
 
 
 export default {
@@ -37,6 +39,7 @@ export default {
     return {
       chosenFile: null,
       chosenFileName:"",
+      imageUrl: null,
     }
   },
 
@@ -80,7 +83,7 @@ export default {
   top: 30vh;
 }
 #imageBackground{
-  background: url("../assets/airportBackground.jpg") ;
+  background: url("/static/img/airportBackground.jpg");
   min-width: 100vw;
   min-height: 100vh;
 

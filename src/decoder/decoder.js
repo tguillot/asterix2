@@ -88,7 +88,7 @@ function pushPlane10MLAT() {
             }
 
             //Popup info for MLAT
-            plane.targetAdress = targetAdress; //key
+            plane.key = targetAdress; //key
             plane.targetId = recordPlane["a245"] != null ? recordPlane["a245"] : "Unknown"; //Title
             plane.trackNumber = recordPlane["a161"] != null ? recordPlane["a161"].toString() : "Unknown";
 
@@ -119,7 +119,7 @@ function pushPlane10SMR() {
                 planes.SMR[trackNumber][planes.SMR[trackNumber].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
 
-            plane.trackNumber = trackNumber.toString();
+            plane.key = trackNumber.toString(); //key
 
 
             planes.SMR[trackNumber].push(plane); //add plane
@@ -150,7 +150,7 @@ function pushPlane21() {
                 planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
             //Popup info for AIR targets
-            plane.targetAdress = targetAdress; //key
+            plane.key = targetAdress; //key
             plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"; //Title
 
             plane.trackNumber = recordPlane["b161"] != null ? recordPlane["b161"].toString() : "Unknown";
