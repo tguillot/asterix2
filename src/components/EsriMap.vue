@@ -14,6 +14,7 @@ import { loadLayers } from "../esri/EsriMap.js"
 import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import { mapGetters } from "vuex";
 import LayerList from "@arcgis/core/widgets/LayerList";
+import { mapActions } from "vuex";
 
 
 export default {
@@ -41,6 +42,11 @@ export default {
       },
     });
 
+    this.timeSlider.watch("viewModel.state", (state) => {
+      if(state=="playing"){ //close layer menu if playing
+        this.offLayerMenu();
+      }
+    });
   
     loadLayers(map, this.view, this.timeSlider);
 
@@ -51,13 +57,24 @@ export default {
         let item = event.item;
         if (!item.title) {
           item.layer.listMode = "hide";
+        }else{
+          item.actionsSections=[[{
+            title: "Toggle Paths",
+            className: "esri-icon-polyline",
+            id: item.layer.id
+          }]]
         }
       },
       visible:false,
     });
+    this.layerList.on("trigger-action", (event) => {
+      this.toggleShowPathMaps(event.action.id);
+      this.timeSlider.timeExtent=this.timeSlider.timeExtent.clone();
+    });
+
   },
 
-  computed: mapGetters({
+  computed:mapGetters({
     speed: "getSpeed",
     layerMenuOn: "getLayerMenu",
 
@@ -85,6 +102,12 @@ export default {
       this.layerList.destroy();
     }
   },
+  methods:{
+    ...mapActions({
+        offLayerMenu: "offLayerMenu",
+        toggleShowPathMaps: "toggleShowPathMaps",
+    }),
+  }
   
 };
 </script>

@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     speed: 1,
     layerMenu: false,
+    showPathsMap: {},
   },
   getters: {
     getSpeed: (state) => {
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     },
     getLayerMenu: (state) => {
       return state.layerMenu;
+    },
+    getShowPathsMap: (state) => {
+      return state.showPathsMap;
     },
   },
   mutations: {
@@ -25,6 +29,15 @@ export default new Vuex.Store({
     TOGGLE_LAYER_MENU(state) {
       state.layerMenu = !state.layerMenu;
     },
+    OFF_LAYER_MENU(state) {
+      state.layerMenu = false;
+    },
+    SET_SHOW_PATHS_MAP(state, payload) {
+      state.showPathsMap[payload.key] = payload.value;
+    },
+    TOGGLE_SHOW_PATHS_MAP(state, key) {
+      state.showPathsMap[key] = !state.showPathsMap[key];
+    }
   },
   actions: {
     setSpeed(context, speed) {
@@ -33,6 +46,16 @@ export default new Vuex.Store({
     toggleLayerMenu(context) {
       context.commit("TOGGLE_LAYER_MENU");
     },
+    offLayerMenu(context) {
+      context.commit("OFF_LAYER_MENU");
+    },
+    setShowPathsMap(context, payload) {
+      context.commit("SET_SHOW_PATHS_MAP", payload);
+    },
+    toggleShowPathMaps(context, key) {
+      context.commit("TOGGLE_SHOW_PATHS_MAP", key);
+    }
+
   },
 })
 

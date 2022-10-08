@@ -10,7 +10,12 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { getPlanes } from "../decoder/decoder";
 import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import * as watchUtils from "@arcgis/core/core/watchUtils";
+import store from "../store";
 
+
+const ADSB_PLANE = "plane-yellow.svg"
+const MLAT_PLANE = "plane-blue.svg"
+const SMR_PLANE = "plane-orange.svg"
 
 export const spatialReference = new SpatialReference({
   wkid: 102100,
@@ -28,6 +33,8 @@ export function loadLayers(map, view, timeSlider) {
 
   createADSBLayer(map, allLayers);
   createSMRLayer(map, allLayers);
+  createMLATLayer(map, allLayers);
+
 
   console.log("number of layers", allLayers.length)
   if (allLayers.length != 0) {
@@ -44,7 +51,6 @@ export function loadLayers(map, view, timeSlider) {
       for (let i = 1; i < allLayerViews.length; i++) {
         allTimeExtents = allTimeExtents.union(allLayerViews[i].layer.timeInfo.fullTimeExtent)
       }
-
       timeSlider.fullTimeExtent = allTimeExtents;
 
       //avoids flash of all planes that then disappears
@@ -56,6 +62,8 @@ export function loadLayers(map, view, timeSlider) {
     });
 
     timeSlider.watch("timeExtent", () => {
+      const showPathsMap = store.getters.getShowPathsMap;
+
       const timePathFilter = new TimeExtent({
         start: timeSlider.fullTimeExtent.start,
         end: timeSlider.timeExtent.end
@@ -68,12 +76,12 @@ export function loadLayers(map, view, timeSlider) {
         excludedEffect: "grayscale(20%) opacity(30%)"
       };
 
-      allLayerViews.forEach(layerView => {
-        layerView.filter = {
-          timeExtent: timePathFilter,
+      allLayerViews.forEach(lv => {
+        lv.filter = {
+          timeExtent: showPathsMap[lv.layer.id] ? timePathFilter : timeSlider.timeExtent,
           geometry: view.extent
         };
-        layerView.featureEffect = effect;
+        lv.featureEffect = effect;
       })
     });
   }
@@ -88,14 +96,13 @@ function createADSBLayer(map, allLayers) {
   console.log("ADSB planes: ", Object.keys(planesADSB).length)
 
 
-
   if (Object.keys(planesADSB).length != 0) {
 
     let renderer = {
       type: "simple",
       symbol: {
         type: "picture-marker",
-        url: "plane-blue.svg",
+        url: ADSB_PLANE,
         width: 20,
         height: 20,
         angle: 270,
@@ -119,10 +126,11 @@ function createADSBLayer(map, allLayers) {
             longitude: plane.lon,
           },
           attributes: {
-            targetId: plane.targetId,
             heading: plane.heading,
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
+            targetId: plane.targetId,
+            trackNumber: plane.trackNumber,
             targetAdress: plane.targetAdress,
             mode3ACode: plane.mode3ACode,
             flightLevel: plane.flightLevel,
@@ -135,6 +143,7 @@ function createADSBLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
+      id: "ADSB",
       title: "ADSB Layer",
       visible: false,
       spatialReference: spatialReference,
@@ -147,6 +156,10 @@ function createADSBLayer(map, allLayers) {
         type: "oid"
       }, {
         name: "targetAdress",
+        type: "string"
+      },
+      {
+        name: "trackNumber",
         type: "string"
       }, {
         name: "mode3ACode",
@@ -200,6 +213,11 @@ function createADSBLayer(map, allLayers) {
                 visible: true,
               },
               {
+                fieldName: "trackNumber",
+                label: "Track Number",
+                visible: true,
+              },
+              {
                 fieldName: "mode3ACode",
                 label: "Mode 3A Code",
                 visible: true,
@@ -222,9 +240,137 @@ function createADSBLayer(map, allLayers) {
 
     map.add(layer);
     allLayers.push(layer)
+    store.dispatch("setShowPathsMap", { key: "ADSB", value: false })
 
   }
 
+}
+
+function createMLATLayer(map, allLayers) {
+  let planesMLAT = getPlanes()["MLAT"];
+  console.log("MLAT planes: ", Object.keys(planesMLAT).length)
+
+
+  if (Object.keys(planesMLAT).length != 0) {
+
+    let renderer = {
+      type: "simple",
+      symbol: {
+        type: "picture-marker",
+        url: MLAT_PLANE,
+        width: 20,
+        height: 20,
+        angle: 270,
+      },
+      visualVariables: [{
+        type: "rotation",
+        field: "heading",
+        rotationType: "geographic"
+      }]
+    };
+
+
+    let features = [];
+    Object.keys(planesMLAT).forEach(function (key) {
+      planesMLAT[key].forEach(plane => {
+        features.push({
+          geometry: {
+            type: "point",
+            spatialReference: spatialReference,
+            latitude: plane.lat,
+            longitude: plane.lon,
+          },
+          attributes: {
+            heading: plane.heading,
+            timestamp1: plane.timestamp1,
+            timestamp2: plane.timestamp2,
+            targetId: plane.targetId,
+            targetAdress: plane.targetAdress,
+            trackNumber: plane.trackNumber,
+          }
+        });
+
+      })
+    })
+
+
+    let layer = new FeatureLayer({
+      title: "MLAT Layer",
+      id: "MLAT",
+      visible: false,
+      spatialReference: spatialReference,
+      renderer: renderer,
+      objectIdField: "ObjectID",
+      source: features,
+      fields: [{
+        name: "ObjectID",
+        alias: "ObjectID",
+        type: "oid"
+      }, {
+        name: "targetAdress",
+        type: "string"
+      },
+      {
+        name: "trackNumber",
+        type: "string"
+      }, {
+        name: "targetId",
+        type: "string"
+      }, {
+        name: "heading",
+        type: "double"
+      }, {
+        name: "timestamp1",
+        type: "date"
+      },
+      {
+        name: "timestamp2",
+        type: "date"
+      },
+      ],
+      timeInfo: {
+        startField: "timestamp1",
+        endField: "timestamp2",
+        interval: {
+          unit: "seconds",
+          value: 1 //want to be able to swauch planes in this inteval so no dupes
+        }
+      },
+      popupTemplate: {
+        title: "{targetId}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "heading",
+                label: "Heading",
+                visible: true,
+                format: {
+                  places: 2
+                }
+              },
+              {
+                fieldName: "targetAdress",
+                label: "Target Adress",
+                visible: true,
+              },
+              {
+                fieldName: "trackNumber",
+                label: "Track Number",
+                visible: true,
+              },
+            ]
+          }
+        ]
+      }
+    });
+
+    map.add(layer);
+    allLayers.push(layer)
+    store.dispatch("setShowPathsMap", { key: "MLAT", value: false })
+
+  }
 
 }
 
@@ -239,7 +385,7 @@ function createSMRLayer(map, allLayers) {
       type: "simple",
       symbol: {
         type: "picture-marker",
-        url: "plane.svg",
+        url: SMR_PLANE,
         width: 20,
         height: 20,
         angle: 270,
@@ -263,10 +409,10 @@ function createSMRLayer(map, allLayers) {
             longitude: plane.lon,
           },
           attributes: {
-            targetId: plane.targetId,
             heading: plane.heading,
             timestamp1: plane.timestamp1,
             timestamp2: plane.timestamp2,
+            trackNumber: plane.trackNumber,
           }
         });
 
@@ -275,6 +421,7 @@ function createSMRLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
+      id: "SMR",
       title: "SMR Layer",
       visible: false,
       spatialReference: spatialReference,
@@ -286,7 +433,7 @@ function createSMRLayer(map, allLayers) {
         alias: "ObjectID",
         type: "oid"
       }, {
-        name: "targetId",
+        name: "trackNumber",
         type: "string"
       }, {
         name: "heading",
@@ -309,7 +456,7 @@ function createSMRLayer(map, allLayers) {
         }
       },
       popupTemplate: {
-        title: "{targetId}",
+        title: "{trackNumber}",
         content: [
           {
             type: "fields",
@@ -330,18 +477,11 @@ function createSMRLayer(map, allLayers) {
 
     map.add(layer);
     allLayers.push(layer);
+    store.dispatch("setShowPathsMap", { key: "SMR", value: false })
 
   }
 
 
 }
 
- //https://developers.arcgis.com/javascript/latest/sample-code/timeslider-filter/
 
-    //Feature filter https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureFilter.html
-
-//feature filter https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-support-FeatureFilter.html
-
-//POPUP and no endtime https://developers.arcgis.com/javascript/latest/sample-code/timeslider-filter/
-
-//feasture effect to exclude stuff https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html

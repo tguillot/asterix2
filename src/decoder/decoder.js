@@ -1,7 +1,7 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { getDate, int8Toint16 } from './utils/bitUtils.js';
-import LatLon, { Ned } from 'geodesy/latlon-ellipsoidal-vincenty.js'; // Node.js
+import LatLon from 'geodesy/latlon-ellipsoidal-vincenty.js'; // Node.js
 
 
 const CATEGORY_10 = 10;
@@ -21,9 +21,9 @@ var records21 = [];
 var progress = 0;
 
 var planes = {
-    MLAT: {}, //CAT 10 needs conversion SAC/SIC = 07
-    SMR: {}, //CAT 10 needs conversion, SAC/SIC = 0/7
-    ADSB: {},
+    MLAT: {}, //CAT 10 SAC/SIC = 07 | KEY = target addreess a220
+    SMR: {}, //CAT 10 SAC/SIC = 0/7 | KEY = track Number a161
+    ADSB: {}, //KEY = target addres b080
     others: {},
 }
 
@@ -55,63 +55,87 @@ function getCoordinates(displacement, referencePoint) {
     return SMR.destinationPoint(displacement.rho, displacement.theta);
 }
 
-// if (recordPlane.SAC == 0 & recordPlane.SIC == 7 & recordPlane["a042"] != null) {
-//     let position = getCoordinates(recordPlane["a042"], POINT_SMR)
-//     plane.lat = position.lat;
-//     plane.lon = position.lon;
-//     plane.planeId = recordPlane["a161"];
-//     plane.timestamp = recordPlane["a140"];
-//     planes.SMR.push(plane);
-// } else if (recordPlane.SAC == 0 & recordPlane.SIC == 107 & recordPlane["a042"] != null) {
-//     let position = getCoordinates(recordPlane["a042"], POINT_MLAT)
-//     plane.lat = position.lat;
-//     plane.lon = position.lon;
-//     plane.planeId = recordPlane["a161"];
-//     plane.timestamp = recordPlane["a140"];
-//     planes.MLAT.push(plane);
-// };
+function getCoordinatesFromCartesian(cartesian, referencePoint) {
+    const theta = Math.atan2(cartesian.y, cartesian.x) * 180 / Math.PI;
+    const rho = Math.sqrt(cartesian.x * cartesian.x + cartesian.y * cartesian.y)
+    const MLAT = new LatLon(referencePoint.lat, referencePoint.lon, 0);;
+    return MLAT.destinationPoint(rho, theta);
+}
+
+
+
+function pushPlane10MLAT() {
+    let recordPlane = records10[records10.length - 1];
+    if (recordPlane.SAC == 0 & recordPlane.SIC == 107) {
+
+        let targetAdress = recordPlane["a220"]; //target Address
+        if (targetAdress != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
+
+            let plane = {};
+            let position = getCoordinatesFromCartesian(recordPlane["a042"], POINT_MLAT)
+            plane.lat = position.lat;
+            plane.lon = position.lon;
+            plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
+            plane.timestamp1 = Math.floor(recordPlane["a140"]) * 1000 + milisToday;
+            plane.timestamp2 = plane.timestamp1;
+
+            if (planes.MLAT[targetAdress] == null) { //Init array
+                planes.MLAT[targetAdress] = [];
+            }
+
+            if (planes.MLAT[targetAdress].length > 0) { //If first position exists make previouse extent
+                planes.MLAT[targetAdress][planes.MLAT[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
+            }
+
+            //Popup info for MLAT
+            plane.targetAdress = targetAdress; //key
+            plane.targetId = recordPlane["a245"] != null ? recordPlane["a245"] : "Unknown"; //Title
+            plane.trackNumber = recordPlane["a161"] != null ? recordPlane["a161"].toString() : "Unknown";
+
+            planes.MLAT[targetAdress].push(plane); //add plane
+        }
+    }
+}
 function pushPlane10SMR() {
     let recordPlane = records10[records10.length - 1];
     if (recordPlane.SAC == 0 & recordPlane.SIC == 7) {
 
-        let targetId = recordPlane["a161"]; //trackNumber
-        if (targetId != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
+        let trackNumber = recordPlane["a161"]; //trackNumber
+        if (trackNumber != null & recordPlane["a040"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
 
             let plane = {};
             let position = getCoordinates(recordPlane["a040"], POINT_SMR)
             plane.lat = position.lat;
             plane.lon = position.lon;
-            plane.targetId = targetId.toString();
             plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
             plane.timestamp1 = Math.floor(recordPlane["a140"]) * 1000 + milisToday;
             plane.timestamp2 = plane.timestamp1;
 
-            if (planes.SMR[targetId] == null) { //Init array
-                planes.SMR[targetId] = [];
+            if (planes.SMR[trackNumber] == null) { //Init array
+                planes.SMR[trackNumber] = [];
             }
 
-            if (planes.SMR[targetId].length > 0) { //If first position exists make previouse extent
-                planes.SMR[targetId][planes.SMR[targetId].length - 1].timestamp2 = plane.timestamp1 - 1000;
+            if (planes.SMR[trackNumber].length > 0) { //If first position exists make previouse extent
+                planes.SMR[trackNumber][planes.SMR[trackNumber].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
 
-            //Popup info for SMR targets
-            // plane.trackNumber = recordPlane["a161"] != null ? recordPlane["a161"].toString() : "Unknown";
+            plane.trackNumber = trackNumber.toString();
 
-            planes.SMR[targetId].push(plane); //add plane
+
+            planes.SMR[trackNumber].push(plane); //add plane
         }
     }
 }
 
 function pushPlane21() {
     let recordPlane = records21[records21.length - 1];
-    let targetAdress = recordPlane["b080"];
+    let targetAdress = recordPlane["b080"]; //target address
     if (targetAdress != null & recordPlane["b131"] != null & recordPlane["b073"] != null) { //Target address, Postion and time
 
         let plane = {};
         let position = recordPlane["b131"]
         plane.lat = position.lat;
         plane.lon = position.lon;
-        plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"
         plane.timestamp1 = Math.floor(recordPlane["b073"]) * 1000 + milisToday;
         plane.timestamp2 = plane.timestamp1;
         plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : null;
@@ -126,7 +150,10 @@ function pushPlane21() {
                 planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
             }
             //Popup info for AIR targets
-            plane.targetAdress = recordPlane["b080"] != null ? recordPlane["b080"] : "Unknown";
+            plane.targetAdress = targetAdress; //key
+            plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"; //Title
+
+            plane.trackNumber = recordPlane["b161"] != null ? recordPlane["b161"].toString() : "Unknown";
             plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"].toString() : "Unknown";
             plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
             plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
@@ -177,7 +204,7 @@ export function decode(buffer) {
             records10.push({ category: CATEGORY_10, length: length });
             parseCat10(record);
             pushPlane10SMR();
-            // pushPlane10MLAT();
+            pushPlane10MLAT();
 
 
         } else if (category == CATEGORY_21) {
