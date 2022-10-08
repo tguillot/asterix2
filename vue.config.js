@@ -1,12 +1,11 @@
 const { defineConfig } = require('@vue/cli-service')
-const ArcGISPlugin = require("@arcgis/webpack-plugin");
 
 module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
   ],
   publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
-  
+
   pluginOptions: {
     electronBuilder: {
         builderOptions: {
