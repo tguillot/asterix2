@@ -26,12 +26,20 @@
           single-line
         ></v-text-field>
       </template>
-      <template v-slot:footer.page-text>
+      <template v-slot:footer.prepend>
+        <v-tooltip top>
+      <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="primary"
-          @click="buttonCallback">
-            <v-icon>mdi-table-arrow-down</v-icon>
-          </v-btn>
+          @click="buttonCallback"
+          v-bind="attrs"
+          v-on="on"
+        >
+        <v-icon>mdi-table-arrow-down</v-icon>
+        </v-btn>
+      </template>
+      <span>Download data as CSV</span>
+      </v-tooltip>
       </template>
 
 

@@ -10,9 +10,13 @@ import tokml from "@maphubs/tokml";
 import { isProductionelectron } from "../utils/electron";
 
 
-const ADSB_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-yellow.svg"
-const MLAT_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-blue.svg"
-const SMR_PLANE = (isProductionelectron() ? "app://public/" : "") +"plane-orange.svg"
+const ADSB_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-yellow.svg"
+const MLAT_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-blue.svg"
+const SMR_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-orange.svg"
+
+const ADSB_KEY = "ADSB";
+const MLAT_KEY = "MLAT";
+const SMR_KEY = "SMR";
 
 export const spatialReference = new SpatialReference({
   wkid: 102100,
@@ -83,8 +87,6 @@ export function loadLayers(map, view, timeSlider) {
     });
   }
 
-
-
 }
 
 const saveToKMLAction = {
@@ -94,7 +96,7 @@ const saveToKMLAction = {
 }
 
 function createADSBLayer(map, allLayers) {
-  let planesADSB = getPlanes()["ADSB"];
+  let planesADSB = getPlanes()[ADSB_KEY];
   console.log("ADSB planes: ", Object.keys(planesADSB).length)
 
 
@@ -145,7 +147,7 @@ function createADSBLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
-      id: "ADSB",
+      id: ADSB_KEY,
       title: "ADSB Layer",
       visible: false,
       spatialReference: spatialReference,
@@ -244,14 +246,14 @@ function createADSBLayer(map, allLayers) {
 
     map.add(layer);
     allLayers.push(layer)
-    store.dispatch("setShowPathsMap", { key: "ADSB", value: false })
+    store.dispatch("setShowPathsMap", { key: ADSB_KEY, value: false })
 
   }
 
 }
 
 function createMLATLayer(map, allLayers) {
-  let planesMLAT = getPlanes()["MLAT"];
+  let planesMLAT = getPlanes()[MLAT_KEY];
   console.log("MLAT planes: ", Object.keys(planesMLAT).length)
 
 
@@ -300,7 +302,7 @@ function createMLATLayer(map, allLayers) {
 
     let layer = new FeatureLayer({
       title: "MLAT Layer",
-      id: "MLAT",
+      id: MLAT_KEY,
       visible: false,
       spatialReference: spatialReference,
       renderer: renderer,
@@ -374,14 +376,14 @@ function createMLATLayer(map, allLayers) {
 
     map.add(layer);
     allLayers.push(layer)
-    store.dispatch("setShowPathsMap", { key: "MLAT", value: false })
+    store.dispatch("setShowPathsMap", { key: MLAT_KEY, value: false })
 
   }
 
 }
 
 function createSMRLayer(map, allLayers) {
-  let planesSMR = getPlanes()["SMR"];
+  let planesSMR = getPlanes()[SMR_KEY];
   console.log("SMR planes: ", Object.keys(planesSMR).length)
 
 
@@ -427,7 +429,7 @@ function createSMRLayer(map, allLayers) {
 
 
     let layer = new FeatureLayer({
-      id: "SMR",
+      id: SMR_KEY,
       title: "SMR Layer",
       visible: false,
       spatialReference: spatialReference,
@@ -485,7 +487,7 @@ function createSMRLayer(map, allLayers) {
 
     map.add(layer);
     allLayers.push(layer);
-    store.dispatch("setShowPathsMap", { key: "SMR", value: false })
+    store.dispatch("setShowPathsMap", { key: SMR_KEY, value: false })
 
   }
 
