@@ -29,6 +29,7 @@
 
 <script>
 import { decode } from '../decoder/decoder';
+import { isProductionelectron } from '../utils/electron';
 
 
 
@@ -39,8 +40,12 @@ export default {
     return {
       chosenFile: null,
       chosenFileName:"",
-      imageUrl: null,
+      imageUrl: ""
+,
     }
+  },
+  mounted() {
+    this.imageUrl=(isProductionelectron() ? "app://img/" : "../assets/") +"airportBackground.jpg";
   },
 
 
@@ -83,7 +88,7 @@ export default {
   top: 30vh;
 }
 #imageBackground{
-  background: url("/static/img/airportBackground.jpg");
+  background: url("~@/assets/airportBackground.jpg");
   min-width: 100vw;
   min-height: 100vh;
 

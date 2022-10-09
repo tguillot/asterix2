@@ -1,7 +1,8 @@
 import { parse as parseCat10 } from './cat10/cat10RecordParser.js';
 import { parse as parseCat21 } from './cat21/cat21RecordParser.js';
 import { getDate, int8Toint16 } from './utils/bitUtils.js';
-import LatLon from 'geodesy/latlon-ellipsoidal-vincenty.js'; // Node.js
+import LatLonEllipsoidal_Vincenty from 'geodesy/latlon-ellipsoidal-vincenty.js'; // Node.js
+import LatLon, { Ned } from 'geodesy/latlon-nvector-ellipsoidal.js'; // Node.js
 
 
 const CATEGORY_10 = 10;
@@ -50,16 +51,16 @@ export function pushDataItem21(name, dataItem) {
     records21[records21.length - 1][name] = dataItem;
 }
 function getCoordinates(displacement, referencePoint) {
-    const SMR = new LatLon(referencePoint.lat, referencePoint.lon, 0);;
+    const SMR = new LatLonEllipsoidal_Vincenty(referencePoint.lat, referencePoint.lon, 0);;
 
     return SMR.destinationPoint(displacement.rho, displacement.theta);
 }
 
 function getCoordinatesFromCartesian(cartesian, referencePoint) {
-    const theta = Math.atan2(cartesian.y, cartesian.x) * 180 / Math.PI;
-    const rho = Math.sqrt(cartesian.x * cartesian.x + cartesian.y * cartesian.y)
-    const MLAT = new LatLon(referencePoint.lat, referencePoint.lon, 0);;
-    return MLAT.destinationPoint(rho, theta);
+   
+    const MLAT = new LatLon(referencePoint.lat, referencePoint.lon, 0);
+    const NED = new Ned(cartesian.y,cartesian.x,0);
+    return MLAT.destinationPoint(NED);
 }
 
 

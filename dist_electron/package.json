@@ -27,7 +27,6 @@
     "webpack": "^5.74.0"
   },
   "devDependencies": {
-    "@arcgis/webpack-plugin": "^4.22.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",

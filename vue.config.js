@@ -9,7 +9,7 @@ module.exports = defineConfig({
   pluginOptions: {
     electronBuilder: {
         builderOptions: {
-            productName: "Asterix Reader",
+            productName: "Asterix",
             appId: 'Asterix.Reader',
             win: {
                 "target": [
@@ -20,7 +20,7 @@ module.exports = defineConfig({
             "nsis": {
                 "installerIcon": "public/favicon.ico",
                 "uninstallerIcon": "public/favicon.ico",
-                "uninstallDisplayName": "asterix Reader",
+                "uninstallDisplayName": "asterix",
             },
         },
     },
