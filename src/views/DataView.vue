@@ -26,6 +26,13 @@
           single-line
         ></v-text-field>
       </template>
+      <template v-slot:footer.page-text>
+        <v-btn
+          color="primary"
+          @click="buttonCallback">
+            <v-icon>mdi-table-arrow-down</v-icon>
+          </v-btn>
+      </template>
 
 
   <template v-slot:item="{ item }" >
@@ -182,7 +189,50 @@ export default {
       }
       
     },
+    buttonCallback(){
+        let records = null;
+        let headers = null;
+        const separator = ";";
+        if(this.dataCategory=="data10"){
+          records=  getRecords10();
+        }else{
+          records = getRecords21();
+        }
+        if(this.dataCategory=="data10"){
+          headers = this.headers10;
+        }else{
+          headers = this.headers21;
+        }
+        let headerString = "";
+        headers.forEach((item)=>{
+          headerString+=item.text+separator;
+        });
+        let body = ""
+        let str =""
+        records.forEach((record)=>{
+          for (let i = 0; i < headers.length; i++) {
+              str = this.getValue(record,headers[i])
+              str = str.toString().replace(/[\n\r]/g, "")
+              body+= str+separator
+          }
+          body+="\n"
+        })
+        let csv =headerString+"\n"+body;
+        let fileName =this.dataCategory;
+        let element = document.createElement("a");
+        element.setAttribute(
+          "href",
+          "data:text/plain;charset=utf-8," + encodeURIComponent(csv)
+        );
+        element.setAttribute("download", fileName + ".csv");
+        element.style.display = "none";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+
+    },
   }
+    
 
 };
 </script>
