@@ -1,6 +1,6 @@
 <template>
 
-<div id="imageBackground">
+<div id="imageBackground" v-bind:style="{ 'background-image': 'url(' + imageUrl + ')' }">
   <v-progress-circular 
       indeterminate
       color="amber"
@@ -45,7 +45,8 @@ export default {
     }
   },
   mounted() {
-    this.imageUrl=(isProductionelectron() ? "app://img/" : "../assets/") +"airportBackground.jpg";
+    //this.imageUrl=(isProductionelectron() ? "app://img/" : "../../public/") +"airportBackground.jpg";
+    this.imageUrl="airportBackground.jpg"
   },
 
 
@@ -88,7 +89,6 @@ export default {
   top: 30vh;
 }
 #imageBackground{
-  background: url("~@/assets/airportBackground.jpg");
   min-width: 100vw;
   min-height: 100vh;
 
@@ -105,4 +105,3 @@ export default {
   visibility: hidden;
 }
 </style>
-  
