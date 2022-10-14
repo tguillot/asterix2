@@ -3,6 +3,7 @@
    <div id="esriMap" class="esriMap"></div>
    <div id="timeSlider" class="timeSlider"></div>
    <div id="layerMenu" class="layerMenu"></div>
+   <div id="legend" class="legend"></div>
 
   </div>
 </template>
@@ -15,6 +16,8 @@ import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import { mapGetters } from "vuex";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import { mapActions } from "vuex";
+import Expand from "@arcgis/core/widgets/Expand";
+import Legend from "@arcgis/core/widgets/Legend";
 
 
 export default {
@@ -78,6 +81,23 @@ export default {
         this.saveKMLFile(this.view.popup.selectedFeature);
       }
     }.bind(this));
+  
+    const legend =new Legend({
+      view: this.view
+    });
+    legend.style = {
+      type: "classic",
+      layout: "stack"
+    };
+    this.legendExpand = new Expand({
+      expanded: true,
+      expandIconClass: "esri-icon-legend",
+      expandTooltip: "Legend",
+      view: this.view,
+      container:"legend",
+      content: legend,
+      expanded: false
+    });
   },
 
   computed:mapGetters({
@@ -105,6 +125,9 @@ export default {
     }
     if (this.layerList) {
       this.layerList.destroy();
+    }
+    if (this.legendExpand) {
+      this.legendExpand.destroy();
     }
   },
   methods:{
@@ -150,6 +173,15 @@ export default {
   position: fixed;
   top: 150px;
   left: 64px;
+}
+
+.legend{
+  position: fixed;
+  top: 160px;
+  left: 15px;
+}
+.esri-legend__layer-cell{
+  min-width: 1px;
 }
 
 </style>
