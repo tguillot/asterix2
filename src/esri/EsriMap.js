@@ -198,7 +198,7 @@ function createADSBLayer(map, allLayers) {
         }
       },
       popupTemplate: {
-        title: "{targetId}",
+        title: "{key}",
         content: [
           {
             type: "fields",
@@ -214,6 +214,11 @@ function createADSBLayer(map, allLayers) {
               {
                 fieldName: "key",
                 label: "Target Adress",
+                visible: true,
+              },
+              {
+                fieldName: "targetId",
+                label: "Target Id",
                 visible: true,
               },
               {
@@ -343,7 +348,7 @@ function createMLATLayer(map, allLayers) {
         }
       },
       popupTemplate: {
-        title: "{targetId}",
+        title: "{key}",
         content: [
           {
             type: "fields",
@@ -359,6 +364,11 @@ function createMLATLayer(map, allLayers) {
               {
                 fieldName: "key",
                 label: "Target Adress",
+                visible: true,
+              },
+              {
+                fieldName: "targetId",
+                label: "Target Id",
                 visible: true,
               },
               {
@@ -476,6 +486,11 @@ function createSMRLayer(map, allLayers) {
                 format: {
                   places: 2
                 }
+              },
+              {
+                fieldName: "key",
+                label: "Track Number",
+                visible: true,
               },
             ]
           }

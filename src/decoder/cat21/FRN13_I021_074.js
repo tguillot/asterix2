@@ -6,7 +6,6 @@
 // Four-Octet fixed length data item.
 
 import { int8Toint32, maskAndShift, secondsToString } from "../utils/bitUtils.js";
-//TODO: ask for help
 import { pushDataItem21 } from "../decoder";
 
 const name = "b074";

@@ -30,7 +30,6 @@ var planes = {
 
 var today = new Date();
 var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
-//TODO: layer with other targets, save to kml (with action in pop up template), export to csv
 
 export function getPlanes() {
     return planes;
@@ -155,7 +154,7 @@ function pushPlane21() {
             plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"; //Title
 
             plane.trackNumber = recordPlane["b161"] != null ? recordPlane["b161"].toString() : "Unknown";
-            plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"].toString() : "Unknown";
+            plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"] : "Unknown";
             plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
             plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
 

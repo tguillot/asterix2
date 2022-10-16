@@ -117,7 +117,7 @@ export default {
         { text: 'Time of Message Reception of Velocity', value: 'b075p',filterable: false },
         { text: 'Time of Message Reception of Velocity-High Precision', value: 'b076p',filterable: false },
         { text: 'Geometric Height (ft)', value: 'b140',filterable: false  },
-        { text: 'Quality Indicators', value: 'b090',filterable: false  },
+        { text: 'Quality Indicators', value: 'b090',parse: this.makePretty,filterable: false  },
         { text: 'MOPS Version', value: 'b210',parse: this.makePretty,filterable: false  },
         { text: 'Mode 3/A Code', value: 'b070' },
         { text: 'Roll Angle (°)', value: 'b230' ,filterable: false },

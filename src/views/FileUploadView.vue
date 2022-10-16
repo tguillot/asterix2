@@ -40,8 +40,7 @@ export default {
     return {
       chosenFile: null,
       chosenFileName:"",
-      imageUrl: ""
-,
+      imageUrl: "",
     }
   },
   mounted() {
