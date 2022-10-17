@@ -4,7 +4,12 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import "@arcgis/core/assets/esri/themes/dark/main.css";
+import { areas, loadAreas } from './esri/readAreas'
 
+
+//Load constants 
+loadAreas();
+console.log(areas);
 
 Vue.config.productionTip = false
 Vue.config.devtools = false

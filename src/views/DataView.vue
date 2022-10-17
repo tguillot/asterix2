@@ -1,5 +1,4 @@
 <template>
-    <div v-if="true">
     <v-data-table
     :headers="getHeaders"
     :items="getRecords"
@@ -66,7 +65,6 @@
    <template v-slot:footer class="footerClass">
    </template>
 </v-data-table>
-  </div>
 
   
 </template>
@@ -98,9 +96,9 @@ export default {
     return {
       search: '',
       headers21: [
-      { text: 'Category', align: 'start', value: 'category', filterable: false},
-      { text: 'Length',  value: 'length', filterable: false },
-      { text: 'SAC', value: 'SAC',filterable: false  },
+        { text: 'Category', align: 'start', value: 'category', filterable: false},
+        { text: 'Length',  value: 'length', filterable: false },
+        { text: 'SAC', value: 'SAC',filterable: false  },
         { text: 'SIC', value: 'SIC' , filterable: false },
         { text: 'Target Report Descriptor', value: 'b040', parse: this.makePretty, filterable: false },
         { text: 'Track Number', value: 'b161' },

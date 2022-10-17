@@ -293,8 +293,8 @@ function createMLATLayer(map, allLayers) {
           },
           attributes: {
             heading: plane.heading,
-            timestamp1: plane.timestamp1,
-            timestamp2: plane.timestamp2,
+            timestamp1: Math.floor(plane.timestamp1), //this floor was not done previousy since needed milis for MOPS
+            timestamp2: Math.floor(plane.timestamp2),
             targetId: plane.targetId,
             key: plane.key,
             trackNumber: plane.trackNumber,

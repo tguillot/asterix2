@@ -76,7 +76,7 @@ function pushPlane10MLAT() {
             plane.lat = position.lat;
             plane.lon = position.lon;
             plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
-            plane.timestamp1 = Math.floor(recordPlane["a140"]) * 1000 + milisToday;
+            plane.timestamp1 = recordPlane["a140"] * 1000 + milisToday;
             plane.timestamp2 = plane.timestamp1;
 
             if (planes.MLAT[targetAdress] == null) { //Init array
