@@ -114,4 +114,9 @@ html{
   background: #3e3e3e;
 }
 
+@media (-webkit-device-pixel-ratio: 1.25) {
+:root {
+zoom: 0.95;
+}}
+
 </style>
