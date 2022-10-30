@@ -23,23 +23,43 @@ export const spatialReference = new SpatialReference({
 });
 
 
+let allLayers = [];
+let allLayerViews = [];
+
+export function clearLayers() {
+  allLayers.forEach(l => l.destroy());
+}
+
 //initialize map layers and widgets
 export function loadLayers(map, view, timeSlider) {
   //Configuration
   view.popup.visibleElements.featureNavigation = false;
 
 
-  let allLayers = [];
-  let allLayerViews = [];
+  //check in store if new file has been uploaded
+  let newFile = store.getters["getNewFile"];
+  if (newFile) {
+    console.log("new file, RELOADING"),
 
-  createADSBLayer(map, allLayers);
-  createSMRLayer(map, allLayers);
-  createMLATLayer(map, allLayers);
+      clearLayers() //now we can destroy (should already be done, but just in case
 
+    allLayers = [];
+    allLayerViews = [];
 
-  console.log("number of layers", allLayers.length)
-  if (allLayers.length != 0) {
+    createADSBLayer(map, allLayers);
+    createSMRLayer(map, allLayers);
+    createMLATLayer(map, allLayers);
 
+    store.dispatch("setNewFile", false);
+
+  } else {
+    console.log("same file, SKIP LOADING");
+    allLayers.forEach(l => map.add(l));
+  }
+
+  console.log("number of layers", allLayers.length);
+
+  if (allLayers.length != 0) { //set up layerviews and extent
     let promises = allLayers.map(l => view.whenLayerView(l));
     Promise.all(promises).then((layerViews) => {
       allLayerViews = layerViews;
@@ -48,19 +68,14 @@ export function loadLayers(map, view, timeSlider) {
     }).then(() => {
       console.log("done updating");
 
-      let allTimeExtents = allLayerViews[0].layer.timeInfo.fullTimeExtent;
-      for (let i = 1; i < allLayerViews.length; i++) {
-        allTimeExtents = allTimeExtents.union(allLayerViews[i].layer.timeInfo.fullTimeExtent)
-      }
-      timeSlider.fullTimeExtent = allTimeExtents;
+      timeSlider.fullTimeExtent = getBiggestTimeExtent();
 
       //avoids flash of all planes that then disappears
       setTimeout(() => {
         allLayers.forEach(l => l.visible = true);
       }, 500); //allow for inital filters to apply before showing layers
-
-
     });
+
 
     timeSlider.watch("timeExtent", () => {
       const showPathsMap = store.getters.getShowPathsMap;
@@ -86,7 +101,14 @@ export function loadLayers(map, view, timeSlider) {
       })
     });
   }
+}
 
+function getBiggestTimeExtent() {
+  let allTimeExtents = allLayers[0].timeInfo.fullTimeExtent;
+  for (let i = 1; i < allLayers.length; i++) {
+    allTimeExtents = allTimeExtents.union(allLayers[i].timeInfo.fullTimeExtent)
+  }
+  return allTimeExtents;
 }
 
 const saveToKMLAction = {

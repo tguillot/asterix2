@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    newFile: true,
     speed: 1,
     layerMenu: false,
     showPathsMap: {},
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     getShowPathsMap: (state) => {
       return state.showPathsMap;
+    },
+    getNewFile: (state) => {
+      return state.newFile;
     },
   },
   mutations: {
@@ -37,6 +41,9 @@ export default new Vuex.Store({
     },
     TOGGLE_SHOW_PATHS_MAP(state, key) {
       state.showPathsMap[key] = !state.showPathsMap[key];
+    },
+    SET_NEW_FILE(state, newFile) {
+      state.newFile = newFile;
     }
   },
   actions: {
@@ -54,6 +61,9 @@ export default new Vuex.Store({
     },
     toggleShowPathMaps(context, key) {
       context.commit("TOGGLE_SHOW_PATHS_MAP", key);
+    },
+    setNewFile(context, newFile) {
+      context.commit("SET_NEW_FILE", newFile);
     }
 
   },

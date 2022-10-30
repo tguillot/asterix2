@@ -100,6 +100,7 @@ export default {
     });
   },
 
+
   computed:mapGetters({
     speed: "getSpeed",
     layerMenuOn: "getLayerMenu",
@@ -118,6 +119,8 @@ export default {
   },
   beforeDestroy() {
     if (this.view) {
+      this.view.map.layers.forEach(l => l.visible = false); //make them invisible to avoid flash
+      this.view.map.layers.removeAll(); //avoid destorying the layers
       this.view.destroy();
     }
     if(this.timeSlider){
@@ -164,8 +167,8 @@ export default {
 }
 .timeSlider {
   position: fixed;
-  left: 7%;
-  right: 5%;
+  left: 12vw;
+  right: 10vw;
   bottom: 20px;
   max-width: 1360px;
 }
@@ -181,7 +184,11 @@ export default {
   left: 15px;
 }
 .esri-legend__layer-cell{
-  min-width: 1px;
+  min-width: 1px !important; //todo fix
+}
+.esri-legend__layer-body
+{
+  margin-left: 20px !important; 
 }
 
 </style>

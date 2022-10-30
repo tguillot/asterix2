@@ -30,6 +30,8 @@
 <script>
 import { decode } from '../decoder/decoder';
 import { isProductionelectron } from '../utils/electron';
+import {  mapActions } from "vuex";
+import { clearLayers } from '../esri/EsriMap';
 
 
 
@@ -61,9 +63,13 @@ export default {
         this.chosenFileName=this.chosenFile.name;
         reader.onload = () => {
           try {
+            clearLayers();
+
             this.offset=1;
             this.$forceUpdate();
-            decode(reader.result)
+            decode(reader.result);
+            
+            this.setNewFile(true); //register new file upload
             this.overlayOn=false;
           } catch (e) {
            console.log(e)
@@ -77,6 +83,9 @@ export default {
 
       setTimeout(() => {  this.decodeFile(); }, 200);
     },
+    ...mapActions({
+      setNewFile: "setNewFile",
+    }),
   }
 };
 </script>
