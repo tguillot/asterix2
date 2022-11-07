@@ -24,7 +24,7 @@ export function parse(record) {
         let BDS2 = maskAndShift(record[8 + i * multiple], 4, 1);
         let BDS = {
             BDS1: BDS1,
-            DTBDS2HETA: BDS2
+            BDS2: BDS2
         };
         BDSArray.push(BDS);
     }

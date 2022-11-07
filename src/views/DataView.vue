@@ -151,7 +151,7 @@ export default {
         { text: 'Message Type', value: 'a000',filterable: false },
         { text: 'Target Report Descriptor', value: 'a020', parse: this.makePretty},
         { text: 'Time of Day', value: 'a140p', filterable: false },
-        { text: 'Position in WGS-84 Co-ordinates (°)', value: 'a041' , filterable: false},
+        { text: 'Position in WGS-84 Co-ordinates (°)', value: 'a041' ,parse: this.makePretty, filterable: false},
         { text: 'Measured Position in Polar Co-ordinates (rho:m, theta:°)', value: 'a040' , parse: this.makePretty, filterable: false},
         { text: 'Position in Cartesian Co-ordinates (m)', value: 'a042' , parse: this.makePretty, filterable: false},
         { text: 'Calculated Track Velocity in Polar Co-ordinates (speed:NM/s, angle:°)', value: 'a200' , parse: this.makePretty, filterable: false},
@@ -161,7 +161,7 @@ export default {
         { text: 'Mode-3/A Code in Octal Representation', value: 'a060', parse: this.makePretty ,filterable: false},
         { text: 'Target Address', value: 'a220' },
         { text: 'Target Identification', value: 'a245',parse: this.makePretty },
-        { text: 'Mode S MB Data', value: 'a250' ,filterable: false},
+        { text: 'Mode S MB Data', value: 'a250' ,parse: this.makePretty,filterable: false},
         { text: 'Vehicle Fleet Identification', value: 'a300' },
         { text: 'Flight Level in Binary Representation', value: 'a090' ,parse: this.makePretty,filterable: false},
         { text: 'Measured Height (ft)', value: 'a091' ,filterable: false},
@@ -185,7 +185,7 @@ export default {
         : "-";
     },
     makePretty(value){
-      return JSON.stringify(value, null, 2).replace(/[\"{},]/g, "") 
+      return JSON.stringify(value, null, 2).replace(/[ \"{},\[ \] ]/g, "") 
     },
     rowClick(value) {
       if(value.target.classList.length!=0){
