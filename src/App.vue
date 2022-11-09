@@ -40,6 +40,16 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <v-btn
+      color="primary"
+        to="/mops"
+      >
+        <v-icon left>
+          mdi-chart-box
+        </v-icon>
+        MOPS
+      </v-btn>
       
       <v-btn
       color="primary"

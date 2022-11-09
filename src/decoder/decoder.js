@@ -60,9 +60,9 @@ function getCoordinates(displacement, referencePoint) {
 }
 
 function getCoordinatesFromCartesian(cartesian, referencePoint) {
-   
+
     const MLAT = new LatLon(referencePoint.lat, referencePoint.lon, 0);
-    const NED = new Ned(cartesian.y,cartesian.x,0);
+    const NED = new Ned(cartesian.y, cartesian.x, 0);
     return MLAT.destinationPoint(NED);
 }
 
@@ -82,7 +82,7 @@ function pushPlane10MLAT() {
             plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
             plane.timestamp1 = recordPlane["a140"] * 1000 + milisToday;
             plane.timestamp2 = plane.timestamp1;
-            plane.groundBit = recordPlane["a040"] != null ? recordPlane["a040"]["indexGBS"] : null;
+            plane.groundBit = recordPlane["a020"] != null ? recordPlane["a020"]["indexGBS"] : null;
 
             if (planes.MLAT[targetAdress] == null) { //Init array
                 planes.MLAT[targetAdress] = [];

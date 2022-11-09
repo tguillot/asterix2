@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DataView from '../views/DataView.vue'
 import FileUploadView from '../views/FileUploadView.vue'
+import MOPSView from '../views/MOPSView.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/file',
     name: 'file',
     component: FileUploadView
+  },
+  {
+    path: '/mops',
+    name: 'mops',
+    component: MOPSView
   }
 ]
 

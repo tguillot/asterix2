@@ -72,7 +72,6 @@ function extend(byteLength, record) {
         let firstExtension = {
             DCR: item["DCR"][indexDCR],
             GBS: item["GBS"][indexGBS],
-            indexGBS: indexGBS,
             SIM: item["SIM"][indexSIM],
             TST: item["TST"][indexTST],
             SAA: item["SAA"][indexSAA],

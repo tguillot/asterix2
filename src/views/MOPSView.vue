@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
+
+import {calculateMOPSUpdateRate} from "../esri/MOPS"
 
 export default {
   compute: {
@@ -14,6 +15,10 @@ export default {
       search: '',
     
     }
+  },
+
+  mounted() {
+    calculateMOPSUpdateRate()
   },
 
   methods:{

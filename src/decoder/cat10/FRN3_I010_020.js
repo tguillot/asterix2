@@ -40,6 +40,7 @@ export function parse(record) {
         DCR: item["DCR"][indexDCR],
         CHN: item["CHN"][indexCHN],
         GBS: item["GBS"][indexGBS],
+        indexGBS: indexGBS,
         CRT: item["CRT"][indexCRT],
     };
 
