@@ -32,6 +32,11 @@ let updateRateData = {
     },
 };
 
+let idProbabilityData = {
+    correct: 0,
+    incorrect: 0,
+}
+
 const AIRBORNE = "airborne";
 const APRON = "apron";
 const RUNWAYS = "runways";
@@ -39,23 +44,65 @@ const TAXI = "taxi";
 const STAND = "stand";
 const UNKNOWN = "unkown";
 
-
-
-export function calculateMOPSUpdateRate() {
-
-    let planesMLAT = getPlanes()[MLAT_KEY];
-
-    console.log("START CALCULATING");
+export function calculateMOPS() {
 
     let mopsCompute = store.getters["getMopsCompute"];
     // if (mopsCompute) {
-    Object.keys(planesMLAT).forEach(function (key) { // each plane
-        // let key = "34560D"
 
+    updateRate();
+    idProbability();
+
+
+    store.dispatch("setMopsCompute", false);
+    // }
+}
+
+//should be more than 99.9%
+function idProbability() {
+    let planesMLAT = getPlanes()[MLAT_KEY];
+
+    Object.keys(planesMLAT).forEach(function (key) { // each plane
+
+        let allIds = {}
+
+        planesMLAT[key].forEach(plane => { //time increases
+
+            //Key = target Address
+            if (allIds[plane.targetId]) {
+                allIds[plane.targetId] += 1;
+            } else {
+                allIds[plane.targetId] = 1;
+            }
+        })
+
+        if (Object.keys(allIds).length != 1) {
+
+            const max = Math.max(...Object.values(allIds));
+            idProbabilityData.correct += max;
+            let wrongIds = Object.values(allIds).filter(number => number !== max); //removed correct
+
+            wrongIds.forEach(count => {
+                idProbabilityData.incorrect += count;
+            });
+
+            console.log("plane:", key, allIds)
+        } else {
+            idProbabilityData.correct += Object.values(allIds)[0];
+            // console.log("plane:", key)
+        }
+
+    })
+    console.log("PROBABILITY ID ", idProbabilityData);
+    console.log(idProbabilityData.correct / (idProbabilityData.correct + idProbabilityData.incorrect) * 100);
+}
+
+function updateRate() {
+
+    let planesMLAT = getPlanes()[MLAT_KEY];
+
+    Object.keys(planesMLAT).forEach(function (key) { // each plane
         let previousArea = UNKNOWN;
         let timeStampsInArea = [];
-
-        // console.log("plane: ", key)
         planesMLAT[key].forEach(plane => { //time increases
             const point = new Point({
                 spatialReference: spatialReference,
@@ -64,11 +111,9 @@ export function calculateMOPSUpdateRate() {
             })
 
             let newArea = getArea(plane, point);
-
             timeStampsInArea.push(plane.timestamp1);
 
             if (previousArea != newArea) {
-                // console.log("prev: ", previousArea, " new: ", newArea)
                 if (previousArea != UNKNOWN) {
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
                     updateRateData[previousArea]["expected"] +=
@@ -82,13 +127,7 @@ export function calculateMOPSUpdateRate() {
             }
         })
     })
-
-    console.log("DONE CALCULATING");
-    console.log(updateRateData);
-
-    store.dispatch("setMopsCompute", false);
-    // }
-
+    console.log("UPDATE RATE ", updateRateData);
 }
 
 function getArea(plane, point) {

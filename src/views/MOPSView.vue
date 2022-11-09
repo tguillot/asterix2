@@ -4,7 +4,7 @@
 
 <script>
 
-import {calculateMOPSUpdateRate} from "../esri/MOPS"
+import {calculateMOPS} from "../esri/MOPS"
 
 export default {
   compute: {
@@ -18,7 +18,7 @@ export default {
   },
 
   mounted() {
-    calculateMOPSUpdateRate()
+    calculateMOPS()
   },
 
   methods:{
