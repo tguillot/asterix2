@@ -73,7 +73,7 @@
 import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
 
 export default {
-  compute: {
+  computed: {
     getRecords() {
       if(this.dataCategory=="data10"){
         return getRecords10();
