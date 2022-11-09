@@ -6,7 +6,7 @@
 import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
 
 export default {
-  computed: {
+  compute: {
    
   },
   data() {

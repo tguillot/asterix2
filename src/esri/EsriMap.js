@@ -2,7 +2,7 @@ import TimeExtent from "@arcgis/core/TimeExtent";
 
 import { SpatialReference } from "@arcgis/core/geometry";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import { getPlanes } from "../decoder/decoder";
+import { ADSB_KEY, MLAT_KEY, SMR_KEY, getPlanes } from "../decoder/decoder";
 import * as watchUtils from "@arcgis/core/core/watchUtils";
 import store from "../store";
 import geojson from "geojson";
@@ -13,10 +13,6 @@ import { isProductionelectron } from "../utils/electron";
 const ADSB_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-yellow.svg"
 const MLAT_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-blue.svg"
 const SMR_PLANE = (isProductionelectron() ? "app://public/" : "") + "plane-orange.svg"
-
-const ADSB_KEY = "ADSB";
-const MLAT_KEY = "MLAT";
-const SMR_KEY = "SMR";
 
 export const spatialReference = new SpatialReference({
   wkid: 102100,
@@ -37,11 +33,9 @@ export function loadLayers(map, view, timeSlider) {
 
 
   //check in store if new file has been uploaded
-  let newFile = store.getters["getNewFile"];
-  if (newFile) {
-    console.log("new file, RELOADING"),
-
-      clearLayers() //now we can destroy (should already be done, but just in case
+  let mapCompute = store.getters["getMapCompute"];
+  if (mapCompute) {
+    clearLayers() //now we can destroy (should already be done, but just in case
 
     allLayers = [];
     allLayerViews = [];
@@ -50,7 +44,7 @@ export function loadLayers(map, view, timeSlider) {
     createSMRLayer(map, allLayers);
     createMLATLayer(map, allLayers);
 
-    store.dispatch("setNewFile", false);
+    store.dispatch("setMapCompute", false);
 
   } else {
     console.log("same file, SKIP LOADING");

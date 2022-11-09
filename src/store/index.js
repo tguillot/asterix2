@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    newFile: true,
+    mapCompute: true,
+    mopsCompute: true,
     speed: 1,
     layerMenu: false,
     showPathsMap: {},
@@ -22,8 +23,11 @@ export default new Vuex.Store({
     getShowPathsMap: (state) => {
       return state.showPathsMap;
     },
-    getNewFile: (state) => {
-      return state.newFile;
+    getMapCompute: (state) => {
+      return state.mapCompute;
+    },
+    getMopsCompute: (state) => {
+      return state.mopsCompute;
     },
   },
   mutations: {
@@ -42,8 +46,11 @@ export default new Vuex.Store({
     TOGGLE_SHOW_PATHS_MAP(state, key) {
       state.showPathsMap[key] = !state.showPathsMap[key];
     },
-    SET_NEW_FILE(state, newFile) {
-      state.newFile = newFile;
+    SET_MAP_COMPUTE(state, mapCompute) {
+      state.mapCompute = mapCompute;
+    },
+    SET_MOPS_COMPUTE(state, mopsCompute) {
+      state.mopsCompute = mopsCompute;
     }
   },
   actions: {
@@ -62,8 +69,11 @@ export default new Vuex.Store({
     toggleShowPathMaps(context, key) {
       context.commit("TOGGLE_SHOW_PATHS_MAP", key);
     },
-    setNewFile(context, newFile) {
-      context.commit("SET_NEW_FILE", newFile);
+    setMopsCompute(context, mopsCompute) {
+      context.commit("SET_MOPS_COMPUTE", mopsCompute);
+    },
+    setMapCompute(context, mapCompute) {
+      context.commit("SET_MAP_COMPUTE", mapCompute);
     }
 
   },

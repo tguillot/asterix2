@@ -21,12 +21,7 @@ import { taxiArea } from "../areas/taxi/Taxi";
 
 
 
-export let areas = {
-
-   
-  
-    
-};
+export let areas = {};
 
 
 

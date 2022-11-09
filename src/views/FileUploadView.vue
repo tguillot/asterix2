@@ -69,7 +69,9 @@ export default {
             this.$forceUpdate();
             decode(reader.result);
             
-            this.setNewFile(true); //register new file upload
+            this.setMapCompute(true); //register new file upload
+            this.setMopsCompute(true); //register new file upload
+
             this.overlayOn=false;
           } catch (e) {
            console.log(e)
@@ -84,7 +86,8 @@ export default {
       setTimeout(() => {  this.decodeFile(); }, 200);
     },
     ...mapActions({
-      setNewFile: "setNewFile",
+      setMapCompute: "setMapCompute",
+      setMopsCompute: "setMopsCompute",
     }),
   }
 };

@@ -101,7 +101,7 @@ export default {
   },
 
 
-  computed:mapGetters({
+  compute:mapGetters({
     speed: "getSpeed",
     layerMenuOn: "getLayerMenu",
 

@@ -5,6 +5,10 @@ import LatLonEllipsoidal_Vincenty from 'geodesy/latlon-ellipsoidal-vincenty.js';
 import LatLon, { Ned } from 'geodesy/latlon-nvector-ellipsoidal.js'; // Node.js
 
 
+export const ADSB_KEY = "ADSB";
+export const MLAT_KEY = "MLAT";
+export const SMR_KEY = "SMR";
+
 const CATEGORY_10 = 10;
 const CATEGORY_21 = 21;
 
@@ -78,6 +82,7 @@ function pushPlane10MLAT() {
             plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
             plane.timestamp1 = recordPlane["a140"] * 1000 + milisToday;
             plane.timestamp2 = plane.timestamp1;
+            plane.groundBit = recordPlane["a040"] != null ? recordPlane["a040"]["indexGBS"] : null;
 
             if (planes.MLAT[targetAdress] == null) { //Init array
                 planes.MLAT[targetAdress] = [];
