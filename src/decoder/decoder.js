@@ -73,7 +73,7 @@ function pushPlane10MLAT() {
     if (recordPlane.SAC == 0 & recordPlane.SIC == 107) {
 
         let targetAdress = recordPlane["a220"]; //target Address
-        if (targetAdress != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Target number, Postion and time
+        if (targetAdress != null & recordPlane["a042"] != null & recordPlane["a140"] != null) { //Postion and time
 
             let plane = {};
             let position = getCoordinatesFromCartesian(recordPlane["a042"], POINT_MLAT)

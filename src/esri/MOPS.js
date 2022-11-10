@@ -8,33 +8,30 @@ let updateRateData = {
     airborne: {
         updates: 0,
         expected: 0,
-        history: [],
     },
     apron: {
         updates: 0,
         expected: 0,
-        history: [],
     },
     runways: {
         updates: 0,
         expected: 0,
-        history: [],
     },
     taxi: {
         updates: 0,
         expected: 0,
-        history: [],
     },
     stand: {
         updates: 0,
         expected: 0,
-        history: [],
     },
 };
 
 let idProbabilityData = {
     correct: 0,
     incorrect: 0,
+    
+    incorrectWithOutUnkown:0,
 }
 
 const AIRBORNE = "airborne";
@@ -43,6 +40,8 @@ const RUNWAYS = "runways";
 const TAXI = "taxi";
 const STAND = "stand";
 const UNKNOWN = "unkown";
+
+const NO_ID="Unknown";
 
 export function calculateMOPS() {
 
@@ -79,23 +78,39 @@ function idProbability() {
 
             const max = Math.max(...Object.values(allIds));
             idProbabilityData.correct += max;
-            let wrongIds = Object.values(allIds).filter(number => number !== max); //removed correct
 
-            wrongIds.forEach(count => {
-                idProbabilityData.incorrect += count;
+            const asArray = Object.entries(allIds); //[[key,value], [key,value]...]
+            const filtered = asArray.filter(([key, value]) => value !== max); //removed correct
+
+            filtered.forEach(([key, value]) => {
+                if(key!=NO_ID){
+                    idProbabilityData.incorrectWithOutUnkown += value;
+                }
+                idProbabilityData.incorrect += value;
+                
             });
 
-            console.log("plane:", key, allIds)
+            // console.log("plane:", key, allIds)
         } else {
-            idProbabilityData.correct += Object.values(allIds)[0];
+            if(Object.values(allIds)[0]==NO_ID){ //All ids are incorrect
+                idProbabilityData.incorrect += Object.values(allIds)[0];
+            }else{
+                idProbabilityData.correct += Object.values(allIds)[0];
+            }
             // console.log("plane:", key)
         }
 
     })
+    idProbabilityData.percetage = idProbabilityData.correct / (idProbabilityData.correct + idProbabilityData.incorrect) * 100;
+    idProbabilityData.percentageWithoutUnkowns = 
+    idProbabilityData.correct / (idProbabilityData.correct + idProbabilityData.incorrectWithOutUnkown) * 100;
+    idProbabilityData.percentageOnlyUnkowns=
+    idProbabilityData.correct / (idProbabilityData.correct +idProbabilityData.incorrect - idProbabilityData.incorrectWithOutUnkown) * 100;
+
     console.log("PROBABILITY ID ", idProbabilityData);
-    console.log(idProbabilityData.correct / (idProbabilityData.correct + idProbabilityData.incorrect) * 100);
 }
 
+const threshold =10;
 function updateRate() {
 
     let planesMLAT = getPlanes()[MLAT_KEY];
@@ -116,17 +131,39 @@ function updateRate() {
             if (previousArea != newArea) {
                 if (previousArea != UNKNOWN) {
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
-                    updateRateData[previousArea]["expected"] +=
-                        (timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000;
+                    let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
+                    updateRateData[previousArea]["expected"] += expected;
+                        
                     // updateRateData[previousArea]["history"].push(timeStampsInArea);
+
+                   if (expected > timeStampsInArea.length){
+                        console.log(key, " ERROR AREA expected: ", expected, " updates: ", timeStampsInArea.length)
+                        console.log(timeStampsInArea)
+                        console.log("from: ", previousArea, "to: ", newArea)
+                    }
                 }
 
                 previousArea = newArea;
                 timeStampsInArea = [];
                 timeStampsInArea.push(plane.timestamp1);
             }
+            //  else if(plane.timestamp1-timeStampsInArea[timeStampsInArea.length-2]>threshold){
+            //     if (previousArea != UNKNOWN) {
+            //         timeStampsInArea.pop(); //remove last timestamp that is too far away
+            //         updateRateData[previousArea]["updates"] += timeStampsInArea.length;
+            //         let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
+            //         updateRateData[previousArea]["expected"] += expected;
+            //     }
+
+            //     timeStampsInArea = [];
+            //     timeStampsInArea.push(plane.timestamp1);
+            // }
         })
     })
+
+    Object.keys(updateRateData).forEach(function (area) { // calculate each percentage 
+        updateRateData[area].percentage = updateRateData[area].updates *100 / updateRateData[area].expected
+    });
     console.log("UPDATE RATE ", updateRateData);
 }
 
