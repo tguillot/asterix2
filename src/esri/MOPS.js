@@ -110,7 +110,7 @@ function idProbability() {
     console.log("PROBABILITY ID ", idProbabilityData);
 }
 
-const threshold =10;
+const threshold =10*1000;
 function updateRate() {
 
     let planesMLAT = getPlanes()[MLAT_KEY];
@@ -130,34 +130,37 @@ function updateRate() {
 
             if (previousArea != newArea) {
                 if (previousArea != UNKNOWN) {
+                    if(plane.timestamp1-timeStampsInArea[timeStampsInArea.length-2]>threshold){ //case where dissaperance is in area change
+                        timeStampsInArea.pop(); //remove last timestamp that is too far away  
+                    }
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
                     let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
                     updateRateData[previousArea]["expected"] += expected;
                         
                     // updateRateData[previousArea]["history"].push(timeStampsInArea);
 
-                   if (expected > timeStampsInArea.length){
-                        console.log(key, " ERROR AREA expected: ", expected, " updates: ", timeStampsInArea.length)
-                        console.log(timeStampsInArea)
-                        console.log("from: ", previousArea, "to: ", newArea)
-                    }
+                //    if (expected > timeStampsInArea.length){
+                //         console.log(key, " ERROR AREA expected: ", expected, " updates: ", timeStampsInArea.length)
+                //         console.log(timeStampsInArea)
+                //         console.log("from: ", previousArea, "to: ", newArea)
+                //     }
                 }
 
                 previousArea = newArea;
                 timeStampsInArea = [];
                 timeStampsInArea.push(plane.timestamp1);
             }
-            //  else if(plane.timestamp1-timeStampsInArea[timeStampsInArea.length-2]>threshold){
-            //     if (previousArea != UNKNOWN) {
-            //         timeStampsInArea.pop(); //remove last timestamp that is too far away
-            //         updateRateData[previousArea]["updates"] += timeStampsInArea.length;
-            //         let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
-            //         updateRateData[previousArea]["expected"] += expected;
-            //     }
+             else if(plane.timestamp1-timeStampsInArea[timeStampsInArea.length-2]>threshold){
+                if (newArea != UNKNOWN) {
+                    timeStampsInArea.pop(); //remove last timestamp that is too far away
+                    updateRateData[previousArea]["updates"] += timeStampsInArea.length;
+                    let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
+                    updateRateData[previousArea]["expected"] += expected;
+                }
 
-            //     timeStampsInArea = [];
-            //     timeStampsInArea.push(plane.timestamp1);
-            // }
+                timeStampsInArea = [];
+                timeStampsInArea.push(plane.timestamp1);
+            }
         })
     })
 
