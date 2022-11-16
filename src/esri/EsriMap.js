@@ -47,11 +47,8 @@ export function loadLayers(map, view, timeSlider) {
     store.dispatch("setMapCompute", false);
 
   } else {
-    console.log("same file, SKIP LOADING");
     allLayers.forEach(l => map.add(l));
   }
-
-  console.log("number of layers", allLayers.length);
 
   if (allLayers.length != 0) { //set up layerviews and extent
     let promises = allLayers.map(l => view.whenLayerView(l));
@@ -60,8 +57,6 @@ export function loadLayers(map, view, timeSlider) {
       let promisesLV = layerViews.map(lv => watchUtils.whenFalseOnce(lv, "updating"));
       return Promise.all(promisesLV);
     }).then(() => {
-      console.log("done updating");
-
       timeSlider.fullTimeExtent = getBiggestTimeExtent();
 
       //avoids flash of all planes that then disappears
@@ -113,7 +108,6 @@ const saveToKMLAction = {
 
 function createADSBLayer(map, allLayers) {
   let planesADSB = getPlanes()[ADSB_KEY];
-  console.log("ADSB planes: ", Object.keys(planesADSB).length)
 
 
   if (Object.keys(planesADSB).length != 0) {
@@ -275,8 +269,6 @@ function createADSBLayer(map, allLayers) {
 
 function createMLATLayer(map, allLayers) {
   let planesMLAT = getPlanes()[MLAT_KEY];
-  console.log("MLAT planes: ", Object.keys(planesMLAT).length)
-
 
   if (Object.keys(planesMLAT).length != 0) {
 
@@ -410,8 +402,6 @@ function createMLATLayer(map, allLayers) {
 
 function createSMRLayer(map, allLayers) {
   let planesSMR = getPlanes()[SMR_KEY];
-  console.log("SMR planes: ", Object.keys(planesSMR).length)
-
 
   if (Object.keys(planesSMR).length != 0) {
 

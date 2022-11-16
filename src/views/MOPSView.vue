@@ -19,11 +19,15 @@
         </v-icon>
         </v-btn>
       </template>
-      <v-card>
+      <v-card color="secondary">
         <v-card-title class="text-h5">
           Update Rate help
         </v-card-title>
-        <v-card-text>{{textUR}}</v-card-text>
+        <v-card-text >
+          <div v-for="(text, index) in textUR.split('\n')" :key="index" style="color:azure">
+          {{ text }}
+        </div>
+      </v-card-text>       
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -84,7 +88,7 @@
       <v-dialog
       v-model="dialog2"
       persistent
-      max-width="400"
+      max-width="500"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -97,11 +101,15 @@
         </v-icon>
         </v-btn>
       </template>
-      <v-card>
+      <v-card color="secondary">
         <v-card-title class="text-h5">
           Probability of identification help
         </v-card-title>
-        <v-card-text>{{textPI}}</v-card-text>
+        <v-card-text >
+          <div v-for="(text, index) in textPI.split('\n')" :key="index" style="color:azure">
+          {{ text }}
+        </div>
+      </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -149,12 +157,13 @@ export default {
       },
     viewItem (item) {
         this.selectedArea = item.area;
-        console.log(item.area)
         this.dialogView = true
       },
   },
   data() {
     return {
+      //TODO ABOUT
+      
       areaImages:{ //TODO IMAGES
         Airborne: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
         Apron: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
@@ -164,8 +173,8 @@ export default {
       },
 
       //TODO TEXT
-      textPI: "help",
-      textUR: "help",
+      textPI: "Correct: number of instances of correct target id \nIncorrect: number of instances of Unknown or different target id \nUnknowns: number of instances of Unknown target ids",
+      textUR: "Updates: number of updates received \n Expected: number of updates that should have been recieved to obtain 1 update/second",
 
       dialog1: false,
       dialog2: false,
@@ -182,7 +191,7 @@ export default {
       headers2: [
         { text: 'Total Correct', align: 'start', value: 'correct' },
         { text: 'Total Incorrrect',  value: 'incorrect'},
-        { text: 'Unknowns Incorrrect', value: 'incorrectOnlyUnknowns'  },
+        { text: 'Unknowns', value: 'incorrectOnlyUnknowns'  },
         { text: 'Probability (%)', value: 'percentage'  },
         { text: 'Probability of Unknown (%)', value: 'percentageOnlyUnkowns'  },
       ]

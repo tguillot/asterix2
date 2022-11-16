@@ -14,7 +14,6 @@ let byteLength = 0;
 const multiple = 8;
 
 export function parse(record) {
-    console.log(record[0]);
     let rep = record[0];
     byteLength = 1 + rep * multiple;
 
@@ -26,7 +25,6 @@ export function parse(record) {
             BDS1: BDS1,
             BDS2: BDS2
         };
-        console.log(BDS);
         BDSArray.push(BDS);
     }
 

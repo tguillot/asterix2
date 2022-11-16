@@ -62,25 +62,3 @@ export function parse(record) {
 }
 
 
-//AUTOGENERATE
-// import { writeFile } from 'fs';
-
-// let code = ["010", "040", "161", "015", "071", "130", "131", "072", "150",
-//     "151", "080", "073", "074", "075", "076", "140", "090", "210",
-//     "070", "230", "145", "152", "200", "155", "157", "160", "165",
-//     "077", "170", "020", "220", "146", "148", "110", "016", "008",
-//     "271", "132", "250", "260", "400", "295"]
-// for (let i = 0; i < 42; i++) {
-//     let filename = "FRN" + (i + 1) + "_I021_" + code[i] + ".js";
-//     writeFile(filename, " ", function (err, result) {
-//         if (err) console.log('error', err);
-//     });
-//     // console.log(filename)
-// }
-// for (let i = 0; i < 42; i++) {
-//     let filename = "FRN" + (i + 1) + "_I021_" + code[i] + ".js";
-//     let importName = "import { parse as parse" + (i + 1) + " } from " + '"./' + filename + '"';
-//     console.log(importName)
-// }
-
-

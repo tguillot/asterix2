@@ -195,7 +195,6 @@ export function decode(buffer) {
         others: {},
     };
 
-    // startTimer();
     let arrayInts = new Uint8Array(buffer);
     let i = 0;
     let framesParsed = 1;
@@ -225,19 +224,5 @@ export function decode(buffer) {
     }
 
     progress = 0;
-    // endTimer();
-}
-
-
-
-var a;
-var b;
-function startTimer() {
-    a = new Date();
-}
-function endTimer() {
-    b = new Date();
-    var difference = (b - a);
-    console.log("You waited: " + difference + " miliseconds");
 }
 

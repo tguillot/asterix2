@@ -112,14 +112,12 @@ function idProbability() {
 
             });
 
-            // console.log("plane:", key, allIds)
         } else {
             if (Object.values(allIds)[0] == NO_ID) { //All ids are incorrect
                 idProbabilityData.incorrect += Object.values(allIds)[0];
             } else {
                 idProbabilityData.correct += Object.values(allIds)[0];
             }
-            // console.log("plane:", key)
         }
 
     })
@@ -129,8 +127,6 @@ function idProbability() {
 
     idProbabilityData.percentageOnlyUnkowns =
         (idProbabilityData.correct + diffIds) / (idProbabilityData.correct + idProbabilityData.incorrect) * 100;
-
-    console.log("PROBABILITY ID ", idProbabilityData);
 }
 
 const threshold = 5 * 1000;
@@ -164,14 +160,6 @@ function updateRate() {
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
                     let expected = Math.ceil((timeStampsInArea[timeStampsInArea.length - 1] - timeStampsInArea[0]) / 1000) + 1;
                     updateRateData[previousArea]["expected"] += expected;
-
-                    // updateRateData[previousArea]["history"].push(timeStampsInArea);
-
-                    //    if (expected > timeStampsInArea.length){
-                    //         console.log(key, " ERROR AREA expected: ", expected, " updates: ", timeStampsInArea.length)
-                    //         console.log(timeStampsInArea)
-                    //         console.log("from: ", previousArea, "to: ", newArea)
-                    //     }
                 }
 
                 previousArea = newArea;
@@ -195,7 +183,6 @@ function updateRate() {
     Object.keys(updateRateData).forEach(function (area) { // calculate each percentage 
         updateRateData[area].percentage = updateRateData[area].updates * 100 / updateRateData[area].expected
     });
-    console.log("UPDATE RATE ", updateRateData);
 }
 
 function getArea(plane, point) {
