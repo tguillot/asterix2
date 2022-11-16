@@ -8,7 +8,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     mapCompute: true,
-    mopsCompute: true,
     speed: 1,
     layerMenu: false,
     showPathsMap: {},
@@ -26,9 +25,7 @@ export default new Vuex.Store({
     getMapCompute: (state) => {
       return state.mapCompute;
     },
-    getMopsCompute: (state) => {
-      return state.mopsCompute;
-    },
+
   },
   mutations: {
     SET_SPEED(state, speed) {
@@ -49,9 +46,6 @@ export default new Vuex.Store({
     SET_MAP_COMPUTE(state, mapCompute) {
       state.mapCompute = mapCompute;
     },
-    SET_MOPS_COMPUTE(state, mopsCompute) {
-      state.mopsCompute = mopsCompute;
-    }
   },
   actions: {
     setSpeed(context, speed) {
@@ -68,9 +62,6 @@ export default new Vuex.Store({
     },
     toggleShowPathMaps(context, key) {
       context.commit("TOGGLE_SHOW_PATHS_MAP", key);
-    },
-    setMopsCompute(context, mopsCompute) {
-      context.commit("SET_MOPS_COMPUTE", mopsCompute);
     },
     setMapCompute(context, mapCompute) {
       context.commit("SET_MAP_COMPUTE", mapCompute);

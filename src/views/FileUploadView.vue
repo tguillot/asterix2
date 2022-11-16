@@ -32,6 +32,7 @@ import { decode } from '../decoder/decoder';
 import { isProductionelectron } from '../utils/electron';
 import {  mapActions } from "vuex";
 import { clearLayers } from '../esri/EsriMap';
+import { calculateMOPS } from '../esri/MOPS';
 
 
 
@@ -67,10 +68,11 @@ export default {
 
             this.offset=1;
             this.$forceUpdate();
-            decode(reader.result);
+
+            decode(reader.result); //decode data
+            calculateMOPS(); //calculate mops of data
             
             this.setMapCompute(true); //register new file upload
-            this.setMopsCompute(true); //register new file upload
 
             this.overlayOn=false;
           } catch (e) {
@@ -87,7 +89,6 @@ export default {
     },
     ...mapActions({
       setMapCompute: "setMapCompute",
-      setMopsCompute: "setMopsCompute",
     }),
   }
 };
