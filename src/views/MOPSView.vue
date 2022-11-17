@@ -55,11 +55,11 @@
   <template v-slot:top>
      
 
-  <v-dialog v-model="dialogView" max-width="500px">
+  <v-dialog v-model="dialogView" max-width="1000px" max-height="800px">
       <v-card>
         <v-card-title class="text-h5" >Area: {{selectedArea}}</v-card-title>
         <v-img
-        height="250"
+        height="700px"
         :src=areaImages[selectedArea]
       ></v-img>
         <v-card-actions>
@@ -165,11 +165,11 @@ export default {
       //TODO ABOUT
       
       areaImages:{ //TODO IMAGES
-        Airborne: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        Apron: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        Runways: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        Taxi: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        Stand: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        Airborne: "airborne.png",
+        Apron: "apron.png",
+        Runways: "runways.png",
+        Taxi: "taxi.png",
+        Stand: "stand.png",
       },
 
       //TODO TEXT
