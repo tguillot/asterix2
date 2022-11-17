@@ -99,12 +99,14 @@ export default {
       expanded: false
     });
 
-    setTimeout(() => { //fix legend css
+    let legendDiv = document.getElementById('legend');
+
+    legendDiv.onclick = function() {
       let collection = document.getElementsByClassName("esri-legend__layer-cell--info");
       for (let i = 0; i < collection.length; i++) {
         collection[i].style.minWidth = "1px";
-      }
-      }, 1500); 
+      }     
+     };
   },
 
 
