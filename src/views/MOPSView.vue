@@ -161,10 +161,8 @@ export default {
       },
   },
   data() {
-    return {
-      //TODO ABOUT
-      
-      areaImages:{ //TODO IMAGES
+    return {      
+      areaImages:{ 
         Airborne: "airborne.png",
         Apron: "apron.png",
         Runways: "runways.png",
@@ -172,7 +170,6 @@ export default {
         Stand: "stand.png",
       },
 
-      //TODO TEXT
       textPI: "Correct: number of instances of correct target id \nIncorrect: number of instances of Unknown or different target id \nUnknowns: number of instances of Unknown target ids",
       textUR: "Updates: number of updates received \n Expected: number of updates that should have been recieved to obtain 1 update/second",
 

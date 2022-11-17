@@ -9,7 +9,6 @@ import { areas, loadAreas } from './esri/readAreas'
 
 //Load constants 
 loadAreas();
-console.log(areas);
 
 Vue.config.productionTip = false
 Vue.config.devtools = false

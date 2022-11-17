@@ -76,7 +76,7 @@
         <v-icon left>
           mdi-help-circle
         </v-icon>
-        About
+        Help
       </v-btn>
         </template>
         <template v-slot:default="dialog">
