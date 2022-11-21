@@ -30,3 +30,7 @@ Download the executable and run it
 Resources
 - Architecture diagram
 - Presentation
+
+## Authors
+
+Tania Guillot and David Saiz
