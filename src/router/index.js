@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import MapView from '../views/MapView.vue'
 import DataView from '../views/DataView.vue'
 import FileUploadView from '../views/FileUploadView.vue'
 import MOPSView from '../views/MOPSView.vue'
@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: MapView
   },
   {
     path: '/data10',

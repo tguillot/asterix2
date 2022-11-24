@@ -80,9 +80,10 @@ function pushPlane10MLAT() {
             plane.lat = position.lat;
             plane.lon = position.lon;
             plane.heading = recordPlane["a200"] != null ? recordPlane["a200"]["trackAngle"] : null;
-            plane.timestamp1 = recordPlane["a140"] * 1000 + milisToday;
+            plane.timestamp1 = Math.floor(recordPlane["a140"]) * 1000 + milisToday;
             plane.timestamp2 = plane.timestamp1;
             plane.groundBit = recordPlane["a020"] != null ? recordPlane["a020"]["indexGBS"] : null;
+            plane.timestamp1WithMilis = recordPlane["a140"] * 1000 + milisToday;
 
             if (planes.MLAT[targetAdress] == null) { //Init array
                 planes.MLAT[targetAdress] = [];
@@ -163,6 +164,9 @@ function pushPlane21() {
             plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
             plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
 
+            if (plane.trackNumber == "1634") {
+                console.log("1634 info")
+            }
 
             planes.ADSB[targetAdress].push(plane); //add plane
 

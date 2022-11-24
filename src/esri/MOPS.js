@@ -150,11 +150,11 @@ function updateRate() {
             })
 
             let newArea = getArea(plane, point);
-            timeStampsInArea.push(plane.timestamp1);
+            timeStampsInArea.push(plane.timestamp1WithMilis);
 
             if (previousArea != newArea) {
                 if (previousArea != UNKNOWN) {
-                    if (plane.timestamp1 - timeStampsInArea[timeStampsInArea.length - 2] > threshold) { //case where dissaperance is in area change
+                    if (plane.timestamp1WithMilis - timeStampsInArea[timeStampsInArea.length - 2] > threshold) { //case where dissaperance is in area change
                         timeStampsInArea.pop(); //remove last timestamp that is too far away  
                     }
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
@@ -164,9 +164,9 @@ function updateRate() {
 
                 previousArea = newArea;
                 timeStampsInArea = [];
-                timeStampsInArea.push(plane.timestamp1);
+                timeStampsInArea.push(plane.timestamp1WithMilis);
             }
-            else if (plane.timestamp1 - timeStampsInArea[timeStampsInArea.length - 2] > threshold) {
+            else if (plane.timestamp1WithMilis - timeStampsInArea[timeStampsInArea.length - 2] > threshold) {
                 if (newArea != UNKNOWN) {
                     timeStampsInArea.pop(); //remove last timestamp that is too far away
                     updateRateData[previousArea]["updates"] += timeStampsInArea.length;
@@ -175,7 +175,7 @@ function updateRate() {
                 }
 
                 timeStampsInArea = [];
-                timeStampsInArea.push(plane.timestamp1);
+                timeStampsInArea.push(plane.timestamp1WithMilis);
             }
         })
     })

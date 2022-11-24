@@ -80,13 +80,13 @@ export function loadLayers(map, view, timeSlider) {
         },
         excludedEffect: "grayscale(20%) opacity(30%)"
       };
-
+      // console.log("timeExtent now", timeSlider.timeExtent, timeSlider.timeExtent.start, timeSlider.timeExtent.end)
       allLayerViews.forEach(lv => {
-        lv.filter = {
+        lv.filter = { //render (past to now) or only now
           timeExtent: showPathsMap[lv.layer.id] ? timePathFilter : timeSlider.timeExtent,
           geometry: view.extent
         };
-        lv.featureEffect = effect;
+        lv.featureEffect = effect; //make any rendered feature that is not present gray
       })
     });
   }
@@ -301,8 +301,8 @@ function createMLATLayer(map, allLayers) {
           },
           attributes: {
             heading: plane.heading,
-            timestamp1: Math.floor(plane.timestamp1), //this floor was not done previousy since needed milis for MOPS
-            timestamp2: Math.floor(plane.timestamp2),
+            timestamp1: plane.timestamp1,
+            timestamp2: plane.timestamp2,
             targetId: plane.targetId,
             key: plane.key,
             trackNumber: plane.trackNumber,
