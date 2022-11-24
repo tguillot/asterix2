@@ -147,42 +147,25 @@ function pushPlane21() {
         plane.heading = recordPlane["b160"] != null ? recordPlane["b160"]["trackAngle"] : null;
 
 
-        if (plane.heading != null) { //if no heading consider other obejct           
-            if (planes.ADSB[targetAdress] == null) { //Init array
-                planes.ADSB[targetAdress] = [];
-            }
 
-            if (planes.ADSB[targetAdress].length > 0) { //If first position exists make previouse extent
-                planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
-            }
-            //Popup info for AIR targets
-            plane.key = targetAdress; //key
-            plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"; //Title
-
-            plane.trackNumber = recordPlane["b161"] != null ? recordPlane["b161"].toString() : "Unknown";
-            plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"] : "Unknown";
-            plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
-            plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
-
-            if (plane.trackNumber == "1634") {
-                console.log("1634 info")
-            }
-
-            planes.ADSB[targetAdress].push(plane); //add plane
-
-        } else {
-            if (planes.others[targetAdress] == null) { //Init array
-                planes.others[targetAdress] = [];
-            }
-
-            if (planes.others[targetAdress].length > 0) { //If first position exists make previouse extent
-                planes.others[targetAdress][planes.others[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
-            }
-
-            //Popup info for GROUND targets
-
-            planes.others[targetAdress].push(plane); //add plane
+        if (planes.ADSB[targetAdress] == null) { //Init array
+            planes.ADSB[targetAdress] = [];
         }
+
+        if (planes.ADSB[targetAdress].length > 0) { //If first position exists make previouse extent
+            planes.ADSB[targetAdress][planes.ADSB[targetAdress].length - 1].timestamp2 = plane.timestamp1 - 1000;
+        }
+        //Popup info for AIR targets
+        plane.key = targetAdress; //key
+        plane.targetId = recordPlane["b170"] != null ? recordPlane["b170"] : "Unknown"; //Title
+
+        plane.trackNumber = recordPlane["b161"] != null ? recordPlane["b161"].toString() : "Unknown";
+        plane.mode3ACode = recordPlane["b070"] != null ? recordPlane["b070"] : "Unknown";
+        plane.flightLevel = recordPlane["b145"] != null ? recordPlane["b145"].toString() : "Unknown";
+        plane.category = recordPlane["b020"] != null ? recordPlane["b020"] : "Unknown";
+
+        planes.ADSB[targetAdress].push(plane); //add plane
+
     }
 
 
