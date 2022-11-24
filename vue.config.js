@@ -5,7 +5,16 @@ module.exports = defineConfig({
     'vuetify'
   ],
   publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
-
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.worker\.js$/,
+          use: { loader: 'worker-loader' }
+        }
+      ]
+    }
+  },
   pluginOptions: {
     electronBuilder: {
         builderOptions: {
