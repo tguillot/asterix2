@@ -57,6 +57,3 @@ To upload the file containing the data.
 
 ![](docs/Asterix_Diagrams-File%20Architecture.drawio.png)
 
-## Authors
-
-Tania Guillot and David Saiz
