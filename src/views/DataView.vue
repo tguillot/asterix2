@@ -56,6 +56,7 @@
 <script>
 import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
 
+// let externalVariable = window.electron.loading();
 export default {
 computed: {
   getRecords() {
