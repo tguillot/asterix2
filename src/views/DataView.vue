@@ -25,22 +25,6 @@
         single-line
       ></v-text-field>
     </template>
-    <template v-slot:footer.prepend>
-      <v-tooltip top>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        color="primary"
-        @click="buttonCallback"
-        v-bind="attrs"
-        v-on="on"
-      >
-      <v-icon>mdi-table-arrow-down</v-icon>
-      </v-btn>
-    </template>
-    <span>Download data as CSV</span>
-    </v-tooltip>
-    </template>
-
 
 <template v-slot:item="{ item }" >
   <tr @click="rowClick" >
@@ -72,7 +56,6 @@
 <script>
 import  { getRecords10, getRecords21}  from "../decoder/decoder.js"
 
-// let externalVariable = window.electron.loading();
 export default {
 computed: {
   getRecords() {
@@ -93,20 +76,10 @@ computed: {
     return this._routerRoot._route.name;
   }
 },
-watch: {
-      // loader () {
-      //   const l = this.loader
-      //   this[l] = !this[l]
-      // },
-      // loading (newValue, oldValue) {
-      //  console.log(newValue, oldValue)
-      // },
-},
+
 data() {
   return {
     search: '',
-    // loader: null,
-    // loading: externalVariable,
     headers21: [
       { label: 'Category' ,text: 'Category', align: 'start', value: 'category', filterable: false},
       { label: 'Length' ,text: 'Length',  value: 'length', filterable: false },
@@ -205,31 +178,7 @@ methods:{
     }else if(value.target.classList.length==0){
       value.target.classList.add('truncate');
     }
-    
-  },
-  buttonCallback(){
-      this.loader = 'loading'
-      let records = null;
-      let headers = null;
-      const separator = ";";
-      if(this.dataCategory=="data10"){
-        records=  getRecords10();
-      }else{
-        records = getRecords21();
-      }
-      if(this.dataCategory=="data10"){
-        headers = this.headers10;
-      }else{
-        headers = this.headers21;
-      }
-      
-      try {
-        window.electron.save(headers, records);
-      } catch (e) {
-        console.log(e);
-      }  
-      
-  },
+  }
 }
   
 

@@ -16,16 +16,7 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {
 
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: true,
-      preload: path.join(__static, 'preload.js'), // add preload script
-      nodeIntegrationInWorker: true
-    },
     icon:'public/favicon.ico'
   })
 

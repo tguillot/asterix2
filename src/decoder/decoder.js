@@ -33,7 +33,7 @@ var planes = {
 }
 
 var today = new Date();
-var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -2, 0, 0, 0);
+var milisToday = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), -1, 0, 0, 0);
 
 export function getPlanes() {
     return planes;

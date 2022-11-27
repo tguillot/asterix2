@@ -34,7 +34,7 @@ export function parse(record) {
         v: item["v"][indexV],
         g: item["g"][indexG],
         l: item["l"][indexL],
-        mode: mode,
+        mode: mode.toString().padStart(4, '0'),
     });
 
     return record.subarray(byteLength);
