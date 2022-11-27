@@ -53,10 +53,6 @@ Update rate and probability of identification values computed.
 To upload the file containing the data.
 
 
-## Installation
-
-Download the executable and run it
-
 ## Architecture
 
 ![](docs/Asterix_Diagrams-File%20Architecture.drawio.png)
