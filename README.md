@@ -41,7 +41,8 @@ By clicking on a plane, you can see its information and export its path to kml.
 ### VIEW DATA
 
 Tables containing the data from the uploaded file.
-Can search by fields, expand rows, and download the table to csv.
+Can search by fields expand rows, and download the table to csv. The searchable fields are: track number, target address, mode 3A code, target/track status and target identification.
+
 ![](docs/table.png)
 
 ### MOPS
