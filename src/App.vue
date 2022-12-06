@@ -91,7 +91,7 @@
               VIEW DATA
             </p>
             <p>Tables containing the data from the uploaded file.
-               Can search by fields, expand rows, and download the table to csv.</p>
+               Can search by fields, expand rows, and download the table to csv. The searchable categories are: track number, target address, mode 3A code and target identification.</p>
                <p class="pt-3 mb-0 text-h6 text--primary">
               MOPS
             </p>

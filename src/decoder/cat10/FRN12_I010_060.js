@@ -30,12 +30,7 @@ export function parse(record) {
 
     let mode = modeA * 1000 + modeB * 100 + modeC * 10 + modeD;
 
-    pushDataItem10(name, {
-        v: item["v"][indexV],
-        g: item["g"][indexG],
-        l: item["l"][indexL],
-        mode: mode.toString().padStart(4, '0'),
-    });
+    pushDataItem10(name, mode.toString().padStart(4, '0'));
 
     return record.subarray(byteLength);
 }
